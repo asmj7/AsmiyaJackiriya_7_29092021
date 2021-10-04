@@ -1,21 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const emailExistence = require('email-existence');
 const cryptoJs = require('crypto-js/md5');
-
-// exports.signup = (req, res, next) => {
-//     emailExistence.check({email:req.body.email}, function(err, user){
-//         if(err){
-//             return err
-//         }
-//         if(user){
-//             return res.status(401).json({message: 'Cette adresse e-mail existe déjà'})
-//         }
-//     }).then(newUser => {
-
-//     })
-// };
 
 exports.signup = (req, res, next) => {
     User.findOne({ email: req.body.email })

@@ -3,7 +3,17 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const cryptoJs = require('crypto-js/md5');
 
+// Création d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
+    if (
+        !req.body.prenom ||
+        !req.body.nom ||
+        !req.body.email ||
+        !req.body.password
+    ) {
+        return res.status(400).json({ error: 'Merci de remplir tous les champs' })
+    };
+    
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {

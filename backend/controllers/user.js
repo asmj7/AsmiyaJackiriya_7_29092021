@@ -60,3 +60,19 @@ exports.login = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+
+exports.deleteUser = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+    User.findOne({ where: { id: req.params.id } })
+        .then((user) => {
+            if (user.id === userId) {
+                user.destroy()
+                    .then(() => {
+                        res.status(200).json({ message: 'Votre compte a bien été supprimé !' });
+                    }).catch(err => res.status(400).json({ message: 'Votre compte n\'a pas pu être supprimé.' }));
+            };
+        })
+        .catch(error => res.status(500).json({ error }));
+};

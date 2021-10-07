@@ -6,7 +6,7 @@ const sequelize = new Sequelize('groupomania','root', '', {
 
 const User = sequelize.define('User', {
     id: {
-        type : DataTypes.STRING,
+        type : DataTypes.INTEGER,
         allowNull : false,
         primaryKey: true,
     },
@@ -18,6 +18,7 @@ const User = sequelize.define('User', {
         unique: true,
     },
     password: DataTypes.STRING,
+    test: DataTypes.STRING,
 });
 
-module.exports = Users;
+module.exports = User;

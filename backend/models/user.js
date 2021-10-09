@@ -1,8 +1,5 @@
 const {Sequelize, DataTypes} = require('sequelize');
-const sequelize = new Sequelize('groupomania','root', '', {
-    host: "localhost",
-    dialect : "mysql"
-});
+const sequelize = require('../config/sequelize')
 
 const User = sequelize.define('User', {
     id: {
@@ -17,8 +14,11 @@ const User = sequelize.define('User', {
         allowNull : false,
         unique: true,
     },
-    password: DataTypes.STRING,
-    test: DataTypes.STRING,
+    password: DataTypes.STRING
 });
+
+User.sync()
+    .then(() => console.log("La table est créé avec succès"))
+    .catch(error => console.log(error));
 
 module.exports = User;

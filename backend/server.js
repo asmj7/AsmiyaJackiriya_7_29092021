@@ -1,16 +1,13 @@
 const http = require('http');
 const app = require('./app');
 const db = require('./models')
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
+const mysql = require('mysql');
+const pool = mysql.createPool({
   host     : 'localhost',
   user     : 'root',
   password : '',
   database : 'Groupomania'
 });
-
-connection.connect();
-
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -56,13 +53,7 @@ server.on('listening', () => {
 });
 
 app.get('/', (req, res)=> {
-  const sqlInsert = "INSERT INTO users (prenom, nom) VALUES ('Asmiya', 'Jackiriya');"
-  connection.query(sqlInsert,(err, res)=> {
     res.send('hello world')
-  })
-  connection.on('error', function(err) {
-    console.log("[mysql error]",err);
-  });
 });
 
 // db.sequelize.sync().then(()=> {

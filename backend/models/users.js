@@ -1,28 +1,37 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('comments', {
+  return sequelize.define('users', {
     id: {
       autoIncrement: true,
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT.UNSIGNED,
       allowNull: false,
       primaryKey: true
     },
-    userId: {
-      type: DataTypes.INTEGER,
+    prenom: {
+      type: DataTypes.STRING(40),
       allowNull: false
     },
-    postId: {
-      type: DataTypes.INTEGER,
+    nom: {
+      type: DataTypes.STRING(40),
       allowNull: false
     },
-    comment: {
-      type: DataTypes.TEXT,
+    email: {
+      type: DataTypes.STRING(70),
+      allowNull: false,
+      unique: "email"
+    },
+    password: {
+      type: DataTypes.STRING(70),
+      allowNull: false
+    },
+    isAdmin: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   }, {
     sequelize,
-    tableName: 'comments',
-    timestamps: true,
+    tableName: 'users',
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -33,17 +42,11 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "userId",
+        name: "email",
+        unique: true,
         using: "BTREE",
         fields: [
-          { name: "userId" },
-        ]
-      },
-      {
-        name: "postId",
-        using: "BTREE",
-        fields: [
-          { name: "postId" },
+          { name: "email" },
         ]
       },
     ]

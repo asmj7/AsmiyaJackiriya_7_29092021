@@ -18,13 +18,14 @@ exports.signup = (req, res, next) => {
             if (!user) {
                 bcrypt.hash(req.body.password, 10)
                     .then(hash => {
-                        const user = new User({
+                        User.create({
                             email: cryptoJs(req.body.email).toString(),
-                            password: hash
-                        });
-                        user.save()
-                            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                            .catch(error => res.status(400).json({ error }));
+                            password: hash,
+                            prenom: req.body.prenom,
+                            nom: req.body.nom
+                        })
+                        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                        .catch(error => res.status(400).json({ error }));
                     })
                     .catch(error => res.status(500).json({ error }));
 
@@ -61,6 +62,7 @@ exports.login = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+// Supprimer un utilisateur
 exports.deleteUser = (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
@@ -76,3 +78,19 @@ exports.deleteUser = (req, res) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+
+// Récupérer tous les utilisateurs 
+exports.getAllUsers = (req, res) => {
+    User.findAll({
+        attributes : ['id', 'prenom', 'nom']
+    })
+    .then((users) => res.status(200).json(users))
+    .catch((error) => res.status(400).json({ error }));
+};
+
+// Récupérer un utilisateur
+exports.getOneUser = (req, res) => {
+    User.findOne({ where: { id: req.params.id } })
+      .then((user) => res.status(200).json(user))
+      .catch((error) => res.status(404).json({ error }));
+  };

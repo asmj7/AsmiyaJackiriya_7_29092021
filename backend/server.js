@@ -1,13 +1,6 @@
 const http = require('http');
 const app = require('./app');
-const db = require('./models')
-const mysql = require('mysql');
-const pool = mysql.createPool({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'Groupomania'
-});
+const sequelize = require('./config/sequelize');
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -20,7 +13,7 @@ const normalizePort = val => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 const errorHandler = error => {
@@ -52,10 +45,9 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
-app.get('/', (req, res)=> {
-    res.send('hello world')
+app.get('/', (req, res) => {
+  res.send('hello world')
 });
 
-// db.sequelize.sync().then(()=> {
-  server.listen(port);
-// });
+server.listen(port);
+

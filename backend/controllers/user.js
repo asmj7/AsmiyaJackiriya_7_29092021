@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/users');
 const cryptoJs = require('crypto-js/md5');
+const sequelize = require('../config/sequelize');
 
 // Création d'un nouvel utilisateur
 exports.signup = (req, res, next) => {

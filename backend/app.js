@@ -5,6 +5,8 @@ const app = express();
 
 app.use(express.json());
 
+const userRoutes = require('./routes/user');
+
 // Gestion des erreurs CORS (accès interdit aux autres serveurs)
 app.use(cors());
 app.use((req, res, next) => {
@@ -15,5 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
+
+app.use('/api/auth', userRoutes)
 
 module.exports = app;

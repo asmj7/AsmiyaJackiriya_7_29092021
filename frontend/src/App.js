@@ -1,16 +1,13 @@
 import React, { usestate } from "react";
 import './App.css';
-import Login from './components/Login';
+import './components/Identification';
+import Identification from "./components/Identification";
 
 function App() {
 
-  const [usernameReg, setUsernameReg] = usestate('');
-  const [uspasswordReg, setPasswordReg] = usestate('');
-
-
   return (
     <div className="App">
-      <Login />
+      <Identification />
     </div>
   );
 }

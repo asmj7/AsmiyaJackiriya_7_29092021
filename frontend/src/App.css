@@ -1,3 +1,14 @@
 .App {
   text-align: center;
 }
+.registration, .login {
+  display: inline-grid;
+}
+.identification {
+  display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 32%;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+}

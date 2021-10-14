@@ -8,7 +8,7 @@ function Identification() {
   const [emailReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
 
-  const Register = () => {
+  const register = () => {
     Axios.post("http://localhost:3000/api/signup", {
       prenom: prenomReg,
       nom: nomReg,
@@ -32,8 +32,8 @@ function Identification() {
         <label>E-mail</label>
         <input type="email"></input>
         <label>Mot de passe</label>
-        <input type="text"></input>
-        <button onClick={Register}>S'inscrire</button>
+        <input type="password"></input>
+        <button onClick={register}>S'inscrire</button>
       </div>
       <div className="login">
         <h1>Se connecter</h1>

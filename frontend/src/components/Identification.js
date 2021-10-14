@@ -9,7 +9,7 @@ function Identification() {
   const [passwordReg, setPasswordReg] = useState("");
 
   const register = () => {
-    Axios.post("http://localhost:3000/api/signup", {
+    Axios.post("http://localhost:3000/api/auth/signup", {
       prenom: prenomReg,
       nom: nomReg,
       email: emailReg,

@@ -1,11 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
+const models = require('../models');
+const User = models.users;
 const cryptoJs = require('crypto-js/md5');
 const sequelize = require('../config/sequelize');
 
 // Création d'un nouvel utilisateur
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
     if (
         !req.body.prenom ||
         !req.body.nom ||
@@ -14,18 +15,20 @@ exports.signup = (req, res, next) => {
     ) {
         return res.status(400).json({ error: 'Merci de remplir tous les champs' })
     }
-    User.findOne({ email: req.body.email })
+    User.findOne({where: {email: req.body.email}})
         .then(user => {
             if (!user) {
+                console.log(req.headers.authorization)
                 bcrypt.hash(req.body.password, 10)
                     .then(hash => {
                         User.create({
                             email: cryptoJs(req.body.email).toString(),
                             password: hash,
                             prenom: req.body.prenom,
-                            nom: req.body.nom
+                            nom: req.body.nom,
+                            isAdmin: false
                         })
-                        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                        .then(() => res.status(201).json({loggedIn: true, message: 'Utilisateur créé !' }))
                         .catch(error => res.status(400).json({ error }));
                     })
                     .catch(error => res.status(500).json({ error }));
@@ -37,8 +40,8 @@ exports.signup = (req, res, next) => {
 };
 
 // Connexion à un compte déjà existant
-exports.login = (req, res, next) => {
-    User.findOne({ email: cryptoJs(req.body.email).toString() })
+exports.login = (req, res) => {
+    User.findOne({where: {email: cryptoJs(req.body.email).toString()}})
         .then(user => {
             if (!user) {
                 return res.status(401).json({ message: 'Utilisateur non trouvé !' });
@@ -46,7 +49,7 @@ exports.login = (req, res, next) => {
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
-                        return res.status(401).json({ message: 'Mot de passe incorrect !' })
+                        return res.status(401).json({loggedIn: false, message: 'Mot de passe incorrect !' })
                     }
                     const token = jwt.sign(
                         { userId: user._id },
@@ -54,6 +57,7 @@ exports.login = (req, res, next) => {
                         { expiresIn: "24h" }
                     )
                     res.status(200).json({
+                        loggedIn: true,
                         userId: user._id,
                         token
                     })
@@ -94,4 +98,4 @@ exports.getOneUser = (req, res) => {
     User.findOne({ where: { id: req.params.id } })
       .then((user) => res.status(200).json(user))
       .catch((error) => res.status(404).json({ error }));
-  };
+};

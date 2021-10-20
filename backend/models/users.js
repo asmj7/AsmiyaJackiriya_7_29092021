@@ -26,7 +26,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     isAdmin: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      default: false
     }
   }, {
     sequelize,

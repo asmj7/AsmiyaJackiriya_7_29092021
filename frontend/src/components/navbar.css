@@ -1,0 +1,22 @@
+body{
+    margin: 0;
+}
+
+.navbar{
+    padding: 30px;
+    background-color: rgb(10, 59, 105);
+    display: flex;
+}
+.navbar .menu {
+    margin-left: auto;
+    display: flex;
+}
+
+.menuItems {
+    text-decoration: none !important;
+    list-style: none;
+    color: white;
+}
+.menu>a:nth-last-child(-n+2) {
+    margin-left: 10px;
+}

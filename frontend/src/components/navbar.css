@@ -1,11 +1,17 @@
 body{
     margin: 0;
 }
-
 .navbar{
     padding: 30px;
     background-color: rgb(10, 59, 105);
     display: flex;
+}
+.link{
+    text-decoration: none;
+}
+.groupomania {
+    color: white;
+    margin: 0;
 }
 .navbar .menu {
     margin-left: auto;
@@ -13,10 +19,52 @@ body{
 }
 
 .menuItems {
-    text-decoration: none !important;
     list-style: none;
     color: white;
 }
 .menu>a:nth-last-child(-n+2) {
-    margin-left: 10px;
+    margin-left: 20px;
+}
+.menu>a {
+    text-decoration: none;
+}
+.identification {
+    width: 25%;
+    margin: auto;
+}
+.registration {
+    display: inline-grid;
+    width: 100%;
+}
+.login{
+    display: inline-grid;
+    width: 100%;
+}
+/* .identification {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 32%;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+} */
+.upload {
+    margin-bottom: 50px;
+}
+.form {
+    display: inline-grid;
+    width: 40%;
+}
+.form input {
+    border: 1px solid #BCBCBC;
+    border-radius: 4px;
+}
+.inputContent {
+    padding-bottom: 170px;
+}
+.form>input:nth-last-child(-n+3) {
+    margin-top: 10px;
+}
+.publish {
+    margin-top: 10px;
 }

@@ -1,0 +1,18 @@
+.home {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+.title {
+    color: #383E5B;
+}
+.post {
+    width: fit-content;
+}
+.postContainer {
+    width: 40%;
+    border: 1.5px solid #BCBCBC;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+}

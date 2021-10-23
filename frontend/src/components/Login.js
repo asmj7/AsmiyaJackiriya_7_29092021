@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Axios from 'axios';
-import '../App.css';
-
+import { useHistory } from "react-router-dom";
+import './navbar.css';
 function Login() {
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  let history = useHistory();
 
   const login = () => {
     Axios.post("http://localhost:3000/api/auth/login", {
@@ -16,10 +18,12 @@ function Login() {
     })
     .then((response) => {
       if (response.data.loggedIn) {
-        console.log(response.data.loggedIn)
+        history.push("/")
+        console.log(response.data)
         localStorage.setItem("loggedIn", true);
-        localStorage.setItem("email", response.data.email)
+        localStorage.setItem("email", response.data.token)
       } else {
+        // localStorage.setItem("loggedIn", false);
         setErrorMessage(response.data.message)
       }
     })
@@ -34,7 +38,7 @@ function Login() {
         <label>Mot de passe</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         <button onClick={login}>Se connecter</button>
-        {/* {errorMessage} */}
+        {errorMessage}
       </div>
     </div>
   );

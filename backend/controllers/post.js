@@ -13,7 +13,7 @@ exports.createPost = (req, res) => {
         return res.status(400).json({ error: "Merci de remplir tous les champs." });
     }
     Post.create({
-        titlt: req.body.title,
+        title: req.body.title,
         content: req.body.content,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         userId: userId

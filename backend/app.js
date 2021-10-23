@@ -7,6 +7,8 @@ const helmet = require("helmet");
 app.use(helmet());
 app.use(express.json());
 
+const commentRoutes = require("./routes/comment")
+const postRoutes = require('./routes/post')
 const userRoutes = require('./routes/user');
 
 // Gestion des erreurs CORS (accès interdit aux autres serveurs)
@@ -22,6 +24,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use(bodyParser.json());
 
-app.use('/api/auth', userRoutes)
+app.use('/api/auth', commentRoutes);
+app.use('/api/auth', postRoutes);
+app.use('/api/auth', userRoutes);
+
 
 module.exports = app;

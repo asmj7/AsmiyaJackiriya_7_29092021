@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './accueil.css';
 import Axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 function Home() {
 
@@ -13,7 +14,7 @@ function Home() {
     // })
 
     useEffect(() => {
-        Axios.get("http://localhost:3000/api/auth/")
+        Axios.get("http://localhost:3000/api/post/")
             .then((response) => {
                 setUploads(response.data)
             })
@@ -43,5 +44,5 @@ function Home() {
     )
 }
 
-export default Home;
+export default withRouter(Home) ;
 

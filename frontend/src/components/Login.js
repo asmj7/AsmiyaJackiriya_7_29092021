@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Axios from 'axios';
 import { useHistory } from "react-router-dom";
 import './navbar.css';
+import { withRouter } from 'react-router-dom';
+
 function Login() {
   
   const [email, setEmail] = useState("");
@@ -44,4 +46,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default withRouter(Login) ;

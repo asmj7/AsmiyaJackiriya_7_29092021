@@ -8,8 +8,8 @@ const sequelize = require('../config/sequelize');
 // Création d'un nouvel utilisateur
 exports.signup = (req, res) => {
     if (
-        !req.body.prenom ||
-        !req.body.nom ||
+        !req.body.firstName ||
+        !req.body.lastName ||
         !req.body.email ||
         !req.body.password
     ) {
@@ -24,8 +24,8 @@ exports.signup = (req, res) => {
                         User.create({
                             email: cryptoJs(req.body.email).toString(),
                             password: hash,
-                            prenom: req.body.prenom,
-                            nom: req.body.nom,
+                            firstName: req.body.firstName,
+                            lastName: req.body.lastName,
                             isAdmin: false
                         })
                         .then(() => res.status(201).json({loggedIn: true, message: 'Utilisateur créé !' }))
@@ -87,7 +87,7 @@ exports.deleteUser = (req, res) => {
 // Récupérer tous les utilisateurs 
 exports.getAllUsers = (req, res) => {
     User.findAll({
-        attributes : ['id', 'prenom', 'nom']
+        attributes : ['id', 'firstName', 'lastName']
     })
     .then((users) => res.status(200).json(users))
     .catch((error) => res.status(400).json({ error }));

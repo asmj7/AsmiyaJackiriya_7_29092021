@@ -1,44 +1,55 @@
 import React, { useState } from "react";
 import Axios from 'axios';
 import './navbar.css';
+import { useHistory } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 function Signup() {
 
-    const [prenomReg, setPrenomReg] = useState("");
-    const [nomReg, setNomReg] = useState("");
+    const [firstNameReg, setFirstNameReg] = useState("");
+    const [lastNameReg, setLastNameReg] = useState("");
     const [emailReg, setEmailReg] = useState("");
     const [passwordReg, setPasswordReg] = useState("");
 
+    const [errorMessage, setErrorMessage] = useState("");
+    let history = useHistory();
+
     const register = () => {
-        console.log(prenomReg)
+        console.log(firstNameReg)
         Axios.post("http://localhost:3000/api/auth/signup", {
-            prenom: prenomReg,
-            nom: nomReg,
+            firstName: firstNameReg,
+            lastName: lastNameReg,
             email: emailReg,
             password: passwordReg
+        }).then((response) => {
+            if (response.data.loggedIn) {
+                history.push("/")
+                console.log(response.data)
+                localStorage.setItem("loggedIn", true);
+                localStorage.setItem("email", response.data.token)
+            } else {
+                // localStorage.setItem("loggedIn", false);
+                setErrorMessage(response.data.message)
+            }
         })
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((err) => console.log(err))
     }
 
-    return (
-        <div className="identification">
-            <div className="registration">
-                <h1>S'inscrire</h1>
-                <label>Prénom</label>
-                <input type="text" value={prenomReg} onChange={(e) => setPrenomReg(e.target.value)}></input>
-                <label>Nom</label>
-                <input type="text" value={nomReg} onChange={(e) => setNomReg(e.target.value)}></input>
-                <label>E-mail</label>
-                <input type="email" value={emailReg} onChange={(e) => setEmailReg(e.target.value)}></input>
-                <label>Mot de passe</label>
-                <input type="password" value={passwordReg} onChange={(e) => setPasswordReg(e.target.value)}></input>
-                <button onClick={register}>S'inscrire</button>
-            </div>
+return (
+    <div className="identification">
+        <div className="registration">
+            <h1>S'inscrire</h1>
+            <label>Prénom</label>
+            <input type="text" value={firstNameReg} onChange={(e) => setFirstNameReg(e.target.value)}></input>
+            <label>Nom</label>
+            <input type="text" value={lastNameReg} onChange={(e) => setLastNameReg(e.target.value)}></input>
+            <label>E-mail</label>
+            <input type="email" value={emailReg} onChange={(e) => setEmailReg(e.target.value)}></input>
+            <label>Mot de passe</label>
+            <input type="password" value={passwordReg} onChange={(e) => setPasswordReg(e.target.value)}></input>
+            <button onClick={register}>S'inscrire</button>
         </div>
-    );
+    </div>
+);
 }
 
-export default Signup;
+export default withRouter(Signup);

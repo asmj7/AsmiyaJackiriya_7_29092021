@@ -4,7 +4,12 @@ import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
 function Home() {
+    const token=localStorage.getItem("token")
 
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    console.log(config)
     const [uploads, setUploads] = useState([]);
 
     // useEffect(() => {
@@ -14,9 +19,10 @@ function Home() {
     // })
 
     useEffect(() => {
-        Axios.get("http://localhost:3000/api/post/")
+        Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
                 setUploads(response.data)
+                console.log(response.data)
             })
     }, [])
 

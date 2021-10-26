@@ -14,7 +14,7 @@ function Upload() {
     // const formData = new FormData()
     // console.log(formData)
     
-    Axios.post("http://localhost:3000/api/auth/upload", {
+    Axios.post("http://localhost:3000/api/post/upload", {
             title: title,
             content: content,
             image: image

@@ -66,3 +66,46 @@ exports.getOnePost = (req, res) => {
             res.status(404).json({ error });
         });
 }
+
+// Like et dislikes 
+exports.likeDislikeSauce = (req, res, next) => {
+    Post.findOne({ _id: req.params.id })
+        .then(post => {
+            const like = req.body.like;
+            let opinions = {};
+            switch (like) {
+                case -1:  //  Si l'utilisateur dislike le post 
+                    opinions = {
+                        $push: { usersDisliked: req.body.userId },
+                        $inc: { dislikes: 1 }
+                    }
+                    break;
+                case 0: // Si l'utilisateur enlève son like / dislike
+                    for (let userId of post.usersDisliked)
+                        if (req.body.userId === userId) {
+                            opinions = {
+                                $pull: { usersDisliked: userId },
+                                $inc: { dislikes: -1 }
+                            };
+                        };
+                    for (let userId of post.usersLiked)
+                        if (req.body.userId === userId) {
+                            opinions = {
+                                $pull: { usersLiked: userId },
+                                $inc: { likes: -1 }
+                            };
+                        };
+                    break;
+                case 1:  // Si l'utilisateur like un post
+                    opinions = {
+                        $push: { usersLiked: req.body.userId },
+                        $inc: { likes: 1 }
+                    };
+                    break;
+            };
+            Post.updateOne({ _id: req.params.id }, opinions) 
+                .then(() => res.status(200).json({ message: "Le post a été liké" }))
+                .catch(error => res.status(500).json({ error }))
+        })
+        .catch(error => res.status(500).json({ error }));
+};

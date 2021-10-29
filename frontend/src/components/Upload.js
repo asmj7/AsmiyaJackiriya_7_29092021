@@ -11,10 +11,15 @@ function Upload() {
 
     const upload = () => {
 
-    // const formData = new FormData()
-    // console.log(formData)
+        const token=localStorage.getItem("email")
+
+        const config = {
+            headers: {
+                'Authorization': `token ${token}`
+              }
+        };
     
-    Axios.post("http://localhost:3000/api/post/upload", {
+    Axios.post("http://localhost:3000/api/post/upload",config, {
             title: title,
             content: content,
             image: image

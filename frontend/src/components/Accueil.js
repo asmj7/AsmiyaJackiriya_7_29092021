@@ -4,24 +4,19 @@ import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
 function Home() {
-    const token=localStorage.getItem("token")
+    const token=localStorage.getItem("email")
 
     const config = {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+            'Authorization': `token ${token}`
+          }
     };
-    console.log(config)
     const [uploads, setUploads] = useState([]);
-
-    // useEffect(() => {
-    //     if (!localStorage.getItem("loggedIn")) {
-    //         localStorage.setItem("loggedIn", false)
-    //     }
-    // })
 
     useEffect(() => {
         Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
-                setUploads(response.data)
+                // setUploads(response.data)
                 console.log(response.data)
             })
     }, [])

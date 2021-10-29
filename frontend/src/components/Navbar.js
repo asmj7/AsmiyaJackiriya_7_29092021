@@ -8,13 +8,13 @@ function UserLogged() {
     return (
         <>
             
-                <Link to="/">
+                <Link to="api/post/">
                     <li className="menuItems">Accueil</li>
                 </Link>
-                <Link to="/upload">
+                <Link to="api/post/upload">
                     <li className="menuItems">Publier</li>
                 </Link>
-                <Link to="/profile">
+                <Link to="api/post/profile">
                     <li className="menuItems">Profile</li>
                 </Link>
             
@@ -25,10 +25,10 @@ function Guest() {
     return (
         <>
             
-                <Link to="/signup">
+                <Link to="api/auth/signup">
                     <li className="menuItems">S'inscrire</li>
                 </Link>
-                <Link to="/login">
+                <Link to="api/auth/login">
                     <li className="menuItems">Se connecter</li>
                 </Link>
 
@@ -49,24 +49,10 @@ function Navbar() {
     return (
         <div className="navbar">
             
-                <Link to="/" className="link">
+                <Link to="api/post/" className="link">
                     <h1 className="groupomania">Groupomania.</h1>
                 </Link>
                 <ul className="menu">
-                    {/* {!loggedIn ? (
-                    <Link to="/profile">
-                        <li className="menuItems" href="/">Profile</li>
-                    </Link>
-                ) : (
-                    <>
-                        <Link to="/login">
-                            <li className="menuItems" href="/">S'inscrire</li>
-                        </Link>
-                        <Link to="/login">
-                            <li className="menuItems" href="/">Se connecter</li>
-                        </Link>
-                    </>
-                )} */}
                     {loggedIn ? (
                         <UserLogged />
                     ) : (

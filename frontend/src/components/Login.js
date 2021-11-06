@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from 'axios';
 import { useHistory } from "react-router-dom";
 import './navbar.css';
 import { withRouter } from 'react-router-dom';
 
 function Login() {
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [errorMessage, setErrorMessage] = useState("");
 
   let history = useHistory();
@@ -18,20 +17,22 @@ function Login() {
       email: email,
       password: password
     })
-    .then((response) => {
-      if (response.data.loggedIn) {
-        history.push("/")
-        console.log(response.data)
-        localStorage.setItem("loggedIn", true);
-        localStorage.setItem("email", response.data.token)
-      } else {
-        // localStorage.setItem("loggedIn", false);
-        setErrorMessage(response.data.message)
-      }
-    })
-      
+      .then((response) => {
+        if (response.data.loggedIn) {
+          history.push("/")
+          console.log(response.data)
+          localStorage.setItem("loggedIn", true);
+          localStorage.setItem("email", response.data.token)
+        } else {
+          // localStorage.setItem("loggedIn", false);
+          setErrorMessage(response.data.message)
+        }
+      })
+
   }
+
   return (
+    
     <div className="identification">
       <div className="login">
         <h1>Se connecter</h1>
@@ -46,4 +47,4 @@ function Login() {
   );
 }
 
-export default withRouter(Login) ;
+export default withRouter(Login);

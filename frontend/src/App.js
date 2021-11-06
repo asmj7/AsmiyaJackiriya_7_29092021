@@ -8,19 +8,18 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-function App() {
 
+function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
-
+          <Navbar />
         <Switch>
-        <Route path="api/post/" exact component={Accueil} />
-        <Route path="api/post/profile" exact component={Profile} />
-        <Route path="api/post/upload" exact component={Upload} />
-        <Route path="api/auth/login" exact component={Login} />
-        <Route path="api/auth/signup" exact component={Signup} />
+          <Route path="/" exact component={Accueil} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/upload" exact component={Upload} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
         </Switch>
       </Router>
     </div>

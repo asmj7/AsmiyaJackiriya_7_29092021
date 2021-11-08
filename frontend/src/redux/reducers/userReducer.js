@@ -1,20 +1,25 @@
 import { ActionTypes } from "../contants/action-types";
 
 const initialState = {
-    user: [
+    user: 
         {
             firstName: "Jackiriya",
             LastName: "Asmiya",
             email: "test12@gmail.com",
             password: "12345"
         }
-    ]
 }
 
-export const userReducer = (state= initialState, action) => {
+const initialStateTwo = {
+    user: {
+
+    }
+}
+
+export const userReducer = (state= initialStateTwo, action) => {
     switch (action.type) {
         case ActionTypes.REGISTER_SUCCESS:
-            return state;
+            return {...state, user:action.payload.user};
         default:
             return state;
     }

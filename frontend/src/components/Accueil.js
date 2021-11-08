@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 function Home() {
     const token = localStorage.getItem("email")
-
+    
     const config = {
         headers: {
             'Authorization': `token ${token}`

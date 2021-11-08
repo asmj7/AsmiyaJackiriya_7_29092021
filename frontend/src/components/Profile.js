@@ -5,9 +5,15 @@ import './navbar.css'
 
 
 function Profile() {
+    const token = localStorage.getItem("email")
     let { id } = useParams();
-    const url = 'http://localhost:3000/api/auth/'
-    Axios.get(url + id)
+    const config = {
+        headers: {
+            'Authorization': `token ${token}`
+        }
+    };
+    const url = ('http://localhost:3000/api/auth/', config)
+    Axios.get(url)
         .then((response) => {
             console.log(response)
         })

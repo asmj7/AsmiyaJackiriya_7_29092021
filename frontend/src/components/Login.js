@@ -3,8 +3,8 @@ import Axios from 'axios';
 import { useHistory } from "react-router-dom";
 import './navbar.css';
 import { withRouter } from 'react-router-dom';
+import { loginSuccess } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
-import { registerSuccess} from '../redux/actions/userActions';
 
 function Login() {
 
@@ -20,7 +20,7 @@ function Login() {
       password: password
     })
       .then((response) => {
-        dispatch(registerSuccess(response))
+        dispatch(loginSuccess(response))
         if (response.data.loggedIn) {
           history.push("/")
           console.log(response.data)

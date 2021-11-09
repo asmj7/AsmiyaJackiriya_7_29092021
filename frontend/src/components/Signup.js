@@ -3,6 +3,8 @@ import Axios from 'axios';
 import './navbar.css';
 import { useHistory } from "react-router-dom";
 import { withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerSuccess} from '../redux/actions/userActions';
 
 function Signup() {
 
@@ -10,8 +12,8 @@ function Signup() {
     const [lastNameReg, setLastNameReg] = useState("");
     const [emailReg, setEmailReg] = useState("");
     const [passwordReg, setPasswordReg] = useState("");
-
     const [errorMessage, setErrorMessage] = useState("");
+    const dispatch = useDispatch();
     let history = useHistory();
 
     const register = () => {
@@ -22,6 +24,7 @@ function Signup() {
             email: emailReg,
             password: passwordReg
         }).then((response) => {
+            dispatch(registerSuccess(response))
             if (response.data.loggedIn) {
                 history.push("/")
                 console.log(response.data)

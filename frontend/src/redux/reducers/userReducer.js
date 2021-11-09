@@ -16,9 +16,18 @@ const initialStateTwo = {
     }
 }
 
-export const userReducer = (state= initialStateTwo, action) => {
+export const userGuestReducer = (state= initialStateTwo, action) => {
     switch (action.type) {
         case ActionTypes.REGISTER_SUCCESS:
+            return {...state, user:action.payload.user};
+        default:
+            return state;
+    }
+}
+
+export const userLoggedReducer = (state= initialStateTwo, action) => {
+    switch (action.type) {
+        case ActionTypes.LOGIN_SUCCESS:
             return {...state, user:action.payload.user};
         default:
             return state;

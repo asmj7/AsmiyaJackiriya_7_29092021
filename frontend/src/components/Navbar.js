@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import './navbar.css';
-import {useSelector} from 'react-redux';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+// import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 
 function UserLogged() {
     return (
@@ -39,18 +39,16 @@ function Guest() {
 
 export default function Navbar() {
 
-
-
-    // const loggedIn = localStorage.getItem("loggedIn")
     const [loggedIn, setLoggedIn] = useState(false);
-    const loggedInUser = useSelector((state)=> state.loggedInUser.user)
+    const loggedInUser = useSelector((state) => state.loggedInUser.user)
     console.log(loggedInUser)
+
     useEffect(() => {
-        console.log(localStorage.getItem('loggedIn'))
-        setLoggedIn(localStorage.setItem("loggedIn"))
+        if(loggedInUser.loggedIn === true) {
+            setLoggedIn(localStorage.getItem("loggedIn"))
+        }
     }, [loggedInUser])
 
-    // let loggedIn = localStorage.getItem("loggedIn")
     return (
         <div className="navbar">
 
@@ -77,3 +75,4 @@ export default function Navbar() {
 // );
 
 // export default Navbar;
+

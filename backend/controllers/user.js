@@ -15,7 +15,7 @@ exports.signup = (req, res) => {
     ) {
         return res.status(400).json({ error: 'Merci de remplir tous les champs' })
     }
-    User.findOne({where: {email: req.body.email}})
+    User.findOne({ where: { email: req.body.email } })
         .then(user => {
             if (!user) {
                 console.log(req.headers.authorization)
@@ -28,8 +28,12 @@ exports.signup = (req, res) => {
                             lastName: req.body.lastName,
                             isAdmin: false
                         })
-                        .then(() => res.status(201).json({loggedIn: true, message: 'Utilisateur créé !' }))
-                        .catch(error => res.status(400).json({ error }));
+                            .then(() => res.status(201).json({
+                                loggedIn: true,
+                                userInfo: [user.firstName, user.lastName],
+                                message: 'Utilisateur créé !'
+                            }))
+                            .catch(error => res.status(400).json({ error }));
                     })
                     .catch(error => res.status(500).json({ error }));
 
@@ -41,7 +45,7 @@ exports.signup = (req, res) => {
 
 // Connexion à un compte déjà existant
 exports.login = (req, res) => {
-    User.findOne({where: {email: cryptoJs(req.body.email).toString()}})
+    User.findOne({ where: { email: cryptoJs(req.body.email).toString() } })
         .then(user => {
             if (!user) {
                 return res.status(401).json({ message: 'Utilisateur non trouvé !' });
@@ -49,7 +53,7 @@ exports.login = (req, res) => {
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
-                        return res.status(401).json({loggedIn: false, message: 'Mot de passe incorrect !' })
+                        return res.status(401).json({ loggedIn: false, message: 'Mot de passe incorrect !' })
                     }
                     const token = jwt.sign(
                         { userId: user._id },
@@ -58,6 +62,7 @@ exports.login = (req, res) => {
                     )
                     res.status(200).json({
                         loggedIn: true,
+                        userInfo: [user.firstName, user.lastName],
                         userId: user._id,
                         token
                     })
@@ -87,15 +92,15 @@ exports.deleteUser = (req, res) => {
 // Récupérer tous les utilisateurs 
 exports.getAllUsers = (req, res) => {
     User.findAll({
-        attributes : ['id', 'firstName', 'lastName']
+        attributes: ['id', 'firstName', 'lastName']
     })
-    .then((users) => res.status(200).json(users))
-    .catch((error) => res.status(400).json({ error }));
+        .then((users) => res.status(200).json(users))
+        .catch((error) => res.status(400).json({ error }));
 };
 
 // Récupérer un utilisateur
 exports.getOneUser = (req, res) => {
     User.findOne({ where: { id: req.params.id } })
-      .then((user) => res.status(200).json(user))
-      .catch((error) => res.status(404).json({ error }));
+        .then((user) => res.status(200).json(user))
+        .catch((error) => res.status(404).json({ error }));
 };

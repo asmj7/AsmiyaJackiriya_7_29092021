@@ -41,13 +41,25 @@ export default function Navbar() {
 
     const [loggedIn, setLoggedIn] = useState(false);
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    console.log(loggedInUser)
+    // console.log(loggedInUser)
 
     useEffect(() => {
-        if(loggedInUser.loggedIn === true) {
-            setLoggedIn(localStorage.getItem("loggedIn"))
+
+        if(!loggedInUser || Object.keys(loggedInUser).length === 0) {
+            setLoggedIn(false)
         }
+        else {
+            setLoggedIn(true)
+        }
+        // {loggedInUser === {} ? (
+        //     setLoggedIn(false)
+        // ) : (
+        //     setLoggedIn(true)
+        // )}
+
     }, [loggedInUser])
+    console.log(loggedInUser)
+    console.log(loggedIn)
 
     return (
         <div className="navbar">

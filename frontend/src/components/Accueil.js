@@ -18,7 +18,6 @@ function Home() {
             .then((response) => {
                 // setUploads(response.data)
                 console.log(response)
-                console.log(config)
             })
     }, [])
 

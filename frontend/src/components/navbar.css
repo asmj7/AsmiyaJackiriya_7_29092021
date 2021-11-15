@@ -22,7 +22,7 @@ body{
     list-style: none;
     color: white;
 }
-.menu>a:nth-last-child(-n+2) {
+.menu>a:nth-last-child(-n+3) {
     margin-left: 20px;
 }
 .menu>a {

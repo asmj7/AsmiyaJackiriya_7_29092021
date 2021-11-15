@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import './accueil.css';
 import Axios from 'axios';
+import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
+
+
 function Home() {
+    // const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const token = localStorage.getItem("email")
     
     const config = {
         headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
             'Authorization': `token ${token}`
         }
     };
@@ -16,7 +22,7 @@ function Home() {
     useEffect(() => {
         Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
-                // setUploads(response.data)
+                // setUploads(response)
                 console.log(response)
             })
     }, [])

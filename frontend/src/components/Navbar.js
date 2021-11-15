@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function UserLogged() {
+    const loggedInUser = useSelector((state) => state.loggedInUser.user)
     return (
         <>
-
             <Link to="/">
                 <li className="menuItems">Accueil</li>
             </Link>
@@ -15,7 +15,7 @@ function UserLogged() {
                 <li className="menuItems">Publier</li>
             </Link>
             <Link to="/profile">
-                <li className="menuItems">Profile</li>
+                <li className="menuItems">{loggedInUser.data.userInfo[0]+ " " + loggedInUser.data.userInfo[1]}</li>
             </Link>
 
         </>
@@ -45,19 +45,14 @@ export default function Navbar() {
 
     useEffect(() => {
 
-        if(!loggedInUser || Object.keys(loggedInUser).length === 0) {
+        if (!loggedInUser || Object.keys(loggedInUser).length === 0) {
             setLoggedIn(false)
         }
         else {
             setLoggedIn(true)
         }
-        // {loggedInUser === {} ? (
-        //     setLoggedIn(false)
-        // ) : (
-        //     setLoggedIn(true)
-        // )}
-
     }, [loggedInUser])
+
     console.log(loggedInUser)
     console.log(loggedIn)
 

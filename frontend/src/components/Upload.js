@@ -11,6 +11,7 @@ function Upload() {
     const [content, setContent] = useState("")
     const [image, setImage] = useState("")
 
+    // Au click sur "Publier"
     const upload = (e) => {
         e.preventDefault();
         const token = localStorage.getItem("email")
@@ -25,7 +26,12 @@ function Upload() {
         // console.log("credentials" + credentials)
         let config: AxiosRequestConfig = {
             baseURL: "http://localhost:3000",
-            method: "POST"
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                Authorization: `token ${token}`,
+                credentials: 'include'
+            }
         }
         // console.log(config)
         let client = NtlmClient(credentials, config)

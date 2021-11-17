@@ -9,7 +9,7 @@ function Upload() {
 
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
-    const [image, setImage] = useState("")
+    const [imageUrl, setImageUrl] = useState("")
 
     // Au click sur "Publier"
     const upload = (e) => {
@@ -20,16 +20,17 @@ function Upload() {
         let credentials: NtlmCredentials = {
             title: title,
             content: content,
-            image: image,
+            imageUrl: imageUrl,
             userId: userId
         };
+        console.log(userId);
         // console.log("credentials" + credentials)
         let config: AxiosRequestConfig = {
             baseURL: "http://localhost:3000",
             method: "POST",
             headers: {
                 Accept: 'application/json',
-                Authorization: `token ${token}`,
+                Authorization: `Bearer ${token}`,
                 credentials: 'include'
             }
         }
@@ -45,25 +46,7 @@ function Upload() {
             console.log("Failed")
         }
     };
-
-    return (
-        <>
-            <div className="upload">
-                <h1>Créer une publication</h1>
-                <div className="form">
-                    <input type="text" placeholder="Titre..." name="title" className="inputTitle" onChange={(e) => setTitle(e.target.value)}></input>
-                    <input type="text" placeholder="Quoi de neuf ?" className="inputContent" name="content" onChange={(e) => setContent(e.target.value)}></input>
-                    <input type="file" name="image" onChange={(e) => setImage(e.target.files[0].name)}></input>
-                    <button className="publish" onClick={upload}>Publier</button>
-                </div>
-            </div>
-        </>
-    )
-}
-
-export default Upload;
-
-// const upload = (e) => {
+    // const upload = (e) => {
     //     e.preventDefault()
     //     const token = localStorage.getItem("email")
     //     var userId = jwt_decode(token);
@@ -92,7 +75,7 @@ export default Upload;
     //     Axios("http://localhost:3000/api/post/upload",{
     //         title: title,
     //         content: content,
-    //         image: image,
+    //         imageUrl: imageUrl,
     //         userId: userId
     //     },{headers: {
     //         'Content-Type': 'application/json',
@@ -101,3 +84,20 @@ export default Upload;
     //         credentials: 'include'
     //     }})
     // }
+    return (
+        <>
+            <div className="upload">
+                <h1>Créer une publication</h1>
+                <div className="form">
+                    <input type="text" placeholder="Titre..." name="title" className="inputTitle" onChange={(e) => setTitle(e.target.value)}></input>
+                    <input type="text" placeholder="Quoi de neuf ?" className="inputContent" name="content" onChange={(e) => setContent(e.target.value)}></input>
+                    <input type="file" name="image" onChange={(e) => setImageUrl(e.target.files[0].name)}></input>
+                    <button className="publish" onClick={upload}>Publier</button>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default Upload;
+

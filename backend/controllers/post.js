@@ -9,17 +9,26 @@ exports.createPost = (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    
+    console.log('userId:' + userId);
+
+    if (!req.body.content) {
+        return res.status(400).json({ error: "Merci de remplir tous les champs." });
+    }
+
     Post.create({
         title: req.body.title,
         content: req.body.content,
-        // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         userId: userId
     })
-        .then((post) => res.status(201).json(post))
-        .catch((error) =>{ 
+        .then((post) => {
+            res.status(201).json(post);
+            console.log('contenu' + post.content);
+        })
+        .catch((error) => {
             console.log(error)
-            return res.status(400).json({ error })});
+            return res.status(400).json({ error })
+        });
 }
 
 // Modification d'un post
@@ -103,7 +112,7 @@ exports.likeDislikeSauce = (req, res, next) => {
                     };
                     break;
             };
-            Post.updateOne({ _id: req.params.id }, opinions) 
+            Post.updateOne({ _id: req.params.id }, opinions)
                 .then(() => res.status(200).json({ message: "Le post a été liké" }))
                 .catch(error => res.status(500).json({ error }))
         })

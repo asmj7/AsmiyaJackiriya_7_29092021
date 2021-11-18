@@ -5,23 +5,38 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      validate: {
+        notEmpty: true
+      }
     },
     userId: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     title: {
       type: DataTypes.STRING(100),
-      allowNull: true
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     imageUrl: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
     }
   }, {
     sequelize,

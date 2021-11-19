@@ -8,7 +8,7 @@ function UserLogged() {
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     return (
         <>
-            <Link to="/">
+            <Link to="/Home">
                 <li className="menuItems">Accueil</li>
             </Link>
             <Link to="/upload">

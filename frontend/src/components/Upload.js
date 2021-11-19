@@ -46,7 +46,25 @@ function Upload() {
             console.log("Failed")
         }
     };
-    // const upload = (e) => {
+    
+    return (
+        <>
+            <div className="upload">
+                <h1>Créer une publication</h1>
+                <div className="form">
+                    <input type="text" placeholder="Titre..." name="title" className="inputTitle" onChange={(e) => setTitle(e.target.value)}></input>
+                    <input type="text" placeholder="Quoi de neuf ?" className="inputContent" name="content" onChange={(e) => setContent(e.target.value)}></input>
+                    <input type="file" name="image" onChange={(e) => setImageUrl(e.target.files[0].name)}></input>
+                    <button className="publish" onClick={upload}>Publier</button>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default Upload;
+
+// const upload = (e) => {
     //     e.preventDefault()
     //     const token = localStorage.getItem("email")
     //     var userId = jwt_decode(token);
@@ -84,20 +102,3 @@ function Upload() {
     //         credentials: 'include'
     //     }})
     // }
-    return (
-        <>
-            <div className="upload">
-                <h1>Créer une publication</h1>
-                <div className="form">
-                    <input type="text" placeholder="Titre..." name="title" className="inputTitle" onChange={(e) => setTitle(e.target.value)}></input>
-                    <input type="text" placeholder="Quoi de neuf ?" className="inputContent" name="content" onChange={(e) => setContent(e.target.value)}></input>
-                    <input type="file" name="image" onChange={(e) => setImageUrl(e.target.files[0].name)}></input>
-                    <button className="publish" onClick={upload}>Publier</button>
-                </div>
-            </div>
-        </>
-    )
-}
-
-export default Upload;
-

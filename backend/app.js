@@ -23,7 +23,9 @@ app.use((req, res, next) => {
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.use('/api/comment', commentRoutes);
 app.use('/api/post', postRoutes);

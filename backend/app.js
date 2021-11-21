@@ -5,7 +5,7 @@ const app = express();
 const path = require("path");
 const helmet = require("helmet");
 app.use(helmet());
-app.use(express.json());
+app.use(bodyParser.json());
 
 const commentRoutes = require("./routes/comment")
 const postRoutes = require('./routes/post')

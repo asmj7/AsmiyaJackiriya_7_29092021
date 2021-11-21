@@ -29,7 +29,7 @@ function Signup() {
                 history.push("/")
                 console.log(response.data)
                 localStorage.setItem("loggedIn", true);
-                localStorage.setItem("email", response.data.token)
+                localStorage.setItem("email", response.data.token);
             } else {
                 // localStorage.setItem("loggedIn", false);
                 setErrorMessage(response.data.message)

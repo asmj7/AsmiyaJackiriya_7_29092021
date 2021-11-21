@@ -1,44 +1,35 @@
 import React, { useState } from "react";
-import { AxiosRequestConfig } from 'axios';
-import Axios from 'axios';
-import jwt_decode from "jwt-decode";
-import { NtlmClient } from 'axios-ntlm';
+import axios, { AxiosRequestConfig } from 'axios';
+import jwt from "jsonwebtoken";
 import './navbar.css';
 
 function Upload() {
 
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
-    const [imageUrl, setImageUrl] = useState("")
+    const [image, setImage] = useState(null)
 
     // Au click sur "Publier"
     const upload = (e) => {
         e.preventDefault();
-        const token = localStorage.getItem("email")
-        const userId = jwt_decode(token);
+        const token = localStorage.getItem("email");
 
-        let credentials: NtlmCredentials = {
-            title: title,
-            content: content,
-            imageUrl: imageUrl,
-            userId: userId
-        };
-        console.log(userId);
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("image", image);
+        formData.append("content", content);
+
         // console.log("credentials" + credentials)
         let config: AxiosRequestConfig = {
             baseURL: "http://localhost:3000",
-            method: "POST",
             headers: {
-                Accept: 'application/json',
+                "Content-Type": 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
-                credentials: 'include'
             }
         }
-        // console.log(config)
-        let client = NtlmClient(credentials, config)
-        // console.log(client)
+
         try {
-            let resp = client.post("/api/post/upload")
+            let resp = axios.post(`/api/post/upload`, formData, config);
             console.log(resp);
         }
         catch (err) {
@@ -51,12 +42,12 @@ function Upload() {
         <>
             <div className="upload">
                 <h1>Créer une publication</h1>
-                <div className="form">
+                <form className="form">
                     <input type="text" placeholder="Titre..." name="title" className="inputTitle" onChange={(e) => setTitle(e.target.value)}></input>
                     <input type="text" placeholder="Quoi de neuf ?" className="inputContent" name="content" onChange={(e) => setContent(e.target.value)}></input>
-                    <input type="file" name="image" onChange={(e) => setImageUrl(e.target.files[0].name)}></input>
-                    <button className="publish" onClick={upload}>Publier</button>
-                </div>
+                    <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])}></input>
+                    <button type="submit" className="publish" onClick={upload}>Publier</button>
+                </form>
             </div>
         </>
     )

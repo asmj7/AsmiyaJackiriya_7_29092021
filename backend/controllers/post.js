@@ -5,19 +5,20 @@ const fs = require("fs");
 
 // Création d'un post
 exports.createPost = (req, res) => {
-    // console.log("createPost")
+    // console.log("createPost");
+    console.log("req.body : ", req.body);
+
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    console.log('userId:' + userId);
 
     if (!req.body.content) {
         return res.status(400).json({ error: "Merci de remplir tous les champs." });
     }
 
     Post.create({
-        title: JSON.parse(req.body.title),
-        content: JSON.parse(req.body.content),
+        title: req.body.title,
+        content: req.body.content,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         userId: userId
     })

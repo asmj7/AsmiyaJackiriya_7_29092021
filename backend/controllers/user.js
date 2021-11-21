@@ -18,7 +18,6 @@ exports.signup = (req, res) => {
     User.findOne({ where: { email: req.body.email } })
         .then(user => {
             if (!user) {
-                console.log(req.headers.authorization)
                 bcrypt.hash(req.body.password, 10)
                     .then(hash => {
                         User.create({
@@ -28,12 +27,13 @@ exports.signup = (req, res) => {
                             lastName: req.body.lastName,
                             isAdmin: false
                         })
-                            .then(() => res.status(201).json({
+                            .then((user) => res.status(201).json({
                                 loggedIn: true,
                                 userInfo: [user.firstName, user.lastName],
+                                userId: user.id,
                                 message: 'Utilisateur créé !'
                             }))
-                            .catch(error => res.status(400).json({ error }));
+                            .catch(error => res.status(400).json({ error: error.message }));
                     })
                     .catch(error => res.status(500).json({ error }));
 
@@ -52,18 +52,19 @@ exports.login = (req, res) => {
             }
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
+                    console.log(user);
                     if (!valid) {
                         return res.status(401).json({ loggedIn: false, message: 'Mot de passe incorrect !' })
                     }
                     const token = jwt.sign(
-                        { userId: user._id },
+                        { userId: user.id },
                         "RANDOM_TOKEN_SECRET",
                         { expiresIn: "24h" }
                     )
                     res.status(200).json({
                         loggedIn: true,
                         userInfo: [user.firstName, user.lastName],
-                        userId: user._id,
+                        userId: user.id,
                         token
                     })
                 })

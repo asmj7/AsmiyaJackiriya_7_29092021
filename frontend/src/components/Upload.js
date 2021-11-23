@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios, { AxiosRequestConfig } from 'axios';
 import jwt from "jsonwebtoken";
-import './navbar.css';
+import './css/navbar.css';
 
 function Upload() {
 

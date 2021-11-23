@@ -6,7 +6,7 @@ const fs = require("fs");
 // Création d'un post
 exports.createPost = (req, res) => {
     // console.log("createPost");
-    console.log("req.body : ", req.body);
+    // console.log("req.body : ", req.body);
 
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
@@ -24,7 +24,6 @@ exports.createPost = (req, res) => {
     })
         .then((post) => {
             res.status(201).json(post);
-            console.log('contenu' + post.content);
         })
         .catch((error) => {
             console.log(error)
@@ -58,11 +57,14 @@ exports.deletePost = (req, res) => {
 
 // Récupérer tous les posts
 exports.getAllPosts = (req, res) => {
-    Post.findAll({ order: [["updatedAt", "DESC"]] })
+    Post.findAll({ 
+        order: [["updatedAt", "DESC"]],
+        attributes: ['id','userId', 'title', 'content', 'imageUrl','createdAt', 'updatedAt']
+      })
         .then((post) => {
             res.status(200).json(post);
         }).catch((error) => {
-            res.status(400).json({ error });
+            res.status(400).json({ error: error.message });
         });
 }
 

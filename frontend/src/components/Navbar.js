@@ -1,21 +1,39 @@
 import React, { useEffect, useState } from "react";
-import './navbar.css';
+import './css/navbar.css';
 import { useSelector } from 'react-redux';
-// import ReactDOM from 'react-dom';
+// import { useHistory } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { logOut } from '../redux/actions/userActions'
+import { useDispatch } from 'react-redux';
 
 function UserLogged() {
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
+    // const loggedInGuest = useSelector((state) => state.loggedInGuest.user)
+    const logout = useSelector((state) => state.logout.user)
+    const dispatch = useDispatch();
+    console.log(loggedInUser)
+    // let history = useHistory();
+
+    function Logout() {
+
+        localStorage.clear();
+        // history.push("/login")
+        dispatch(logOut(logout))
+    }
+
     return (
         <>
-            <Link to="/Home">
+            <Link to="/">
                 <li className="menuItems">Accueil</li>
             </Link>
             <Link to="/upload">
                 <li className="menuItems">Publier</li>
             </Link>
             <Link to="/profile">
-                <li className="menuItems">{loggedInUser.data.userInfo[0]+ " " + loggedInUser.data.userInfo[1]}</li>
+                <li className="menuItems">{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</li>
+            </Link>
+            <Link to="/login">
+                <li className="menuItems" onClick={Logout}>Se déconnecter</li>
             </Link>
 
         </>
@@ -41,6 +59,7 @@ export default function Navbar() {
 
     const [loggedIn, setLoggedIn] = useState(false);
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
+    // const loggedInGuest = useSelector((state) => state.loggedInGuest.user)
     // console.log(loggedInUser)
 
     useEffect(() => {
@@ -53,8 +72,15 @@ export default function Navbar() {
         }
     }, [loggedInUser])
 
-    console.log(loggedInUser)
-    console.log(loggedIn)
+    // useEffect(() => {
+
+    //     if (!loggedInGuest || Object.keys(loggedInGuest).length === 0) {
+    //         setLoggedIn(false)
+    //     }
+    //     else {
+    //         setLoggedIn(true)
+    //     }
+    // }, [loggedInGuest])
 
     return (
         <div className="navbar">

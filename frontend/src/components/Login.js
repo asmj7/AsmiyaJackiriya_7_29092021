@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from 'axios';
 import { useHistory } from "react-router-dom";
-import './navbar.css';
+import './css/navbar.css';
 import { withRouter } from 'react-router-dom';
 import { loginSuccess } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';

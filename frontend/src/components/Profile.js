@@ -1,7 +1,7 @@
 import React from "react";
 import Axios from 'axios';
 import { useParams } from "react-router";
-import './navbar.css'
+import './css/navbar.css'
 
 
 function Profile() {
@@ -12,7 +12,7 @@ function Profile() {
             'Authorization': `token ${token}`
         }
     };
-    const url = ('http://localhost:3000/api/auth/', config)
+    const url = (`http://localhost:3000/api/auth/${id}`, config)
     Axios.get(url)
         .then((response) => {
             console.log(response)

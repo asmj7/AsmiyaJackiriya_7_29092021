@@ -2,8 +2,28 @@ import React, { useState } from "react";
 import axios, { AxiosRequestConfig } from 'axios';
 import jwt from "jsonwebtoken";
 import './css/navbar.css';
+import {
+    Typography,
+    TextField,
+    Button,
+    FormControl,
+    TextareaAutosize
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { borderRadius } from "@mui/system";
+
 
 function Upload() {
+
+    const useStyles = makeStyles({
+        inputContent: {
+            width: "99%",
+            borderRadius: "4px"
+        },
+        contentContainer: {
+            marginTop: "11px",
+        }
+    })
 
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
@@ -34,20 +54,47 @@ function Upload() {
         }
         catch (err) {
             console.log(err)
-            console.log("Failed")
         }
     };
-    
+
+    const classes = useStyles();
+
     return (
         <>
             <div className="upload">
                 <h1>Créer une publication</h1>
-                <form className="form">
-                    <input type="text" placeholder="Titre..." name="title" className="inputTitle" onChange={(e) => setTitle(e.target.value)}></input>
-                    <input type="text" placeholder="Quoi de neuf ?" className="inputContent" name="content" onChange={(e) => setContent(e.target.value)}></input>
+                <FormControl className="form">
+                    <div>
+                        <TextField
+                            label="Titre"
+                            id="standard-size-small"
+                            size="small"
+                            variant="standard"
+                            type="text"
+                            name="title"
+                            sx={{ width: '100%' }}
+                            placeholder="Titre..."
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="inputTitle"
+                        />
+                    </div>
+                    <div className={classes.contentContainer}>
+                        <TextareaAutosize
+                            label="Contenu"
+                            id="standard-size-small"
+                            size="small"
+                            variant="standard"
+                            type="text"
+                            minRows={5}
+                            name="content"
+                            placeholder="Quoi de neuf ?"
+                            onChange={(e) => setContent(e.target.value)}
+                            className={classes.inputContent}
+                        />
+                    </div>
                     <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])}></input>
-                    <button type="submit" className="publish" onClick={upload}>Publier</button>
-                </form>
+                    <Button type="submit" className="publish" variant="contained" onClick={upload} sx={{ mt: 2.5 }}>Publier</Button>
+                </FormControl>
             </div>
         </>
     )

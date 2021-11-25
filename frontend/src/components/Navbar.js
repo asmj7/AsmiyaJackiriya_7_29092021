@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logOut } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
+import ListItemButton from '@mui/material/ListItemButton';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function UserLogged() {
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
@@ -33,7 +35,7 @@ function UserLogged() {
                 <li className="menuItems">{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</li>
             </Link>
             <Link to="/login">
-                <li className="menuItems" onClick={Logout}>Se déconnecter</li>
+                <ListItemButton className="menuItems" onClick={Logout}>{<LogoutIcon/>}</ListItemButton>
             </Link>
 
         </>

@@ -3,12 +3,28 @@ import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
+import { TextField, Button, Box } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import { makeStyles } from '@mui/styles';
 
 // After auth
 function Home(props) {
 
+
+    const useStyles = makeStyles({
+        comment: {
+            width: "90%"
+        },
+        commentBox: {
+            width: "90%",
+            margin: "auto",
+            marginTop: "10px",
+            marginBottom: "20px"
+        }
+    })
     // const loggedInUser = useSelector((state) => state.loggedInUser.user)
 
+    const [newComment, setNewComment] = useState("")
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
     const config = {
@@ -30,22 +46,40 @@ function Home(props) {
             })
     }, [props.loggedInUser])
 
+    const classes = useStyles();
+
+    function sendComment() {
+        
+    }
+
     return (
         <>
             <div className="home">
                 {uploads.map(val => (
-                    <div className="post">
-                        <div className="postContainer">
-                            <h2 className="title">{val.title}</h2>
-                            <div className="imgContainer">
-                                <img src={val.imageUrl} alt="img"></img>
-                            </div>
-                            <div className="content">
-                                <div className="description">
-                                    {val.content}
-                                </div>
+                    <div className="postContainer">
+                        <h2 className="title">{val.title}</h2>
+                        <div className="content">
+                            <div className="description">
+                                {val.content}
                             </div>
                         </div>
+                        <div className="imgContainer">
+                            <img className="image" src={val.imageUrl} alt="img"></img>
+                        </div>
+                        <Box sx={{ display: 'flex' }} className={classes.commentBox}>
+                            <TextField
+                                label="Commentaire"
+                                id="standard-size-small"
+                                size="small"
+                                variant="standard"
+                                type="comment"
+                                name="comment"
+                                placeholder="Écrivez quelque chose"
+                                className={classes.comment}
+                                onChange={(e)=> setNewComment(e.target.value)}
+                            />
+                            <Button onClick={sendComment} endIcon={<SendIcon/>}>Envoyer</Button>
+                        </Box>
                     </div>
                 ))}
             </div>

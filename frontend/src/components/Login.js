@@ -5,8 +5,22 @@ import './css/navbar.css';
 import { withRouter } from 'react-router-dom';
 import { loginSuccess } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
+import { Typography, TextField, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { fontSize, fontWeight } from "@mui/system";
+// import style from './style';
 
 function Login() {
+
+  const useStyles = makeStyles({
+    login: {
+      display: 'inline-grid',
+      width: "100%"
+    },
+    loginText: {
+      fontSize: "35px"
+    }
+  })
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,17 +47,34 @@ function Login() {
       })
 
   }
+  const classes = useStyles();
 
   return (
-    
+
     <div className="identification">
-      <div className="login">
-        <h1>Se connecter</h1>
-        <label>E-mail</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-        <label>Mot de passe</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-        <button onClick={login}>Se connecter</button>
+      <div className={classes.login}>
+        <h1 className={classes.loginText}>Se connecter</h1>
+        <div >
+          <TextField
+            label="Email"
+            id="standard-size-small"
+            size="small"
+            variant="standard"
+            value={email} onChange={(e) => setEmail(e.target.value)}
+            type="email"
+          />
+        </div>
+        <div>
+          <TextField
+            label="Mot de passe"
+            id="standard-size-small"
+            size="small"
+            variant="standard"
+            value={password} onChange={(e) => setPassword(e.target.value)}
+            type="password"
+          />
+        </div>
+        <Button variant="contained" onClick={login} sx={{ mt: 3.5 }}>Se connecter</Button>
         {errorMessage}
       </div>
     </div>

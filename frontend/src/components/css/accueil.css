@@ -4,9 +4,14 @@
 }
 .title {
     color: #383E5B;
+    margin-bottom: 0;
 }
-.post {
-    width: fit-content;
+.description {
+    padding: 20px
+}
+.image {
+    width: 90%;
+    border-radius: 5px;
 }
 .postContainer {
     width: 40%;

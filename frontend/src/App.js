@@ -16,7 +16,7 @@ function App() {
           <Navbar />
         <Switch>
           <Route path="/" exact component={Accueil} />
-          <Route path="/profile" exact component={Profile} />
+          <Route path="/profile/:id" exact component={Profile} />
           <Route path="/upload" exact component={Upload} />
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />

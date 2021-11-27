@@ -3,7 +3,7 @@ import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, Container, autocompleteClasses } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 
@@ -20,18 +20,27 @@ function Home(props) {
             margin: "auto",
             marginTop: "10px",
             marginBottom: "20px"
+        },
+        postContainer: {
+            border: "1.5px solid #BCBCBC",
+            height: "fit-content",
+            borderRadius: "25px",
+            maxWidth: 500,
+            minWidth: 250,
+            margin: "auto",
         }
     })
     // const loggedInUser = useSelector((state) => state.loggedInUser.user)
 
-    const [newComment, setNewComment] = useState("")
+    const [postId, setPostId] = useState("")
+    const [comment, setComment] = useState("")
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
     const config = {
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": 'multipart/form-data',
             'Accept': 'application/json',
-            'Authorization': `token ${token}`
+            Authorization: `Bearer ${token}`,
         }
     };
 
@@ -39,24 +48,63 @@ function Home(props) {
         Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
                 setUploads(response.data)
+                setPostId(response.data[0].id)
                 console.log(response)
             })
             .catch((error) => {
-                console.log('cannot get values');
+                console.log(error.message);
             })
     }, [props.loggedInUser])
 
-    const classes = useStyles();
+    const createComment = () => {
+        // .preventDefault()
 
-    function sendComment() {
-        
+        // const formData = new FormData();
+        // formData.append("comment", comment);
+
+        // Axios.post("http://localhost:3000/api/comment/create", formData, config, postId)
+        //     .then((response) => {
+        //         console.log()
+        //     })
+        //     .catch((error) => {
+        //         console.log(error.message);
+        //     })
+
+        console.log(postId)
+
+        const formData = new FormData();
+        formData.append("comment", comment);
+
+        const URL = "http://localhost:3000/api/comment/create";
+        Axios(URL, {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json',
+                'Accept': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            data: formData, config, postId
+
+        })
+            .then(() => {
+                console.log(postId)
+            })
+            .catch(error => {
+                throw error;
+            });
     }
+
+    console.log(postId)
+    const classes = useStyles();
 
     return (
         <>
-            <div className="home">
+            <Container display="flex"
+                justifycontent="center"
+                alignitems="center" xs={6} className="home">
                 {uploads.map(val => (
-                    <div className="postContainer">
+                    <Box className={classes.postContainer}>
+                        <Box className={classes.userName}></Box>
                         <h2 className="title">{val.title}</h2>
                         <div className="content">
                             <div className="description">
@@ -64,7 +112,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="imgContainer">
-                            <img className="image" src={val.imageUrl} alt="img"></img>
+                            <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
                         </div>
                         <Box sx={{ display: 'flex' }} className={classes.commentBox}>
                             <TextField
@@ -76,13 +124,14 @@ function Home(props) {
                                 name="comment"
                                 placeholder="Écrivez quelque chose"
                                 className={classes.comment}
-                                onChange={(e)=> setNewComment(e.target.value)}
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
                             />
-                            <Button onClick={sendComment} endIcon={<SendIcon/>}>Envoyer</Button>
+                            <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
                         </Box>
-                    </div>
+                    </Box>
                 ))}
-            </div>
+            </Container>
         </>
     )
 }

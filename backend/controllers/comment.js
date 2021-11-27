@@ -1,20 +1,25 @@
-const models = require("../models/comments");
+const models = require("../models");
 const comment = models.comments;
 const jwt = require("jsonwebtoken");
 
 // Création d'un commentaire
 exports.createComment = (req, res) => {
+    console.log("test")
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
 
+    console.log("comment: " + comment)
     comment.create({
         userId: userId,
-        postId: req.params.id,
-        commentId: req.body.id
+        postId: req.body.postId,
+        comment: req.body.comment,
+        // commentId: req.body.commentId
     })
         .then(() => res.status(200).json({ message: "Commentaire créé !" }))
-        .catch(() => res.status(400).json({ error: "Commentaire non créé" }));
+        .catch((error) => {
+            console.log(error);
+        })
 }
 
 // Modification du commentaire
@@ -29,7 +34,9 @@ exports.updateComment = (req, res) => {
         .then(() => {
             res.status(201).json({ message: " Commentaire modifié" });
         })
-        .catch((error) => res.status(404).json({ error }));
+        .catch((error) => {
+            console.log(error);
+        })
 }
 
 // Suppression d'un commentaire

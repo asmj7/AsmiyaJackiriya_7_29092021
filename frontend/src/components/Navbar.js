@@ -22,6 +22,8 @@ function UserLogged() {
         // history.push("/login")
         dispatch(logOut(logout))
     }
+    let id = loggedInUser.data.userId
+    console.log(id)
 
     return (
         <>
@@ -31,11 +33,11 @@ function UserLogged() {
             <Link to="/upload">
                 <li className="menuItems">Publier</li>
             </Link>
-            <Link to="/profile">
+            <Link to={`/profile/${id}`}>
                 <li className="menuItems">{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</li>
             </Link>
             <Link to="/login">
-                <ListItemButton className="menuItems" onClick={Logout}>{<LogoutIcon/>}</ListItemButton>
+                <ListItemButton className="menuItems" onClick={Logout}>{<LogoutIcon />}</ListItemButton>
             </Link>
 
         </>

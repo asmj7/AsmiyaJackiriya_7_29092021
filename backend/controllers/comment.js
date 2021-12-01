@@ -9,8 +9,6 @@ exports.createComment = (req, res) => {
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
 
-    console.log(req)
-    console.log("comment: " + comment)
     comment.create({
         userId: userId,
         postId: req.body.postId,
@@ -60,7 +58,7 @@ exports.getAllComments = (req, res) => {
         where: {
             postId: req.params.postId
         },
-        order: [["id", "DESC"]],
+        // order: [["id", "DESC"]],
         attributes: ["comment"],
         include: [
             {

@@ -48,29 +48,30 @@ function Home(props) {
     useEffect(() => {
         Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
+                console.log(response)
                 setUploads(response.data)
                 setPostId(response.data[0].id)
             })
             .catch((error) => {
-                console.log(error.message);
+                console.log(error);
             })
-    }, [props.loggedInUser])
-
-    console.log(postId);
+    }, [props.loggedInUser]);
 
     // Créer un commentaire
     const createComment = () => {
         Axios.post("http://localhost:3000/api/comment/create", { postId, newComment }, config)
     }
 
+    console.log("postId: " + postId)
+
     // Récupérer un commentaire
     useEffect(() => {
+        console.log("postId : " + postId);
         Axios.get('http://localhost:3000/api/comment/', {
             params: {
-                postId: postId
-            },
-            config
-        })
+                postId: postId,
+            }
+        }, config)
             .then(function (response) {
                 console.log(response);
                 console.log(postId);
@@ -79,7 +80,7 @@ function Home(props) {
             .catch(function (error) {
                 console.log(error);
             })
-    }, [])
+    }, [postId])
 
 
     const classes = useStyles();

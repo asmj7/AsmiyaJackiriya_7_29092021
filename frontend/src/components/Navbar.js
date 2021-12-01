@@ -23,7 +23,6 @@ function UserLogged() {
         dispatch(logOut(logout))
     }
     let id = loggedInUser.data.userId
-    console.log(id)
 
     return (
         <>

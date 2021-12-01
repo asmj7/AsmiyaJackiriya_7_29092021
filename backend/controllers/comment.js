@@ -19,8 +19,8 @@ exports.createComment = (req, res) => {
     })
         .then(() => res.status(200).json({ message: "Commentaire créé !" }))
         .catch((error) => {
-            console.log(error);
-        })
+            res.status(400).json({ error: error.message });
+        });
 }
 
 // Modification du commentaire
@@ -36,8 +36,8 @@ exports.updateComment = (req, res) => {
             res.status(201).json({ message: " Commentaire modifié" });
         })
         .catch((error) => {
-            console.log(error);
-        })
+            res.status(400).json({ error: error.message });
+        });
 }
 
 // Suppression d'un commentaire
@@ -46,6 +46,9 @@ exports.deleteComment = (req, res) => {
         .then((comment) => {
             comment.destroy({ where: { id: req.params.id } })
         })
+        .catch((error) => {
+            res.status(400).json({ error: error.message });
+        });
 }
 
 // Récupérer les commentaires

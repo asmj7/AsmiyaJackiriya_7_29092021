@@ -55,60 +55,72 @@ function Home(props) {
                 console.log(error.message);
             })
     }, [props.loggedInUser])
-    
+
+    console.log(postId);
+
     // Créer un commentaire
     const createComment = () => {
         Axios.post("http://localhost:3000/api/comment/create", { postId, newComment }, config)
     }
 
-    console.log(postId);
     // Récupérer un commentaire
     useEffect(() => {
-        Axios.get(`http://localhost:3000/api/comment/${postId}`, config)
-            .then((response) => {
+        Axios.get('http://localhost:3000/api/comment/', {
+            params: {
+                postId: postId
+            },
+            config
+        })
+            .then(function (response) {
                 console.log(response);
+                console.log(postId);
+
+            })
+            .catch(function (error) {
+                console.log(error);
             })
     }, [])
 
-const classes = useStyles();
 
-return (
-    <>
-        <Container display="flex"
-            justifycontent="center"
-            alignitems="center" xs={6} className="home">
-            {uploads.map(val => (
-                <Box className={classes.postContainer}>
-                    <Box className={classes.userName}></Box>
-                    <h2 className="title">{val.title}</h2>
-                    <div className="content">
-                        <div className="description">
-                            {val.content}
+    const classes = useStyles();
+
+    return (
+        <>
+            <Container display="flex"
+                justifycontent="center"
+                alignitems="center" xs={6} className="home">
+                {uploads.map(val => (
+                    <Box className={classes.postContainer}>
+                        <Box className={classes.userName}></Box>
+                        <h2 className="title">{val.title}</h2>
+                        <div className="content">
+                            <div className="description">
+                                {val.content}
+                            </div>
                         </div>
-                    </div>
-                    <div className="imgContainer">
-                        <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
-                    </div>
-                    <Box sx={{ display: 'flex' }} className={classes.commentBox}>
-                        <TextField
-                            label="Commentaire"
-                            id="standard-size-small"
-                            size="small"
-                            variant="standard"
-                            type="comment"
-                            name="comment"
-                            placeholder="Écrivez quelque chose"
-                            className={classes.comment}
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                        />
-                        <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
+                        <div className="imgContainer">
+                            <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
+                        </div>
+                        <Box sx={{ display: 'flex' }} className={classes.commentBox}>
+                            <TextField
+                                label="Commentaire"
+                                id="standard-size-small"
+                                size="small"
+                                variant="standard"
+                                type="comment"
+                                name="comment"
+                                placeholder="Écrivez quelque chose"
+                                className={classes.comment}
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
+                            />
+                            <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
+                        </Box>
                     </Box>
-                </Box>
-            ))}
-        </Container>
-    </>
-)
+                ))}
+            </Container>
+        </>
+    )
 }
 
 
@@ -150,4 +162,3 @@ function HomePage() {
 }
 
 export default withRouter(HomePage);
-

@@ -10,7 +10,6 @@ import { makeStyles } from '@mui/styles';
 // After auth
 function Home(props) {
 
-
     const useStyles = makeStyles({
         comment: {
             width: "90%"
@@ -30,110 +29,86 @@ function Home(props) {
             margin: "auto",
         }
     })
-    // const loggedInUser = useSelector((state) => state.loggedInUser.user)
 
-    const [postId, setPostId] = useState("")
-    const [comment, setComment] = useState("")
+    const [postId, setPostId] = useState("");
+    const [comments, setComments] = useState([])
+    const [newComment, setNewComment] = useState("");
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
+
     const config = {
         headers: {
-            "Content-Type": 'multipart/form-data',
+            "Content-Type": 'application/json',
             'Accept': 'application/json',
             Authorization: `Bearer ${token}`,
         }
-    };
+    }
 
+    // Récupérer les posts
     useEffect(() => {
         Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
                 setUploads(response.data)
                 setPostId(response.data[0].id)
-                console.log(response)
             })
             .catch((error) => {
                 console.log(error.message);
             })
     }, [props.loggedInUser])
-
+    
+    // Créer un commentaire
     const createComment = () => {
-        // .preventDefault()
-
-        // const formData = new FormData();
-        // formData.append("comment", comment);
-
-        // Axios.post("http://localhost:3000/api/comment/create", formData, config, postId)
-        //     .then((response) => {
-        //         console.log()
-        //     })
-        //     .catch((error) => {
-        //         console.log(error.message);
-        //     })
-
-        console.log(postId)
-
-        const formData = new FormData();
-        formData.append("comment", comment);
-
-        const URL = "http://localhost:3000/api/comment/create";
-        Axios(URL, {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json',
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            data: formData, config, postId
-
-        })
-            .then(() => {
-                console.log(postId)
-            })
-            .catch(error => {
-                throw error;
-            });
+        Axios.post("http://localhost:3000/api/comment/create", { postId, newComment }, config)
     }
 
-    console.log(postId)
-    const classes = useStyles();
+    console.log(postId);
+    // Récupérer un commentaire
+    useEffect(() => {
+        Axios.get(`http://localhost:3000/api/comment/${postId}`, config)
+            .then((response) => {
+                console.log(response);
+            })
+    }, [])
 
-    return (
-        <>
-            <Container display="flex"
-                justifycontent="center"
-                alignitems="center" xs={6} className="home">
-                {uploads.map(val => (
-                    <Box className={classes.postContainer}>
-                        <Box className={classes.userName}></Box>
-                        <h2 className="title">{val.title}</h2>
-                        <div className="content">
-                            <div className="description">
-                                {val.content}
-                            </div>
+const classes = useStyles();
+
+return (
+    <>
+        <Container display="flex"
+            justifycontent="center"
+            alignitems="center" xs={6} className="home">
+            {uploads.map(val => (
+                <Box className={classes.postContainer}>
+                    <Box className={classes.userName}></Box>
+                    <h2 className="title">{val.title}</h2>
+                    <div className="content">
+                        <div className="description">
+                            {val.content}
                         </div>
-                        <div className="imgContainer">
-                            <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
-                        </div>
-                        <Box sx={{ display: 'flex' }} className={classes.commentBox}>
-                            <TextField
-                                label="Commentaire"
-                                id="standard-size-small"
-                                size="small"
-                                variant="standard"
-                                type="comment"
-                                name="comment"
-                                placeholder="Écrivez quelque chose"
-                                className={classes.comment}
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                            />
-                            <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
-                        </Box>
+                    </div>
+                    <div className="imgContainer">
+                        <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
+                    </div>
+                    <Box sx={{ display: 'flex' }} className={classes.commentBox}>
+                        <TextField
+                            label="Commentaire"
+                            id="standard-size-small"
+                            size="small"
+                            variant="standard"
+                            type="comment"
+                            name="comment"
+                            placeholder="Écrivez quelque chose"
+                            className={classes.comment}
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                        <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
                     </Box>
-                ))}
-            </Container>
-        </>
-    )
+                </Box>
+            ))}
+        </Container>
+    </>
+)
 }
 
 

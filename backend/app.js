@@ -5,6 +5,7 @@ const app = express();
 const path = require("path");
 const helmet = require("helmet");
 app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 const commentRoutes = require("./routes/comment")

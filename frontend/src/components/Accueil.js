@@ -3,7 +3,7 @@ import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { TextField, Button, Box, Container, autocompleteClasses } from '@mui/material';
+import { TextField, Button, Box, Container } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 

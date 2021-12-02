@@ -7,8 +7,28 @@ import { logOut } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import ListItemButton from '@mui/material/ListItemButton';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { makeStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
+import jwt from "jsonwebtoken";
 
 function UserLogged() {
+
+
+    const useStyles = makeStyles({
+        menuItems: {
+            textDecoration: 'none',
+            color: 'white',
+            padding: "0px"
+        },
+        logout: {
+            color: 'white',
+            padding: "0px"
+        }
+
+    })
+
+
+
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     // const loggedInGuest = useSelector((state) => state.loggedInGuest.user)
     const logout = useSelector((state) => state.logout.user)
@@ -22,22 +42,36 @@ function UserLogged() {
         // history.push("/login")
         dispatch(logOut(logout))
     }
+
+    const current_time = Date.now() / 1000;
+    if (jwt.exp < current_time) {
+        localStorage.clear();
+        // history.push("/login")
+        dispatch(logOut(logout))
+    }
+
+
+
     let id = loggedInUser.data.userId
+
+    const classes = useStyles();
 
     return (
         <>
-            <Link to="/">
-                <li className="menuItems">Accueil</li>
-            </Link>
-            <Link to="/upload">
-                <li className="menuItems">Publier</li>
-            </Link>
-            <Link to={`/profile/${id}`}>
-                <li className="menuItems">{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</li>
-            </Link>
-            <Link to="/login">
-                <ListItemButton className="menuItems" onClick={Logout}>{<LogoutIcon />}</ListItemButton>
-            </Link>
+            <Grid className={classes.grid} columnSpacing={{ xs: 3, sm: 2, md: 3 }} sx={{ display: 'flex', columnGap: 3 }}>
+                <Link to="/">
+                    <Grid item className={classes.menuItems}>Accueil</Grid>
+                </Link>
+                <Link to="/upload">
+                    <Grid item className={classes.menuItems}>Publier</Grid>
+                </Link>
+                <Link to={`/profile/${id}`}>
+                    <Grid item className={classes.menuItems}>{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</Grid>
+                </Link>
+                <Link to="/login">
+                    <Grid item className={classes.menuItems, classes.logout}><ListItemButton className={classes.logout} onClick={Logout}>{<LogoutIcon />}</ListItemButton></Grid>
+                </Link>
+            </Grid>
 
         </>
     )

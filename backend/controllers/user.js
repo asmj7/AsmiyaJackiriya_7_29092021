@@ -65,7 +65,7 @@ exports.login = (req, res) => {
                         loggedIn: true,
                         userInfo: [user.firstName, user.lastName],
                         userId: user.id,
-                        token
+                        token,
                     })
                 })
                 .catch(error => res.status(500).json({ error: error.message }));

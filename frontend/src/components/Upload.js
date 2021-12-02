@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios, { AxiosRequestConfig } from 'axios';
-import jwt from "jsonwebtoken";
 import './css/navbar.css';
 import {
     Typography,

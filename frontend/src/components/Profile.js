@@ -7,19 +7,28 @@ import { useParams } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 
-
 function Profile() {
 
     const useStyles = makeStyles({
         userInfo: {
             justifyContent: "center",
             margin: 'auto',
-            overflowWrap: 'anywhere'
+            overflowWrap: 'anywhere',
+            paddingLeft: "0",
+            paddingRight: "0"
         },
         modifMessage: {
             color: '#e53935',
+        },
+        // userEmail: {
+        //     Typography: {
+        //         fontFamily: ['"Helvetica Neue"'],
+        //         fontWeight: "600"
+        //     }
+        // }
+        userFirstname: {
+            fontFamily: '-apple-system',
         }
-
     })
 
 const params = useParams();
@@ -49,21 +58,21 @@ return (
     <>
 
         <h1 className="profile">À propos de moi</h1>
-        <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ display: 'flex', p: 2, border: '1px dashed grey' }} className={classes.userInfo}>
-            <Grid xs={4} item className={classes.userFirstname}>
-                <Typography variant="subtitle1">Prénom</Typography>
+        <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
+            <Grid xs={8} sm={6} md={4} item>
+                <Typography className={classes.userFirstname} variant="subtitle1">Prénom</Typography>
                 <Typography variant="subtitle1">{firstName}</Typography>
             </Grid>
-            <Grid xs={4} item className={classes.userLastname}>
-                <Typography variant="subtitle1">Nom</Typography>
+            <Grid xs={8} sm={6} md={4} item>
+                <Typography className={classes.userLastname} variant="subtitle1">Nom</Typography>
                 <Typography variant="subtitle1">{lastName}</Typography>
             </Grid>
-            <Grid columnSpacing={{ xs: 1, sm: 2, md: 3 }} item className={classes.userLastname}>
-                <Typography variant="subtitle1">E-mail</Typography>
+            <Grid xs={8} sm={6} md={4} item >
+                <Typography className={classes.userEmail} variant="subtitle1">E-mail</Typography>
                 <Typography variant="subtitle1">{email}</Typography>
             </Grid>
         </Grid>
-        <Typography mt={2} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
+        <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
 
     </>
 )

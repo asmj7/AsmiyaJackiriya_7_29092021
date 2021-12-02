@@ -20,15 +20,6 @@ function Profile() {
         modifMessage: {
             color: '#e53935',
         },
-        // userEmail: {
-        //     Typography: {
-        //         fontFamily: ['"Helvetica Neue"'],
-        //         fontWeight: "600"
-        //     }
-        // }
-        userFirstname: {
-            fontFamily: '-apple-system',
-        }
     })
 
 const params = useParams();

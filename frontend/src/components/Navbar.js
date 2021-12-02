@@ -16,13 +16,15 @@ function UserLogged() {
 
     const useStyles = makeStyles({
         menuItems: {
-            textDecoration: 'none',
             color: 'white',
-            padding: "0px"
         },
         logout: {
             color: 'white',
-            padding: "0px"
+            padding: "none"
+        },
+        linkItems: {
+            padding: "0",
+            textDecoration: "none"
         }
 
     })
@@ -59,17 +61,17 @@ function UserLogged() {
     return (
         <>
             <Grid className={classes.grid} columnSpacing={{ xs: 3, sm: 2, md: 3 }} sx={{ display: 'flex', columnGap: 3 }}>
-                <Link to="/">
+                <Link className={classes.linkItems} to="/">
                     <Grid item className={classes.menuItems}>Accueil</Grid>
                 </Link>
-                <Link to="/upload">
+                <Link className={classes.linkItems}  to="/upload">
                     <Grid item className={classes.menuItems}>Publier</Grid>
                 </Link>
-                <Link to={`/profile/${id}`}>
+                <Link className={classes.linkItems} to={`/profile/${id}`}>
                     <Grid item className={classes.menuItems}>{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</Grid>
                 </Link>
-                <Link to="/login">
-                    <Grid item className={classes.menuItems, classes.logout}><ListItemButton className={classes.logout} onClick={Logout}>{<LogoutIcon />}</ListItemButton></Grid>
+                <Link className={classes.linkItems} to="/login">
+                    <Grid item className={classes.menuItems}><ListItemButton className={classes.logout} onClick={Logout}>{<LogoutIcon />}</ListItemButton></Grid>
                 </Link>
             </Grid>
 

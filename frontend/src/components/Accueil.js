@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { TextField, Button, Box, Container } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
+import Footer from "./Footer"
 
 // After auth
 function Home(props) {
@@ -154,11 +155,17 @@ function HomePage() {
     }, [loggedInUser])
 
     return (
-        loggedIn ? (
-            <Home loggedInUser={loggedInUser} />
-        ) : (
-            <GuestHome />
-        )
+        <>
+            {
+                loggedIn ? (
+                <Home loggedInUser={loggedInUser} />
+                // <Footer/>
+                ) : (
+                <GuestHome />
+                // <Footer/>
+                )
+            }
+        </>
     )
 }
 

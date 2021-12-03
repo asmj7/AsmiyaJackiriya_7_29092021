@@ -3,7 +3,8 @@ import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { TextField, Button, Box, Container, Typography } from '@mui/material';
+import { TextField, Box, Container, Typography, Link } from '@mui/material';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
@@ -131,12 +132,16 @@ function Home(props) {
 function GuestHome() {
 
     const useStyles = makeStyles({
-        Typography: {
-            // titleTwo: {
-            //     fontSize: '35px',
-            //     width: '87%',
-            //     margin: 'auto',
-            // }
+        span: {
+            color: '#e81f63',
+        },
+        signupLink: {
+            color: '#004d40'
+        },
+        boxSpan: {
+            backgroundColor: '#fce4ec',
+            paddingTop: '20px',
+            paddingBottom: '20px'
         }
     })
 
@@ -150,7 +155,7 @@ function GuestHome() {
                 </Grid>
                 <Grid item md={4}>
                     <Typography variant='subtitle1'>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur neque augue, imperdiet at tortor at, malesuada convallis felis. Morbi viverra enim eget porta suscipit. Praesent vulputate egestas purus sit amet vulputate. Mauris id suscipit neque, id pulvinar lorem.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur neque augue, imperdiet at tortor at, malesuada convallis felis. <span className={classes.span}>Morbi viverra enim eget porta suscipit. Praesent vulputate egestas purus sit amet vulputate.</span> Mauris id suscipit neque, id pulvinar lorem.
                     </Typography>
                 </Grid>
                 <Grid item md={4} m='auto'>
@@ -160,11 +165,15 @@ function GuestHome() {
                 </Grid>
                 <Grid item md={4} m='auto'>
                     <Typography variant='subtitle1'>
-                        Suspendisse ultrices ligula lacus, eget porttitor ligula placerat a. Vivamus pretium eget odio vel aliquam.
+                        Suspendisse ultrices ligula lacus, eget porttitor ligula placerat a.<span className={classes.span}>Vivamus pretium eget odio vel aliquam.</span>
                     </Typography>
                 </Grid>
             </Grid>
-            <Typography m='auto'>Vous êtes nouveau ? Inscrivez-vous</Typography>
+            <Box m='auto' className={classes.boxSpan}>
+                <Typography m='auto' variant='subtitle1' color='#263238'>Vous êtes nouveau sur le site ?</Typography>
+                <Button href="/signup">Inscrivez-vous !
+                </Button>
+            </Box>
         </>
     )
 }

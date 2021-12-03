@@ -174,6 +174,7 @@ function GuestHome() {
                 <Button href="/signup">Inscrivez-vous !
                 </Button>
             </Box>
+            <Footer/>
         </>
     )
 }

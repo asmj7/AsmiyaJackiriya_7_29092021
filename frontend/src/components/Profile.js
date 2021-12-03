@@ -6,6 +6,8 @@ import { Typography, Box, autocompleteClasses } from '@mui/material';
 import { useParams } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
+import Footer from './Footer';
+// import CryptoAES from 'crypto-js/aes';
 
 function Profile() {
 
@@ -47,24 +49,23 @@ const classes = useStyles();
 
 return (
     <>
-
         <h1 className="profile">À propos de moi</h1>
         <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
             <Grid xs={8} sm={6} md={4} item>
-                <Typography className={classes.userFirstname} variant="subtitle1">Prénom</Typography>
+                <Typography className={classes.userFirstname} fontWeight='600' variant="subtitle1">Prénom</Typography>
                 <Typography variant="subtitle1">{firstName}</Typography>
             </Grid>
             <Grid xs={8} sm={6} md={4} item>
-                <Typography className={classes.userLastname} variant="subtitle1">Nom</Typography>
+                <Typography className={classes.userLastname} fontWeight='600' variant="subtitle1">Nom</Typography>
                 <Typography variant="subtitle1">{lastName}</Typography>
             </Grid>
             <Grid xs={8} sm={6} md={4} item >
-                <Typography className={classes.userEmail} variant="subtitle1">E-mail</Typography>
+                <Typography className={classes.userEmail} fontWeight='600' variant="subtitle1">E-mail</Typography>
                 <Typography variant="subtitle1">{email}</Typography>
             </Grid>
         </Grid>
         <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
-
+        <Footer/>
     </>
 )
 }

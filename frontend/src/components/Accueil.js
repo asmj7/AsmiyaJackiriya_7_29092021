@@ -3,7 +3,8 @@ import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { TextField, Button, Box, Container } from '@mui/material';
+import { TextField, Button, Box, Container, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import Footer from "./Footer"
@@ -28,7 +29,7 @@ function Home(props) {
             maxWidth: 500,
             minWidth: 250,
             margin: "auto",
-        }
+        },
     })
 
     const [postId, setPostId] = useState("");
@@ -128,14 +129,42 @@ function Home(props) {
 
 // Home page before auth
 function GuestHome() {
+
+    const useStyles = makeStyles({
+        Typography: {
+            // titleTwo: {
+            //     fontSize: '35px',
+            //     width: '87%',
+            //     margin: 'auto',
+            // }
+        }
+    })
+
+    const classes = useStyles();
     return (
         <>
-            <h1>Communication interne</h1>
-            <h2>Communiquer plus directement avec vos collègues</h2>
-
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur neque augue, imperdiet at tortor at, malesuada convallis felis. Vivamus lacinia orci ipsum, at vehicula risus euismod a. Curabitur venenatis ultrices tortor, in tempus quam vehicula eu. Morbi viverra enim eget porta suscipit. Praesent vulputate egestas purus sit amet vulputate. Mauris id suscipit neque, id pulvinar lorem. Suspendisse ultrices ligula lacus, eget porttitor ligula placerat a. Vivamus pretium eget odio vel aliquam.</p>
-
-            {console.log('not logged')}
+            <Grid container mt={6} rowGap={10} mb='30px' columnGap={5} >
+                <Grid item md={6}>
+                    <Typography variant='h1' fontSize='40px' fontWeight='medium' color='#e81f63'>Communication interne</Typography>
+                    <Typography variant='h2' fontSize='40px' m='auto' mt='20px' className={classes.titleTwo}>Communiquer plus directement avec vos collègues</Typography>
+                </Grid>
+                <Grid item md={4}>
+                    <Typography variant='subtitle1'>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur neque augue, imperdiet at tortor at, malesuada convallis felis. Morbi viverra enim eget porta suscipit. Praesent vulputate egestas purus sit amet vulputate. Mauris id suscipit neque, id pulvinar lorem.
+                    </Typography>
+                </Grid>
+                <Grid item md={4} m='auto'>
+                    <Typography variant='subtitle1'>
+                        Vivamus lacinia orci ipsum, at vehicula risus euismod a. Curabitur venenatis ultrices tortor, in tempus quam vehicula eu.
+                    </Typography>
+                </Grid>
+                <Grid item md={4} m='auto'>
+                    <Typography variant='subtitle1'>
+                        Suspendisse ultrices ligula lacus, eget porttitor ligula placerat a. Vivamus pretium eget odio vel aliquam.
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Typography m='auto'>Vous êtes nouveau ? Inscrivez-vous</Typography>
         </>
     )
 }
@@ -158,11 +187,11 @@ function HomePage() {
         <>
             {
                 loggedIn ? (
-                <Home loggedInUser={loggedInUser} />
-                // <Footer/>
+                    <Home loggedInUser={loggedInUser} />
+                    // <Footer/>
                 ) : (
-                <GuestHome />
-                // <Footer/>
+                    <GuestHome />
+                    // <Footer/>
                 )
             }
         </>

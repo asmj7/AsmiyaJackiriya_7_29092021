@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Footer from "./Footer"
 
 // After auth
@@ -35,7 +36,8 @@ function Home(props) {
 
     const [postId, setPostId] = useState("");
     const [comments, setComments] = useState([])
-    const [newComment, setNewComment] = useState("");
+    const [comment, setComment] = useState("");
+    const [commentId, setCommentId] = useState("");
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -51,7 +53,7 @@ function Home(props) {
     useEffect(() => {
         Axios.get("http://localhost:3000/api/post/", config)
             .then((response) => {
-                console.log(response)
+                console.log(response.data)
                 setUploads(response.data)
                 setPostId(response.data[0].id)
             })
@@ -62,29 +64,55 @@ function Home(props) {
 
     // Créer un commentaire
     const createComment = () => {
-        Axios.post("http://localhost:3000/api/comment/create", { postId, newComment }, config)
+        Axios.post("http://localhost:3000/api/comment/create", { postId: postId, comment: comment }, config)
     }
-
-    console.log("postId: " + postId)
 
     // Récupérer un commentaire
     useEffect(() => {
-        console.log("postId : " + postId);
-        Axios.get('http://localhost:3000/api/comment/', {
-            params: {
-                postId: postId,
-            }
-        }, config)
-            .then(function (response) {
-                console.log(response);
-                console.log(postId);
-
+        try {
+            Axios({
+                method: "GET",
+                url: "http://localhost:3000/api/comment/",
+                headers: {
+                    "Content-Type": 'application/json',
+                    'Accept': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    postId: postId,
+                }
             })
-            .catch(function (error) {
-                console.log(error);
-            })
+                .then((response) => {
+                    console.log(response.data);
+                    setCommentId(response.data)
+                    setComments(response.data)
+                })
+            console.log()
+        } catch (err) {
+            console.log(
+                "here is the error on a post request from the python server  ",
+                err
+            );
+        }
     }, [postId])
 
+    // Supprimer un commentaire
+    function GetCommentId(e) {
+        useEffect(() => {
+            Axios.delete("http://localhost:3000/api/comment/delete",
+                {
+                    commentId: commentId,
+                    headers: {
+                        "Content-Type": 'application/json',
+                        'Accept': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+                .then((response) => {
+                    console.log(response.data[e.target.id]);
+                })
+        }, [])
+    }
 
     const classes = useStyles();
 
@@ -95,7 +123,7 @@ function Home(props) {
                 alignitems="center" xs={6} className="home">
                 {uploads.map(val => (
                     <Box className={classes.postContainer}>
-                        <Box className={classes.userName}></Box>
+                        <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>{val.user.firstName}{val.user.lastName}</Box>
                         <h2 className="title">{val.title}</h2>
                         <div className="content">
                             <div className="description">
@@ -105,6 +133,19 @@ function Home(props) {
                         <div className="imgContainer">
                             <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
                         </div>
+                        <Box className={classes.showComments}>
+                            {comments.map(val => (
+                                <Box pl='20px' pr='20px' sx={{ display: 'flex', height: '50px' }} justifyContent='space-between' border='1px solid #DEDEDE' borderColor='grey'>
+                                    <Box color='#495fdb' className={classes.commentUserInfo}>{val.user.firstName}<span> </span>{val.user.lastName}</Box>
+                                    <Box alignSelf='flex-end'>
+                                        {val.comment}
+                                    </Box>
+                                    <Box onClick={GetCommentId}sx={{ cursor: 'pointer', height: 'fit-content' }}>
+                                        <HighlightOffIcon />
+                                    </Box>
+                                </Box>
+                            ))}
+                        </Box>
                         <Box sx={{ display: 'flex' }} className={classes.commentBox}>
                             <TextField
                                 label="Commentaire"
@@ -115,14 +156,15 @@ function Home(props) {
                                 name="comment"
                                 placeholder="Écrivez quelque chose"
                                 className={classes.comment}
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
                             />
                             <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
                         </Box>
                     </Box>
                 ))}
             </Container>
+            <Footer />
         </>
     )
 }
@@ -174,7 +216,7 @@ function GuestHome() {
                 <Button href="/signup">Inscrivez-vous !
                 </Button>
             </Box>
-            <Footer/>
+            <Footer />
         </>
     )
 }

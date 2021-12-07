@@ -13,7 +13,6 @@ exports.createComment = (req, res) => {
         userId: userId,
         postId: req.body.postId,
         comment: req.body.comment,
-        // commentId: req.body.commentId
     })
         .then(() => res.status(200).json({ message: "Commentaire créé !" }))
         .catch((error) => {
@@ -40,9 +39,11 @@ exports.updateComment = (req, res) => {
 
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
-    comment.findOne({ where: { id: req.params.id } })
+    comment.findOne({ where: { id: req.body.id } })
         .then((comment) => {
-            comment.destroy({ where: { id: req.params.id } })
+            if (comment.userId === userId){
+                comment.destroy({ where: { id: req.body.id } })
+            }
         })
         .catch((error) => {
             res.status(400).json({ error: error.message });
@@ -50,16 +51,16 @@ exports.deleteComment = (req, res) => {
 }
 
 // Récupérer les commentaires
-exports.getAllComments = (req, res) => {
-    console.log("postId: " + req.params.postId)
+exports.getCommentsByPost = (req, res) => {
+    // console.log(JSON.stringify(req.query));
+    console.log("postId: " + req.query.postId)
     userModel.hasMany(comment, { foreignKey: 'userId' });
     comment.belongsTo(userModel, { foreignKey: 'userId' });
     comment.findAll({
         where: {
-            postId: req.params.postId
+            postId: req.query.postId
         },
-        // order: [["id", "DESC"]],
-        attributes: ["comment"],
+        attributes: ["comment", "createdAt", "id"],
         include: [
             {
                 model: userModel,

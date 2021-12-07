@@ -18,16 +18,15 @@ module.exports = function(sequelize, DataTypes) {
     comment: {
       type: DataTypes.TEXT,
       allowNull: false,
-      defaultValue: 2
     },
-    // createdAt: {
-    //   type: DataTypes.NOW,
-    //   allowNull: false
-    // },
-    // deletedAt: {
-    //   type: DataTypes.NOW,
-    //   allowNull: false
-    // }
+    createdAt: {
+      type: DataTypes.NOW,
+      allowNull: true
+    },
+    deletedAt: {
+      type: DataTypes.NOW,
+      allowNull: true
+    }
   }, {
     sequelize,
     tableName: 'comments',

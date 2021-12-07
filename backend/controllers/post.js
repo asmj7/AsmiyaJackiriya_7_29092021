@@ -1,6 +1,7 @@
 const models = require('../models');
 const jwt = require('jsonwebtoken');
 const Post = models.posts;
+const User = models.users;
 const fs = require("fs");
 
 // Création d'un post
@@ -46,7 +47,7 @@ exports.updatePost = (req, res) => {
 
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
-    Post.findOne({ where: { id: req.params.id } })
+    Post.findOne({ where: { id: req.body.id } })
     models.comments.destroy({ where: { postId: Post.id } })
     Post.destroy()
         .then(() => {
@@ -57,9 +58,17 @@ exports.deletePost = (req, res) => {
 
 // Récupérer tous les posts
 exports.getAllPosts = (req, res) => {
+    User.hasMany(Post);
+    Post.belongsTo(User);
     Post.findAll({ 
         order: [["updatedAt", "DESC"]],
-        attributes: ['id','userId', 'title', 'content', 'imageUrl','createdAt', 'updatedAt']
+        attributes: ['id','userId', 'title', 'content', 'imageUrl','createdAt', 'updatedAt'],
+        include: [
+            {
+                model: User,
+                attributes: ["firstName", "lastName"],
+            },
+        ],
       })
         .then((post) => {
             res.status(200).json(post);

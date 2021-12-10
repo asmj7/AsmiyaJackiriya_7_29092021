@@ -30,7 +30,6 @@ function Signup() {
     let history = useHistory();
 
     const register = () => {
-        console.log(firstNameReg)
         Axios.post("http://localhost:3000/api/auth/signup", {
             firstName: firstNameReg,
             lastName: lastNameReg,
@@ -39,12 +38,13 @@ function Signup() {
         }).then((response) => {
             dispatch(registerSuccess(response))
             if (response.data.loggedIn) {
-                history.push("/")
+                history.push("/login")
                 console.log(response.data)
                 localStorage.setItem("loggedIn", true);
                 localStorage.setItem("email", response.data.token);
             } else {
                 // localStorage.setItem("loggedIn", false);
+                console.log(response.data)
                 setErrorMessage(response.data.message)
             }
         })
@@ -55,7 +55,7 @@ function Signup() {
     return (
         <div className="identification">
             <div className="registration">
-                <h1>S'inscrire</h1>
+                <h1>S'enregistrer</h1>
 
                 <div >
                     <TextField
@@ -97,7 +97,8 @@ function Signup() {
                         type="password"
                     />
                 </div>
-                <Button variant="contained" onClick={register} sx={{ mt: 3.5 }}>S'inscrire</Button>
+                <Button variant="contained" onClick={register} sx={{ mt: 3.5 }}>S'enregistrer</Button>
+                <Typography>{errorMessage}</Typography>
             </div>
         </div>
     );

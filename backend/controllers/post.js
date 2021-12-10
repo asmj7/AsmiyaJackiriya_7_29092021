@@ -2,6 +2,7 @@ const models = require('../models');
 const jwt = require('jsonwebtoken');
 const Post = models.posts;
 const User = models.users;
+const Comment = models.comments;
 const fs = require("fs");
 
 // Création d'un post
@@ -58,23 +59,41 @@ exports.deletePost = (req, res) => {
 
 // Récupérer tous les posts
 exports.getAllPosts = (req, res) => {
-    User.hasMany(Post);
-    Post.belongsTo(User);
-    Post.findAll({ 
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
+    Post.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(Post, { foreignKey: 'userId' });
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+    Post.findAll({
         order: [["updatedAt", "DESC"]],
-        attributes: ['id','userId', 'title', 'content', 'imageUrl','createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,
                 attributes: ["firstName", "lastName"],
             },
-        ],
-      })
+            {
+                model: Comment, // recuperer les commentaire du  poste
+                attributes: ["id", "comment", "createdAt"],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["firstName", "lastName"],
+                    },
+                ]
+            }
+        ],  
+    })
         .then((post) => {
             res.status(200).json(post);
         }).catch((error) => {
             res.status(400).json({ error: error.message });
         });
+}
+
+exports.getUserPosts = (req, res) => {
+
 }
 
 //  Récupérer un post
@@ -130,3 +149,25 @@ exports.likeDislikeSauce = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+
+
+// Post.findAll({
+//     order: [["updatedAt", "DESC"]],
+//     attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+//     include: [
+//         {
+//             model: User,
+//             attributes: ["firstName", "lastName"],
+//         },
+//         {
+//             model: Comment, // recuperer les commentaire du  poste
+//             attributes: ["id", "comment", "createdAt"],
+//             include: [
+//                 {
+//                     model: User,
+//                     attributes: ["firstName", "lastName"],
+//                 },
+//             ]
+//         }
+//     ],  
+// })

@@ -83,7 +83,7 @@ function Guest() {
         <>
 
             <Link to="/signup">
-                <li className="menuItems">S'inscrire</li>
+                <li className="menuItems">S'enregistrer</li>
             </Link>
             <Link to="/login">
                 <li className="menuItems">Se connecter</li>

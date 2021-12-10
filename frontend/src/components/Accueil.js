@@ -35,7 +35,7 @@ function Home(props) {
     })
 
     const [postId, setPostId] = useState("");
-    const [comments, setComments] = useState([])
+    const [comments, setComments] = useState([]);
     const [comment, setComment] = useState("");
     const [commentId, setCommentId] = useState("");
     const [uploads, setUploads] = useState([]);
@@ -65,7 +65,16 @@ function Home(props) {
     // Créer un commentaire
     const createComment = () => {
         Axios.post("http://localhost:3000/api/comment/create", { postId: postId, comment: comment }, config)
+            .then((response) => {
+                console.log(response.config.data);
+            })
     }
+
+    // for (let i = 0, len = uploads.length; i < len; i++) {
+    //     uploads[i].onclick = function () {
+    //         console.log(uploads[i]);
+    //     }
+    // }
 
     // Récupérer un commentaire
     useEffect(() => {
@@ -83,8 +92,7 @@ function Home(props) {
                 }
             })
                 .then((response) => {
-                    console.log(response.data);
-                    setCommentId(response.data)
+                    // setCommentId(response.data[0].id);
                     setComments(response.data)
                 })
             console.log()
@@ -96,23 +104,6 @@ function Home(props) {
         }
     }, [postId])
 
-    // Supprimer un commentaire
-    function GetCommentId(e) {
-        useEffect(() => {
-            Axios.delete("http://localhost:3000/api/comment/delete",
-                {
-                    commentId: commentId,
-                    headers: {
-                        "Content-Type": 'application/json',
-                        'Accept': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    }
-                })
-                .then((response) => {
-                    console.log(response.data[e.target.id]);
-                })
-        }, [])
-    }
 
     const classes = useStyles();
 
@@ -121,8 +112,8 @@ function Home(props) {
             <Container display="flex"
                 justifycontent="center"
                 alignitems="center" xs={6} className="home">
-                {uploads.map(val => (
-                    <Box className={classes.postContainer}>
+                {uploads.map((val, key) => (
+                    <Box className={classes.postContainer} key={key}>
                         <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>{val.user.firstName}{val.user.lastName}</Box>
                         <h2 className="title">{val.title}</h2>
                         <div className="content">
@@ -140,7 +131,7 @@ function Home(props) {
                                     <Box alignSelf='flex-end'>
                                         {val.comment}
                                     </Box>
-                                    <Box onClick={GetCommentId}sx={{ cursor: 'pointer', height: 'fit-content' }}>
+                                    <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }}>
                                         <HighlightOffIcon />
                                     </Box>
                                 </Box>
@@ -159,7 +150,7 @@ function Home(props) {
                                 value={comment}
                                 onChange={(e) => setComment(e.target.value)}
                             />
-                            <Button onClick={createComment} endIcon={<SendIcon />}>Envoyer</Button>
+                            <Button onClick={() => createComment(postId)} endIcon={<SendIcon />}>Envoyer</Button>
                         </Box>
                     </Box>
                 ))}
@@ -240,10 +231,8 @@ function HomePage() {
             {
                 loggedIn ? (
                     <Home loggedInUser={loggedInUser} />
-                    // <Footer/>
                 ) : (
                     <GuestHome />
-                    // <Footer/>
                 )
             }
         </>
@@ -251,3 +240,23 @@ function HomePage() {
 }
 
 export default withRouter(HomePage);
+
+
+
+// Supprimer un commentaire
+        // function GetCommentId(e) {
+        //     useEffect(() => {
+        //         Axios.delete("http://localhost:3000/api/comment/delete",
+        //             {
+        //                 commentId: commentId,
+        //                 headers: {
+        //                     "Content-Type": 'application/json',
+        //                     'Accept': 'application/json',
+        //                     Authorization: `Bearer ${token}`,
+        //                 }
+        //             })
+        //             .then((response) => {
+        //                 console.log(response.data[e.target.id]);
+        //             })
+        //     }, [])
+        // }

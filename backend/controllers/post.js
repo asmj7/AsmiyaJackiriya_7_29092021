@@ -48,13 +48,17 @@ exports.updatePost = (req, res) => {
 
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
-    Post.findOne({ where: { id: req.body.id } })
-    models.comments.destroy({ where: { postId: Post.id } })
-    Post.destroy()
-        .then(() => {
-            res.status(200).json({ message: "Publication supprimé avec succès" })
-        })
-        .catch(error => res.status(400).json({ error }));
+    console.log('delete post');
+    Post.hasMany(Comment, { onDelete: 'cascade', hooks: true, foreignKey: 'postId' })
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    Post.findOne({ where: { id: req.params.id } })
+    if (Post.userId === req.body.id) {
+        Post.destroy({ where: { id: req.params.id }})
+    } else {
+        res.status(401).json({
+            message: "Impossible de supprimer le post",
+        });
+    }
 }
 
 // Récupérer tous les posts
@@ -84,7 +88,7 @@ exports.getUserPosts = (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    
+
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
     Post.hasMany(Comment, { foreignKey: 'postId' });

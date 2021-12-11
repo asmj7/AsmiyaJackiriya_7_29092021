@@ -62,8 +62,6 @@ function Home(props) {
     //         })
     // }
 
-    console.log(uploads);
-
     const classes = useStyles();
 
     return (

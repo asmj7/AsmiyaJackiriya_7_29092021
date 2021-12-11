@@ -14,7 +14,12 @@ import Footer from "./Footer"
 function Post() {
     let { id } = useParams();
 
+    const loggedInUser = useSelector((state) => state.loggedInUser.user)
+    const userId = loggedInUser.data.userId
+
     const [uploads, setUploads] = useState([]);
+    // const [userId, setUserId] = useState("");
+    const [postData, setPostData] = useState("");
     const [postId, setPostId] = useState("");
     const [comment, setComment] = useState("");
     const [showComments, setShowComments] = useState("");
@@ -28,7 +33,6 @@ function Post() {
             minWidth: 250,
             margin: "auto",
             marginTop: '50px',
-            cursor: 'pointer'
         },
         comment: {
             width: "90%"
@@ -39,9 +43,18 @@ function Post() {
             marginTop: "10px",
             marginBottom: "20px"
         },
+        postBoxContainer: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: "90%",
+            margin: "auto",
+            paddingTop: '20px'
+        }
     })
 
-    const token = localStorage.getItem("email")
+    const token = localStorage.getItem("email");
+    console.log(postData.userId);
+    console.log(userId);
 
     const config = {
         headers: {
@@ -57,7 +70,7 @@ function Post() {
             .then((response) => {
                 setUploads(response.data)
                 setPostId(response.data.id);
-                console.log(response.data)
+                setPostData(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -66,9 +79,10 @@ function Post() {
 
     // Créer un commentaire
     const createComment = () => {
-        Axios.post("http://localhost:3000/api/comment/create", { postId: postId, comment: comment }, config)
+        Axios.post("http://localhost:3000/api/comment/create",
+            { postId: postId, comment: comment }, config)
             .then((response) => {
-                console.log(response.data);
+                console.log(response.config.data);
             })
     }
 
@@ -91,14 +105,30 @@ function Post() {
             })
     }, [id]);
 
-    console.log(uploads.user);
+    // Supprimer un post
+    const deletePost = (e) => {
+        e.preventDefault()
+        Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
+    // console.log(uploads.user.firstName);
     const classes = useStyles();
 
     return (
         <>
             <Box className={classes.postContainer}>
-                <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>{uploads.firstName}{uploads.lastName}</Box>
+                <Box className={classes.postBoxContainer}>
+                    <Box fontWeight='700' className={classes.userName}>{uploads.firstName}(User Name)</Box>
+                    {userId == postData.userId ? (<Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }}>
+                        <HighlightOffIcon />
+                    </Box>) : (false)}
+                </Box>
                 <h2 className="title">{uploads.title}</h2>
                 <div className="content">
                     <div className="description">
@@ -109,20 +139,22 @@ function Post() {
                     <img className="image" maxwidth="xs" src={uploads.imageUrl} alt="img"></img>
                 </div>
                 {showComments ? (
-                    showComments.map((val, key) => ( 
-                     <Box className={classes.showComments}>
-                     <Box pl='20px' pr='20px' sx={{ display: 'flex', height: '50px' }} justifyContent='space-between' border='1px solid #DEDEDE' borderColor='grey'>
-                         <Box color='#495fdb' className={classes.commentUserInfo}><span> </span></Box>
-                         <Box alignSelf='flex-end'>{val.comment}</Box>
-                         <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }}>
-                             <HighlightOffIcon />
-                         </Box>
-                     </Box>
-                 </Box>
-                 ))
-                ): false}
-                
-                 
+                    showComments.map((val, key) => (
+                        <Box className={classes.showComments}>
+                            <Box pl='20px' pr='20px' sx={{ display: 'block', border:'1px solid #DEDEDE', borderColor:'grey' }}>
+                                <Box color='#495fdb' className={classes.commentUserInfo}><span>(Very long username test) </span></Box>
+                                <Box className={classes.postBoxContainer}>
+                                    <Box alignSelf='flex-end'>{val.comment}</Box>
+                                    {userId == postData.userId ? (<Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }}>
+                                        <HighlightOffIcon />
+                                    </Box>) : (false)}
+                                </Box>
+                            </Box>
+                        </Box>
+                    ))
+                ) : false}
+
+
 
                 <Box sx={{ display: 'flex' }} className={classes.commentBox}>
                     <TextField

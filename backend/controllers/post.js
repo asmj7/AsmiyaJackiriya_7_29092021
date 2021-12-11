@@ -70,7 +70,7 @@ exports.getAllPosts = (req, res) => {
                 model: User,
                 attributes: ["firstName", "lastName"],
             },
-        ],  
+        ],
     })
         .then((post) => {
             res.status(200).json(post);
@@ -80,6 +80,48 @@ exports.getAllPosts = (req, res) => {
 }
 
 exports.getUserPosts = (req, res) => {
+
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+    
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+    Post.findAll({
+        where: {
+            userId: userId
+        },
+        order: [["updatedAt", "DESC"]],
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        include: [
+            {
+                model: User,
+                attributes: ["firstName", "lastName"],
+            },
+            {
+                model: Comment,
+                attributes: ["id", "comment", "createdAt"],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["firstName", "lastName"],
+                    },
+                ],
+            },
+        ],
+    })
+        .then((posts) => {
+            res.status(200).json(posts);
+        })
+        .catch((error) => {
+            res.status(400).json({
+                error: error,
+            });
+        });
 
 }
 
@@ -166,5 +208,5 @@ exports.likeDislikeSauce = (req, res, next) => {
 //                 },
 //             ]
 //         }
-//     ],  
+//     ],
 // })

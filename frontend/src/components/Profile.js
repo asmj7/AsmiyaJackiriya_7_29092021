@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import Axios from 'axios';
 import { useLocation } from 'react-router-dom'
 import './css/navbar.css'
-import { Typography, Box, autocompleteClasses } from '@mui/material';
+import { TextField, Box, Container, Typography, Link } from '@mui/material';
 import { useParams } from "react-router-dom";
-import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import SendIcon from '@mui/icons-material/Send';
+import { makeStyles } from '@mui/styles';
 import Footer from './Footer';
+import { useHistory } from "react-router-dom";
 // import CryptoAES from 'crypto-js/aes';
 
 function Profile() {
 
+    let history = useHistory();
     const useStyles = makeStyles({
         userInfo: {
             justifyContent: "center",
@@ -22,9 +26,30 @@ function Profile() {
         modifMessage: {
             color: '#e53935',
         },
+        postContainer: {
+            border: "1.5px solid #BCBCBC",
+            height: "fit-content",
+            borderRadius: "25px",
+            paddingBottom: '30px',
+            cursor: 'pointer',
+            width: "90%",
+            margin: 'auto',
+        },
+        container: {
+            columnGap: '10px',
+            width: "90%",
+            margin: 'auto',
+            rowGap: '20px',
+            marginBottom: '30px'
+        },
+        profile: {
+            color: "#1C2833",
+            backgroundColor: '#D6DBDF'
+        }
     })
 
     const params = useParams();
+    const [userPosts, setUserPosts] = useState([]);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -44,6 +69,14 @@ function Profile() {
                 setLastName(response.data.lastName)
                 setEmail(response.data.email)
                 console.log(response.data);
+            })
+    }, [])
+
+    useEffect(() => {
+        Axios.get(`http://localhost:3000/api/post/user/${params.id}`, config)
+            .then((response) => {
+                setUserPosts(response.data);
+                console.log('test')
             })
     }, [])
 
@@ -67,11 +100,23 @@ function Profile() {
                 </Grid>
             </Grid>
             <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
-            <h1 className="profile">Mes publications</h1>
-            <Grid>
-                <Grid>
-                    
-                </Grid>
+            <h1 className={classes.profile}>Mes publications</h1>
+            <Grid container className={classes.container}>
+                {userPosts.map((val, key) => (
+                    <Grid margin='auto' item className={classes.postContainer} sm={6} md={4} xs={8}>
+                        <Box onClick={() => history.push(`/post/${val.id}`)}>
+                            <h2 className="title">{val.title}</h2>
+                            <div className="content">
+                                <div className="description">
+                                    {val.content}
+                                </div>
+                            </div>
+                            <div className="imgContainer">
+                                <img className="image" src={val.imageUrl} alt="img"></img>
+                            </div>
+                        </Box>
+                    </Grid>
+                ))}
             </Grid>
             <Footer />
         </>

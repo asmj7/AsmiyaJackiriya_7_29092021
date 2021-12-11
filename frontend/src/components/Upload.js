@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios, { AxiosRequestConfig } from 'axios';
+import React, { useEffect, useState } from "react";
+import Axios from 'axios';
 import './css/navbar.css';
 import {
     Typography,
@@ -38,22 +38,19 @@ function Upload() {
         formData.append("image", image);
         formData.append("content", content);
 
-        // console.log("credentials" + credentials)
-        let config: AxiosRequestConfig = {
-            baseURL: "http://localhost:3000",
+        // console.log("credentials" + credentials
+
+        const config = {
             headers: {
                 "Content-Type": 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
             }
         }
 
-        try {
-            let resp = axios.post(`/api/post/upload`, formData, config);
-            console.log(resp);
-        }
-        catch (err) {
-            console.log(err)
-        }
+        Axios.post("http://localhost:3000/api/post/upload", formData, config)
+            .then((response) => {
+                console.log(response);
+            })
     };
 
     const classes = useStyles();

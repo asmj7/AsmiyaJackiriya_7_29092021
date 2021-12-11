@@ -62,9 +62,6 @@ exports.getAllPosts = (req, res) => {
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
     Post.hasMany(Comment, { foreignKey: 'userId' });
-    Comment.belongsTo(Post, { foreignKey: 'userId' });
-    User.hasMany(Comment, { foreignKey: 'userId' });
-    Comment.belongsTo(User, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
         attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
@@ -73,16 +70,6 @@ exports.getAllPosts = (req, res) => {
                 model: User,
                 attributes: ["firstName", "lastName"],
             },
-            {
-                model: Comment, // recuperer les commentaire du  poste
-                attributes: ["id", "comment", "createdAt"],
-                include: [
-                    {
-                        model: User,
-                        attributes: ["firstName", "lastName"],
-                    },
-                ]
-            }
         ],  
     })
         .then((post) => {
@@ -98,12 +85,22 @@ exports.getUserPosts = (req, res) => {
 
 //  Récupérer un post
 exports.getOnePost = (req, res) => {
-    Post.findOne({ where: { id: req.params.id } })
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
+    Post.findOne({
+        where: { id: req.params.id },
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        include: [
+            {
+                model: User,
+                attributes: ["firstName", "lastName"]
+            }
+        ],
+    })
         .then((post) => {
             res.status(200).json(post);
-        })
-        .catch((error) => {
-            res.status(404).json({ error });
+        }).catch((error) => {
+            res.status(400).json({ error: error.message });
         });
 }
 

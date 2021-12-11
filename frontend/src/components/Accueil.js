@@ -9,21 +9,14 @@ import Grid from '@mui/material/Grid';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Footer from "./Footer"
+import Footer from "./Footer";
+import { useHistory } from "react-router-dom";
 
 // After auth
 function Home(props) {
 
+    let history = useHistory();
     const useStyles = makeStyles({
-        comment: {
-            width: "90%"
-        },
-        commentBox: {
-            width: "90%",
-            margin: "auto",
-            marginTop: "10px",
-            marginBottom: "20px"
-        },
         postContainer: {
             border: "1.5px solid #BCBCBC",
             height: "fit-content",
@@ -31,13 +24,12 @@ function Home(props) {
             maxWidth: 500,
             minWidth: 250,
             margin: "auto",
+            cursor: 'pointer',
+            paddingBottom: '30px',
+            marginTop: '30px'
         },
     })
 
-    const [postId, setPostId] = useState("");
-    const [comments, setComments] = useState([]);
-    const [comment, setComment] = useState("");
-    const [commentId, setCommentId] = useState("");
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -55,7 +47,7 @@ function Home(props) {
             .then((response) => {
                 console.log(response.data)
                 setUploads(response.data)
-                setPostId(response.data[0].id)
+                // setPostId(response.data[0].id)
             })
             .catch((error) => {
                 console.log(error);
@@ -63,47 +55,14 @@ function Home(props) {
     }, [props.loggedInUser]);
 
     // Créer un commentaire
-    const createComment = () => {
-        Axios.post("http://localhost:3000/api/comment/create", { postId: postId, comment: comment }, config)
-            .then((response) => {
-                console.log(response.config.data);
-            })
-    }
-
-    // for (let i = 0, len = uploads.length; i < len; i++) {
-    //     uploads[i].onclick = function () {
-    //         console.log(uploads[i]);
-    //     }
+    // const createComment = () => {
+    //     Axios.post("http://localhost:3000/api/comment/create", { postId: postId, comment: comment }, config)
+    //         .then((response) => {
+    //             console.log(response.config.data);
+    //         })
     // }
 
-    // Récupérer un commentaire
-    useEffect(() => {
-        try {
-            Axios({
-                method: "GET",
-                url: "http://localhost:3000/api/comment/",
-                headers: {
-                    "Content-Type": 'application/json',
-                    'Accept': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                params: {
-                    postId: postId,
-                }
-            })
-                .then((response) => {
-                    // setCommentId(response.data[0].id);
-                    setComments(response.data)
-                })
-            console.log()
-        } catch (err) {
-            console.log(
-                "here is the error on a post request from the python server  ",
-                err
-            );
-        }
-    }, [postId])
-
+    console.log(uploads);
 
     const classes = useStyles();
 
@@ -113,7 +72,7 @@ function Home(props) {
                 justifycontent="center"
                 alignitems="center" xs={6} className="home">
                 {uploads.map((val, key) => (
-                    <Box className={classes.postContainer} key={key}>
+                    <Box className={classes.postContainer} key={key} onClick={()=> history.push(`/post/${val.id}`)}>
                         <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>{val.user.firstName}{val.user.lastName}</Box>
                         <h2 className="title">{val.title}</h2>
                         <div className="content">
@@ -124,34 +83,7 @@ function Home(props) {
                         <div className="imgContainer">
                             <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
                         </div>
-                        <Box className={classes.showComments}>
-                            {comments.map(val => (
-                                <Box pl='20px' pr='20px' sx={{ display: 'flex', height: '50px' }} justifyContent='space-between' border='1px solid #DEDEDE' borderColor='grey'>
-                                    <Box color='#495fdb' className={classes.commentUserInfo}>{val.user.firstName}<span> </span>{val.user.lastName}</Box>
-                                    <Box alignSelf='flex-end'>
-                                        {val.comment}
-                                    </Box>
-                                    <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }}>
-                                        <HighlightOffIcon />
-                                    </Box>
-                                </Box>
-                            ))}
-                        </Box>
-                        <Box sx={{ display: 'flex' }} className={classes.commentBox}>
-                            <TextField
-                                label="Commentaire"
-                                id="standard-size-small"
-                                size="small"
-                                variant="standard"
-                                type="comment"
-                                name="comment"
-                                placeholder="Écrivez quelque chose"
-                                className={classes.comment}
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                            />
-                            <Button onClick={() => createComment(postId)} endIcon={<SendIcon />}>Envoyer</Button>
-                        </Box>
+                        
                     </Box>
                 ))}
             </Container>

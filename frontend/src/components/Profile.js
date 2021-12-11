@@ -35,21 +35,17 @@ function Profile() {
             'Authorization': `token ${token}`
         }
     };
+
+    // get user info
     useEffect(() => {
         Axios.get(`http://localhost:3000/api/auth/${params.id}`, config)
             .then((response) => {
                 setFirstName(response.data.firstName)
                 setLastName(response.data.lastName)
                 setEmail(response.data.email)
-                console.log(response);
+                console.log(response.data);
             })
     }, [])
-    useEffect(()=> {
-        Axios.get(`http://localhost:3000/api/post/${params.id}`, config)
-        .then((response) => {
-            console.log(response)
-        })
-    },[])
 
     const classes = useStyles();
 

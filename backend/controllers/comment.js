@@ -1,7 +1,8 @@
-const models = require("../models");
-const comment = models.comments;
+const models = require('../models');
 const jwt = require("jsonwebtoken");
-const userModel = models.users;
+const Post = models.posts;
+const User = models.users;
+const Comment = models.comments;
 
 // Création d'un commentaire
 exports.createComment = (req, res) => {
@@ -9,7 +10,7 @@ exports.createComment = (req, res) => {
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
 
-    comment.create({
+    Comment.create({
         userId: userId,
         postId: req.body.postId,
         comment: req.body.comment,
@@ -41,7 +42,7 @@ exports.updateComment = (req, res) => {
 exports.deleteComment = (req, res) => {
     comment.findOne({ where: { id: req.body.id } })
         .then((comment) => {
-            if (comment.userId === userId){
+            if (comment.userId === userId) {
                 comment.destroy({ where: { id: req.body.id } })
             }
         })
@@ -52,18 +53,17 @@ exports.deleteComment = (req, res) => {
 
 // Récupérer les commentaires
 exports.getCommentsByPost = (req, res) => {
-    // console.log(JSON.stringify(req.query));
-    console.log("postId: " + req.query.postId)
-    userModel.hasMany(comment, { foreignKey: 'userId' });
-    comment.belongsTo(userModel, { foreignKey: 'userId' });
-    comment.findAll({
+    console.log("postId: " + req.params.id)
+    User.hasMany(Comment, {foreignKey: 'postId'});
+    Comment.belongsTo(User, {foreignKey: 'postId'});
+    Comment.findAll({
         where: {
-            postId: req.query.postId
+            postId: req.params.id
         },
-        attributes: ["comment", "createdAt", "id"],
+        attributes: ["comment", "createdAt"],
         include: [
             {
-                model: userModel,
+                model: User,
                 attributes: ["firstName", "lastName"],
             },
         ],

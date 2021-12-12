@@ -71,6 +71,7 @@ function Post() {
                 setUploads(response.data)
                 setPostId(response.data.id);
                 setPostData(response.data)
+                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -99,6 +100,12 @@ function Post() {
         })
             .then((response) => {
                 setShowComments(response.data);
+                console.log(response.data);
+                let array = response.data
+                const results = array.filter(obj => {
+                    return obj.user.id === obj.userId;
+                  });
+                console.log(results)
             })
             .catch((error) => {
                 console.log(error);
@@ -106,8 +113,7 @@ function Post() {
     }, [id]);
 
     // Supprimer un post
-    const deletePost = (e) => {
-        e.preventDefault()
+    const deletePost = () => {
         Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
             .then((response) => {
                 console.log(response.data)
@@ -117,6 +123,18 @@ function Post() {
             })
     }
 
+    // supprimer un commentaire
+    const deleteComment = () => {
+        Axios.delete(`http://localhost:3000/api/comment/delete/${id}`, config)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+
     // console.log(uploads.user.firstName);
     const classes = useStyles();
 
@@ -125,9 +143,11 @@ function Post() {
             <Box className={classes.postContainer}>
                 <Box className={classes.postBoxContainer}>
                     <Box fontWeight='700' className={classes.userName}>{uploads.firstName}(User Name)</Box>
-                    {userId == postData.userId ? (<Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }}>
-                        <HighlightOffIcon />
-                    </Box>) : (false)}
+                    {userId == postData.userId ? (
+                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deletePost()}>
+                            <HighlightOffIcon />
+                        </Box>
+                    ) : (false)}
                 </Box>
                 <h2 className="title">{uploads.title}</h2>
                 <div className="content">
@@ -141,13 +161,15 @@ function Post() {
                 {showComments ? (
                     showComments.map((val, key) => (
                         <Box className={classes.showComments}>
-                            <Box pl='20px' pr='20px' sx={{ display: 'block', border:'1px solid #DEDEDE', borderColor:'grey' }}>
+                            <Box pl='20px' pr='20px' sx={{ display: 'block', border: '1px solid #DEDEDE', borderColor: 'grey' }}>
                                 <Box color='#495fdb' className={classes.commentUserInfo}><span>(Very long username test) </span></Box>
                                 <Box className={classes.postBoxContainer}>
                                     <Box alignSelf='flex-end'>{val.comment}</Box>
-                                    {userId == postData.userId ? (<Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }}>
-                                        <HighlightOffIcon />
-                                    </Box>) : (false)}
+                                    {userId == postData.userId ? (
+                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }}>
+                                            <HighlightOffIcon />
+                                        </Box>
+                                    ) : (false)}
                                 </Box>
                             </Box>
                         </Box>

@@ -40,31 +40,42 @@ exports.updateComment = (req, res) => {
 
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
-    comment.findOne({ where: { id: req.body.id } })
-        .then((comment) => {
-            if (comment.userId === userId) {
-                comment.destroy({ where: { id: req.body.id } })
-            }
-        })
-        .catch((error) => {
-            res.status(400).json({ error: error.message });
+    console.log(req.body.id);
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+    Comment.findOne({ where: { id: req.params.id } })
+    if (Comment.userId === req.body.id) {
+        Comment.destroy({ where: { id: req.params.id } })
+            .then(() => {
+                res.status(200).json({
+                    message: "Commentaire supprimé !",
+                });
+            })
+    } else {
+        res.status(401).json({
+            message: "Impossible de supprimer le post",
         });
+    }
 }
 
 // Récupérer les commentaires
 exports.getCommentsByPost = (req, res) => {
     console.log("postId: " + req.params.id)
-    User.hasMany(Comment, {foreignKey: 'postId'});
-    Comment.belongsTo(User, {foreignKey: 'postId'});
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
     Comment.findAll({
         where: {
             postId: req.params.id
         },
-        attributes: ["comment", "createdAt"],
+        attributes: ["comment", "createdAt", "userId"],
         include: [
             {
                 model: User,
-                attributes: ["firstName", "lastName"],
+                attributes: ["firstName", "lastName", "id"],
             },
         ],
     })

@@ -49,8 +49,8 @@ exports.updatePost = (req, res) => {
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
     console.log('delete post');
-    Post.hasMany(Comment, { onDelete: 'cascade', hooks: true, foreignKey: 'postId' })
-    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    Post.hasMany(Comment, {foreignKey: 'postId', onDelete: 'cascade', hooks: true})
+    Comment.belongsTo(Post, { foreignKey: 'postId'});
     Post.findOne({ where: { id: req.params.id } })
     if (Post.userId === req.body.id) {
         Post.destroy({ where: { id: req.params.id }})

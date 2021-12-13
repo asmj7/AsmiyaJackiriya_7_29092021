@@ -3,12 +3,11 @@ import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { TextField, Box, Container, Typography, Link } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+// import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 

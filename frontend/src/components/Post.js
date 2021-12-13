@@ -103,8 +103,8 @@ function Post() {
                 console.log(response.data);
                 let array = response.data
                 const results = array.filter(obj => {
-                    return obj.user.id === obj.userId;
-                  });
+                    return obj.user.id == obj.userId
+                });
                 console.log(results)
             })
             .catch((error) => {
@@ -124,7 +124,7 @@ function Post() {
     }
 
     // supprimer un commentaire
-    const deleteComment = () => {
+    const deleteComment = (id) => {
         Axios.delete(`http://localhost:3000/api/comment/delete/${id}`, config)
             .then((response) => {
                 console.log(response)
@@ -134,15 +134,20 @@ function Post() {
             })
     }
 
+    console.log(uploads);
 
     // console.log(uploads.user.firstName);
     const classes = useStyles();
 
+    if(!uploads){
+        return <div>loading</div>
+    }
     return (
         <>
             <Box className={classes.postContainer}>
                 <Box className={classes.postBoxContainer}>
-                    <Box fontWeight='700' className={classes.userName}>{uploads.firstName}(User Name)</Box>
+                    {uploads && uploads.user && 
+                    <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
                     {userId == postData.userId ? (
                         <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deletePost()}>
                             <HighlightOffIcon />
@@ -162,14 +167,14 @@ function Post() {
                     showComments.map((val, key) => (
                         <Box className={classes.showComments}>
                             <Box pl='20px' pr='20px' sx={{ display: 'block', border: '1px solid #DEDEDE', borderColor: 'grey' }}>
-                                <Box color='#495fdb' className={classes.commentUserInfo}><span>(Very long username test) </span></Box>
+                                <Box color='#495fdb' className={classes.commentUserInfo}><span>{val.user.firstName}</span></Box>
                                 <Box className={classes.postBoxContainer}>
                                     <Box alignSelf='flex-end'>{val.comment}</Box>
-                                    {userId == postData.userId ? (
-                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }}>
+                                    {val.userId == val.user.id  && 
+                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }} onClick={()=> deleteComment(val.comment.id)}>
                                             <HighlightOffIcon />
                                         </Box>
-                                    ) : (false)}
+                                    }
                                 </Box>
                             </Box>
                         </Box>

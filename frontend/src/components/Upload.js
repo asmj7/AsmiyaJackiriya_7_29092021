@@ -88,7 +88,7 @@ function Upload() {
                             className={classes.inputContent}
                         />
                     </div>
-                    <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])}></input>
+                    <input accept="image/*" id="imgInp" type="file" name="image" onChange={(e) => setImage(e.target.files[0])}></input>
                     <Button type="submit" className="publish" variant="contained" onClick={upload} sx={{ mt: 2.5 }}>Publier</Button>
                 </FormControl>
             </div>

@@ -103,7 +103,7 @@ function Post() {
                 console.log(response.data);
                 let array = response.data
                 const results = array.filter(obj => {
-                    return obj.user.id == obj.userId
+                    return obj.user.id == userId
                 });
                 console.log(results)
             })
@@ -134,20 +134,18 @@ function Post() {
             })
     }
 
-    console.log(uploads);
-
     // console.log(uploads.user.firstName);
     const classes = useStyles();
 
-    if(!uploads){
+    if (!uploads) {
         return <div>loading</div>
     }
     return (
         <>
             <Box className={classes.postContainer}>
                 <Box className={classes.postBoxContainer}>
-                    {uploads && uploads.user && 
-                    <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
+                    {uploads && uploads.user &&
+                        <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
                     {userId == postData.userId ? (
                         <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deletePost()}>
                             <HighlightOffIcon />
@@ -167,11 +165,11 @@ function Post() {
                     showComments.map((val, key) => (
                         <Box className={classes.showComments}>
                             <Box pl='20px' pr='20px' sx={{ display: 'block', border: '1px solid #DEDEDE', borderColor: 'grey' }}>
-                                <Box color='#495fdb' className={classes.commentUserInfo}><span>{val.user.firstName}</span></Box>
+                                <Box color='#495fdb' className={classes.commentUserInfo}><span>{val.user.firstName} {val.user.lastName}</span></Box>
                                 <Box className={classes.postBoxContainer}>
                                     <Box alignSelf='flex-end'>{val.comment}</Box>
-                                    {val.userId == val.user.id  && 
-                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }} onClick={()=> deleteComment(val.comment.id)}>
+                                    {userId == val.user.id &&
+                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deleteComment(val.comment.id)}>
                                             <HighlightOffIcon />
                                         </Box>
                                     }

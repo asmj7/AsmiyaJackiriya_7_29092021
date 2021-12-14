@@ -41,10 +41,10 @@ exports.updateComment = (req, res) => {
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
     console.log(req.body.id);
-    Post.hasMany(Comment, { foreignKey: 'postId' });
-    Comment.belongsTo(Post, { foreignKey: 'postId' });
-    User.hasMany(Comment, { foreignKey: 'userId' });
-    Comment.belongsTo(User, { foreignKey: 'userId' });
+    // Post.hasMany(Comment, { foreignKey: 'postId' });
+    // Comment.belongsTo(Post, { foreignKey: 'postId' });
+    // User.hasMany(Comment, { foreignKey: 'userId' });
+    // Comment.belongsTo(User, { foreignKey: 'userId' });
     Comment.findOne({ where: { id: req.params.id } })
     if (Comment.userId === req.body.id) {
         Comment.destroy({ where: { id: req.params.id } })
@@ -63,6 +63,7 @@ exports.deleteComment = (req, res) => {
 // Récupérer les commentaires
 exports.getCommentsByPost = (req, res) => {
     console.log("postId: " + req.params.id)
+    console.log(req.body.id);
     Post.hasMany(Comment, { foreignKey: 'postId' });
     Comment.belongsTo(Post, { foreignKey: 'postId' });
     User.hasMany(Comment, { foreignKey: 'userId' });
@@ -71,7 +72,7 @@ exports.getCommentsByPost = (req, res) => {
         where: {
             postId: req.params.id
         },
-        attributes: ["comment", "createdAt", "userId"],
+        attributes: ["comment", "createdAt", "userId", 'id'],
         include: [
             {
                 model: User,

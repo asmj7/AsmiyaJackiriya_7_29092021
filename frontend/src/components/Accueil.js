@@ -10,9 +10,13 @@ import { makeStyles } from '@mui/styles';
 // import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 // After auth
 function Home(props) {
+
+    const loggedInUser = useSelector((state) => state.loggedInUser.user)
+    const userId = loggedInUser.data.userId
 
     let history = useHistory();
     const useStyles = makeStyles({
@@ -69,7 +73,12 @@ function Home(props) {
                 justifycontent="center"
                 alignitems="center" xs={6} className="home">
                 {uploads.map((val, key) => (
-                    <Box className={classes.postContainer} key={key} onClick={()=> history.push(`/post/${val.id}`)}>
+                    <Box className={classes.postContainer} key={key} onClick={() => history.push(`/post/${val.id}`)}>
+                        {userId == val.userId &&
+                            <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }}>
+                                <HighlightOffIcon />
+                            </Box>
+                        }
                         <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>{val.user.firstName}{val.user.lastName}</Box>
                         <h2 className="title">{val.title}</h2>
                         <div className="content">
@@ -80,7 +89,7 @@ function Home(props) {
                         <div className="imgContainer">
                             <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
                         </div>
-                        
+
                     </Box>
                 ))}
             </Container>

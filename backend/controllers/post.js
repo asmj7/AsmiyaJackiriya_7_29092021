@@ -49,11 +49,12 @@ exports.updatePost = (req, res) => {
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
     console.log('delete post');
-    Post.hasMany(Comment, {foreignKey: 'postId'})
-    Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true});
+    Post.hasMany(Comment, { foreignKey: 'postId' })
+    Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true });
     Post.findOne({ where: { id: req.params.id } })
     if (Post.userId === req.body.id) {
-        Post.destroy({ where: { id: req.params.id }})
+        Post.destroy({ where: { id: req.params.id } })
+        res.status(200).json({ message: "Post supprimé !" });
     } else {
         res.status(401).json({
             message: "Impossible de supprimer le post",

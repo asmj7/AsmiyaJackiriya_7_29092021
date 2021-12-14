@@ -37,7 +37,12 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         notEmpty: false
       }
-    }
+    },
+    likes: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
   }, {
     sequelize,
     tableName: 'posts',

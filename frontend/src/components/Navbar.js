@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logOut } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
-import ListItemButton from '@mui/material/ListItemButton';
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import jwt from "jsonwebtoken";
@@ -17,10 +16,6 @@ function UserLogged() {
     const useStyles = makeStyles({
         menuItems: {
             color: 'white',
-        },
-        logout: {
-            color: 'white',
-            padding: "none"
         },
         linkItems: {
             padding: "0",
@@ -71,7 +66,7 @@ function UserLogged() {
                     <Grid item className={classes.menuItems}>{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</Grid>
                 </Link>
                 <Link className={classes.linkItems} to="/login">
-                    <Grid item className={classes.menuItems}><ListItemButton className={classes.logout} onClick={Logout}>{<LogoutIcon />}</ListItemButton></Grid>
+                    <Grid item className={classes.menuItems} onClick={Logout}><LogoutRoundedIcon /></Grid>
                 </Link>
             </Grid>
 

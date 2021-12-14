@@ -136,7 +136,7 @@ exports.getOnePost = (req, res) => {
     Post.belongsTo(User, { foreignKey: 'userId' });
     Post.findOne({
         where: { id: req.params.id },
-        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title', 'content',, 'likes', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,
@@ -152,26 +152,13 @@ exports.getOnePost = (req, res) => {
 }
 
 // Like et dislikes 
-exports.likeDislikeSauce = (req, res, next) => {
-    Post.findOne({ _id: req.params.id })
+exports.likePost = (req, res, next) => {
+    Post.findOne({ id: req.params.id })
         .then(post => {
             const like = req.body.like;
             let opinions = {};
             switch (like) {
-                case -1:  //  Si l'utilisateur dislike le post 
-                    opinions = {
-                        $push: { usersDisliked: req.body.userId },
-                        $inc: { dislikes: 1 }
-                    }
-                    break;
-                case 0: // Si l'utilisateur enlève son like / dislike
-                    for (let userId of post.usersDisliked)
-                        if (req.body.userId === userId) {
-                            opinions = {
-                                $pull: { usersDisliked: userId },
-                                $inc: { dislikes: -1 }
-                            };
-                        };
+                case 0: // Si l'utilisateur enlève son like
                     for (let userId of post.usersLiked)
                         if (req.body.userId === userId) {
                             opinions = {
@@ -187,31 +174,9 @@ exports.likeDislikeSauce = (req, res, next) => {
                     };
                     break;
             };
-            Post.updateOne({ _id: req.params.id }, opinions)
+            Post.updateOne({ id: req.params.id }, opinions)
                 .then(() => res.status(200).json({ message: "Le post a été liké" }))
                 .catch(error => res.status(500).json({ error }))
         })
         .catch(error => res.status(500).json({ error }));
 };
-
-
-// Post.findAll({
-//     order: [["updatedAt", "DESC"]],
-//     attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
-//     include: [
-//         {
-//             model: User,
-//             attributes: ["firstName", "lastName"],
-//         },
-//         {
-//             model: Comment, // recuperer les commentaire du  poste
-//             attributes: ["id", "comment", "createdAt"],
-//             include: [
-//                 {
-//                     model: User,
-//                     attributes: ["firstName", "lastName"],
-//                 },
-//             ]
-//         }
-//     ],
-// })

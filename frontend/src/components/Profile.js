@@ -76,7 +76,7 @@ function Profile() {
         Axios.get(`http://localhost:3000/api/post/user/${params.id}`, config)
             .then((response) => {
                 setUserPosts(response.data);
-                console.log('test')
+                console.log(response.data)
             })
     }, [])
 

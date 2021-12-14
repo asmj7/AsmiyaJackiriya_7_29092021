@@ -31,6 +31,16 @@ function Home(props) {
             paddingBottom: '30px',
             marginTop: '30px'
         },
+        iconBox: {
+            cursor: 'pointer',
+            fontSize: '20px',
+            color: '#BAC0E1',
+            p: '20px',
+        },
+        deleteBox: {
+            display: 'flex',
+            justifyContent: 'space-between',
+        }
     })
 
     const [uploads, setUploads] = useState([]);
@@ -74,12 +84,16 @@ function Home(props) {
                 alignitems="center" xs={6} className="home">
                 {uploads.map((val, key) => (
                     <Box className={classes.postContainer} key={key} onClick={() => history.push(`/post/${val.id}`)}>
-                        {userId == val.userId &&
-                            <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }}>
-                                <HighlightOffIcon />
+                        <Box className={classes.deleteBox}>
+                            <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>
+                                {val.user.firstName} {val.user.lastName}
                             </Box>
-                        }
-                        <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>{val.user.firstName}{val.user.lastName}</Box>
+                            {userId == val.userId &&
+                                <Box className={classes.iconBox}>
+                                    <HighlightOffIcon sx={{p: '20px'}}/>
+                                </Box>
+                            }
+                        </Box>
                         <h2 className="title">{val.title}</h2>
                         <div className="content">
                             <div className="description">

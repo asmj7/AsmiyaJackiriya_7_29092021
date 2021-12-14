@@ -55,7 +55,7 @@ exports.deleteComment = (req, res) => {
             })
     } else {
         res.status(401).json({
-            message: "Impossible de supprimer le post",
+            message: "Impossible de supprimer le commentaire ",
         });
     }
 }

@@ -169,7 +169,7 @@ function Post() {
                                 <Box className={classes.postBoxContainer}>
                                     <Box alignSelf='flex-end'>{val.comment}</Box>
                                     {userId == val.user.id &&
-                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deleteComment(val.comment.id)}>
+                                        <Box sx={{ cursor: 'pointer', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deleteComment(val.id)}>
                                             <HighlightOffIcon />
                                         </Box>
                                     }

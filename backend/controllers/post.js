@@ -48,13 +48,18 @@ exports.updatePost = (req, res) => {
 
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
-    Post.findOne({ where: { id: req.body.id } })
-    models.comments.destroy({ where: { postId: Post.id } })
-    Post.destroy()
-        .then(() => {
-            res.status(200).json({ message: "Publication supprimé avec succès" })
-        })
-        .catch(error => res.status(400).json({ error }));
+    console.log('delete post');
+    Post.hasMany(Comment, { foreignKey: 'postId' })
+    Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true });
+    Post.findOne({ where: { id: req.params.id } })
+    if (Post.userId === req.body.id) {
+        Post.destroy({ where: { id: req.params.id } })
+        res.status(200).json({ message: "Post supprimé !" });
+    } else {
+        res.status(401).json({
+            message: "Impossible de supprimer le post",
+        });
+    }
 }
 
 // Récupérer tous les posts
@@ -62,9 +67,6 @@ exports.getAllPosts = (req, res) => {
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
     Post.hasMany(Comment, { foreignKey: 'userId' });
-    Comment.belongsTo(Post, { foreignKey: 'userId' });
-    User.hasMany(Comment, { foreignKey: 'userId' });
-    Comment.belongsTo(User, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
         attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
@@ -73,17 +75,7 @@ exports.getAllPosts = (req, res) => {
                 model: User,
                 attributes: ["firstName", "lastName"],
             },
-            {
-                model: Comment, // recuperer les commentaire du  poste
-                attributes: ["id", "comment", "createdAt"],
-                include: [
-                    {
-                        model: User,
-                        attributes: ["firstName", "lastName"],
-                    },
-                ]
-            }
-        ],  
+        ],
     })
         .then((post) => {
             res.status(200).json(post);
@@ -94,16 +86,68 @@ exports.getAllPosts = (req, res) => {
 
 exports.getUserPosts = (req, res) => {
 
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+    Post.findAll({
+        where: {
+            userId: userId
+        },
+        order: [["updatedAt", "DESC"]],
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        include: [
+            {
+                model: User,
+                attributes: ["firstName", "lastName"],
+            },
+            {
+                model: Comment,
+                attributes: ["id", "comment", "createdAt"],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["firstName", "lastName"],
+                    },
+                ],
+            },
+        ],
+    })
+        .then((posts) => {
+            res.status(200).json(posts);
+        })
+        .catch((error) => {
+            res.status(400).json({
+                error: error,
+            });
+        });
+
 }
 
 //  Récupérer un post
 exports.getOnePost = (req, res) => {
-    Post.findOne({ where: { id: req.params.id } })
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
+    Post.findOne({
+        where: { id: req.params.id },
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        include: [
+            {
+                model: User,
+                attributes: ["firstName", "lastName"]
+            }
+        ],
+    })
         .then((post) => {
             res.status(200).json(post);
-        })
-        .catch((error) => {
-            res.status(404).json({ error });
+        }).catch((error) => {
+            res.status(400).json({ error: error.message });
         });
 }
 
@@ -169,5 +213,5 @@ exports.likeDislikeSauce = (req, res, next) => {
 //                 },
 //             ]
 //         }
-//     ],  
+//     ],
 // })

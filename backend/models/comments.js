@@ -23,10 +23,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.NOW,
       allowNull: true
     },
-    deletedAt: {
-      type: DataTypes.NOW,
-      allowNull: true
-    }
   }, {
     sequelize,
     tableName: 'comments',

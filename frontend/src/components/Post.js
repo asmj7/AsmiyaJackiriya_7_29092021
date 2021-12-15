@@ -88,7 +88,7 @@ function Post() {
             })
     }
 
-    // Récupérer un commentaire
+    // Récupérer les commentaires du post
     useEffect(() => {
         Axios({
             method: "GET",

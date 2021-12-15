@@ -21,23 +21,6 @@ exports.createComment = (req, res) => {
         });
 }
 
-// Modification du commentaire
-exports.updateComment = (req, res) => {
-    comment.findOne({ where: { id: req.params.id } })
-        .then(() => {
-            comment.update(
-                { comment: req.body.comment },
-                { where: { id: req.params.id } }
-            )
-        })
-        .then(() => {
-            res.status(201).json({ message: " Commentaire modifié" });
-        })
-        .catch((error) => {
-            res.status(400).json({ error: error.message });
-        });
-}
-
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
     console.log(req.body.id);
@@ -60,7 +43,7 @@ exports.deleteComment = (req, res) => {
     }
 }
 
-// Récupérer les commentaires
+// Récupérer les commentaires du post
 exports.getCommentsByPost = (req, res) => {
     console.log("postId: " + req.params.id)
     console.log(req.body.id);
@@ -86,4 +69,27 @@ exports.getCommentsByPost = (req, res) => {
         .catch((error) => {
             res.status(400).json({ error: error.message });
         });
+}
+exports.getAllComments = (req, res) => {
+    User.hasMany(Post, {foreignKey: "userId"})
+    Post.belongsTo(User, {foreignKey: "userId"})
+    User.hasMany(Comment, {foreignKey: 'userId'})
+    Comment.belongsTo(User, {foreignKey: 'userId'})
+    Post.hasMany(Comment, {foreignKey: 'postId'})
+    Comment.belongsTo(Post, {foreignKey: 'postId'})
+    Comment.findAll({
+        attributes: ["comment", "createdAt", "userId", 'id', "postId", "updatedAt"],
+        include: [
+            {
+                model: User,
+                attributes: ["firstName", "lastName", "id"],
+            },
+        ],
+    })
+    .then((comments) => {
+        res.status(200).json(comments);
+    })
+    .catch((error) => {
+        res.status(400).json({ error: error.message });
+    });
 }

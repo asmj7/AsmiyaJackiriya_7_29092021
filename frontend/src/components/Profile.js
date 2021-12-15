@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Axios from 'axios';
-import { useLocation } from 'react-router-dom'
 import './css/navbar.css'
-import { TextField, Box, Container, Typography, Link } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useParams } from "react-router-dom";
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import Footer from './Footer';
 import { useHistory } from "react-router-dom";
 // import CryptoAES from 'crypto-js/aes';
 
 function Profile() {
+
+    const loggedInUser = useSelector((state) => state.loggedInUser.user)
+    const userId = loggedInUser.data.userId
 
     let history = useHistory();
     const useStyles = makeStyles({
@@ -80,27 +81,46 @@ function Profile() {
             })
     }, [])
 
+    console.log(userPosts.id);
     const classes = useStyles();
 
     return (
         <>
-            <h1 className="profile">À propos de moi</h1>
-            <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
+            {userId == params.id ? (
+                <>
+                    <h1 className="profile">À propos de moi</h1>
+                    <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
+                        <Grid xs={8} sm={6} md={4} item>
+                            <Typography className={classes.userFirstname} fontWeight='600' variant="subtitle1">Prénom</Typography>
+                            <Typography variant="subtitle1">{firstName}</Typography>
+                        </Grid>
+                        <Grid xs={8} sm={6} md={4} item>
+                            <Typography className={classes.userLastname} fontWeight='600' variant="subtitle1">Nom</Typography>
+                            <Typography variant="subtitle1">{lastName}</Typography>
+                        </Grid>
+                        <Grid xs={8} sm={6} md={4} item >
+                            <Typography className={classes.userEmail} fontWeight='600' variant="subtitle1">E-mail</Typography>
+                            <Typography variant="subtitle1">{email}</Typography>
+                        </Grid>
+                    </Grid>
+                    <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
+                </>
+            ) : (
+                <>
+                <h1 className="profile">À propos de {firstName} {lastName}</h1>
+                <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
                 <Grid xs={8} sm={6} md={4} item>
-                    <Typography className={classes.userFirstname} fontWeight='600' variant="subtitle1">Prénom</Typography>
-                    <Typography variant="subtitle1">{firstName}</Typography>
+                            <Typography className={classes.userFirstname} fontWeight='600' variant="subtitle1">Prénom</Typography>
+                            <Typography variant="subtitle1">{firstName}</Typography>
+                        </Grid>
+                        <Grid xs={8} sm={6} md={4} item>
+                            <Typography className={classes.userLastname} fontWeight='600' variant="subtitle1">Nom</Typography>
+                            <Typography variant="subtitle1">{lastName}</Typography>
+                        </Grid>
                 </Grid>
-                <Grid xs={8} sm={6} md={4} item>
-                    <Typography className={classes.userLastname} fontWeight='600' variant="subtitle1">Nom</Typography>
-                    <Typography variant="subtitle1">{lastName}</Typography>
-                </Grid>
-                <Grid xs={8} sm={6} md={4} item >
-                    <Typography className={classes.userEmail} fontWeight='600' variant="subtitle1">E-mail</Typography>
-                    <Typography variant="subtitle1">{email}</Typography>
-                </Grid>
-            </Grid>
-            <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
-            <h1 className={classes.profile}>Mes publications</h1>
+                </>
+            )}
+            {params.id == userId ? (<h1 className={classes.profile}>Mes publications</h1>) : (<h1 className={classes.profile}>Les publications de {firstName} {lastName}</h1>)}
             <Grid container className={classes.container}>
                 {userPosts.map((val, key) => (
                     <Grid margin='auto' item className={classes.postContainer} sm={6} md={4} xs={8}>

@@ -66,15 +66,22 @@ exports.deletePost = (req, res) => {
 exports.getAllPosts = (req, res) => {
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
-    Post.hasMany(Comment, { foreignKey: 'userId' });
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    // User.hasMany(Comment, { foreignKey: 'userId' });
+    // Comment.belongsTo(Post, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
         attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,
-                attributes: ["firstName", "lastName"],
+                attributes: ["firstName", "lastName", "id"],
             },
+            {
+                model: Comment,
+                attributes: ["comment"],
+            }
         ],
     })
         .then((post) => {
@@ -98,7 +105,7 @@ exports.getUserPosts = (req, res) => {
     Comment.belongsTo(User, { foreignKey: 'userId' });
     Post.findAll({
         where: {
-            userId: userId
+            userId: req.params.id
         },
         order: [["updatedAt", "DESC"]],
         attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
@@ -134,14 +141,28 @@ exports.getUserPosts = (req, res) => {
 exports.getOnePost = (req, res) => {
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
     Post.findOne({
         where: { id: req.params.id },
-        attributes: ['id', 'userId', 'title', 'content',, 'likes', 'imageUrl', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title', 'content', 'likes', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,
-                attributes: ["firstName", "lastName"]
-            }
+                attributes: ["firstName", "lastName", "id"]
+            },
+            {
+                model: Comment,
+                attributes: ["id", "comment", "createdAt"],
+                include: [
+                    {
+                        model: User,
+                        attributes: ["firstName", "lastName"],
+                    },
+                ],
+            },
         ],
     })
         .then((post) => {
@@ -153,7 +174,7 @@ exports.getOnePost = (req, res) => {
 
 // Like et dislikes 
 exports.likePost = (req, res, next) => {
-    Post.findOne({ id: req.params.id })
+    Post.findOne({ where: { id: req.params.id } })
         .then(post => {
             const like = req.body.like;
             let opinions = {};
@@ -174,9 +195,9 @@ exports.likePost = (req, res, next) => {
                     };
                     break;
             };
-            Post.updateOne({ id: req.params.id }, opinions)
+            Post.updateOne({ where: { id: req.params.id } }, opinions)
                 .then(() => res.status(200).json({ message: "Le post a été liké" }))
-                .catch(error => res.status(500).json({ error }))
+                .catch(error => res.status(500).json({ error: error.message }))
         })
         .catch(error => res.status(500).json({ error }));
 };

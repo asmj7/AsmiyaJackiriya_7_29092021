@@ -3,9 +3,8 @@ import Axios from 'axios';
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { TextField, Box, Container, Typography, Link } from '@mui/material';
+import { TextField, Box } from '@mui/material';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -83,7 +82,9 @@ function Post() {
         Axios.post("http://localhost:3000/api/comment/create",
             { postId: postId, comment: comment }, config)
             .then((response) => {
-                console.log(response.config.data);
+                console.log(response.data);
+                // const commentToAdd = {comment: comment}
+                // setShowComments([...showComments, commentToAdd])
             })
     }
 
@@ -134,7 +135,7 @@ function Post() {
             })
     }
 
-    // console.log(uploads.user.firstName);
+
     const classes = useStyles();
 
     if (!uploads) {
@@ -147,7 +148,7 @@ function Post() {
                     {uploads && uploads.user &&
                         <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
                     {userId == postData.userId ? (
-                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#BAC0E1' }} onClick={() => deletePost()}>
+                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost()}>
                             <HighlightOffIcon />
                         </Box>
                     ) : (false)}
@@ -197,6 +198,7 @@ function Post() {
                     <Button onClick={() => createComment(postId)} endIcon={<SendIcon />}>Envoyer</Button>
                 </Box>
             </Box>
+            <Footer/>
         </>
     )
 }

@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Axios from 'axios';
 import './css/navbar.css';
 import {
-    Typography,
     TextField,
     Button,
     FormControl,
     TextareaAutosize
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { borderRadius } from "@mui/system";
 
 
 function Upload() {

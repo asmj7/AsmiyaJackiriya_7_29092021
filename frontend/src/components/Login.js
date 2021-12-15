@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Axios from 'axios';
 import { useHistory } from "react-router-dom";
 import './css/navbar.css';
 import { withRouter } from 'react-router-dom';
 import { loginSuccess } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
-import { Typography, TextField, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { fontSize, fontWeight } from "@mui/system";
 // import style from './style';
 
 function Login() {

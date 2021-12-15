@@ -31,9 +31,9 @@ exports.signup = (req, res) => {
                                 loggedIn: true,
                                 userInfo: [user.firstName, user.lastName],
                                 userId: user.id,
-                                message: 'Utilisateur créé !'
+                                message: 'Enregistrement réussie. Connectez-vous.'
                             }))
-                            .catch(error => res.status(400).json({ error: error.message }));
+                            .catch(error => res.status(400).json({ error:'Merci de remplir tous les champs' }));
                     })
                     .catch(error => res.status(500).json({ error: error.message }));
 

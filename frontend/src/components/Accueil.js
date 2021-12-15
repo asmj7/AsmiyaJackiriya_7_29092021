@@ -11,6 +11,7 @@ import { makeStyles } from '@mui/styles';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import Like from "./Like";
 
 // After auth
 function Home(props) {
@@ -27,19 +28,32 @@ function Home(props) {
             maxWidth: 500,
             minWidth: 250,
             margin: "auto",
-            cursor: 'pointer',
-            paddingBottom: '30px',
             marginTop: '30px'
+        },
+        postBox: {
+            cursor: 'pointer'
         },
         iconBox: {
             cursor: 'pointer',
             fontSize: '20px',
-            color: '#BAC0E1',
+            color: '#23394D',
             p: '20px',
         },
         deleteBox: {
             display: 'flex',
             justifyContent: 'space-between',
+        },
+        thumbUp: {
+            padding:'20px',
+            display: 'flex',
+            color:'#9DA8B2',
+            cursor: 'pointer',
+        },
+        userName: {
+            cursor: 'pointer',
+            fontWeight:'700',
+            padding:'20px',
+            display:'flex',
         }
     })
 
@@ -67,13 +81,13 @@ function Home(props) {
             })
     }, [props.loggedInUser]);
 
-    // Créer un commentaire
-    // const createComment = () => {
-    //     Axios.post("http://localhost:3000/api/comment/create", { postId: postId, comment: comment }, config)
-    //         .then((response) => {
-    //             console.log(response.config.data);
-    //         })
-    // }
+    // // like
+    // useEffect(()=> {
+    //     Axios.post(`http://localhost:3000/api/post/like/${id}`, config)
+    //     .then((response) => {
+    //         console.log(response);
+    //     })
+    // }, [])
 
     const classes = useStyles();
 
@@ -83,27 +97,29 @@ function Home(props) {
                 justifycontent="center"
                 alignitems="center" xs={6} className="home">
                 {uploads.map((val, key) => (
-                    <Box className={classes.postContainer} key={key} onClick={() => history.push(`/post/${val.id}`)}>
+                    <Box className={classes.postContainer} key={key}>
                         <Box className={classes.deleteBox}>
-                            <Box fontWeight='700' p='20px' display='flex' className={classes.userName}>
+                            <Box className={classes.userName} onClick={() => history.push(`/profile/${val.user.id}`)}>
                                 {val.user.firstName} {val.user.lastName}
                             </Box>
                             {userId == val.userId &&
                                 <Box className={classes.iconBox}>
-                                    <HighlightOffIcon sx={{p: '20px'}}/>
+                                    <HighlightOffIcon sx={{ p: '20px' }} />
                                 </Box>
                             }
                         </Box>
-                        <h2 className="title">{val.title}</h2>
-                        <div className="content">
-                            <div className="description">
-                                {val.content}
+                        <Box className={classes.postBox} key={key} onClick={() => history.push(`/post/${val.id}`)}>
+                            <h2 className="title">{val.title}</h2>
+                            <div className="content">
+                                <div className="description">
+                                    {val.content}
+                                </div>
                             </div>
-                        </div>
-                        <div className="imgContainer">
-                            <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
-                        </div>
-
+                            <div className="imgContainer">
+                                <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
+                            </div>
+                        </Box>
+                        <Like post={val}/>
                     </Box>
                 ))}
             </Container>

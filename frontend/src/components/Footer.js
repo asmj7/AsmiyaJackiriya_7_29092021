@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import { fontFamily } from "@mui/system";
 
 export default function Footer() {
 

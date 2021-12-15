@@ -52,7 +52,7 @@ exports.deletePost = (req, res) => {
     Post.hasMany(Comment, { foreignKey: 'postId' })
     Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true });
     Post.findOne({ where: { id: req.params.id } })
-    if (Post.userId === req.body.id) {
+    if (Post.userId === req.body.id || isAdmin === true) {
         Post.destroy({ where: { id: req.params.id } })
         res.status(200).json({ message: "Post supprimé !" });
     } else {

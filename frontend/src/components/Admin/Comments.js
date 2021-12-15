@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { useParams, withRouter } from "react-router-dom";
-import { DataGrid } from '@mui/x-data-grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function Comments(props) {
 
     let { id } = useParams();
 
-
-    const [users, setUsers] = useState([]);
-    const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
@@ -45,28 +48,39 @@ function Comments(props) {
             })
     }, [id]);
 
-    const commentColumns = [
-        { field: 'id', headerName: 'Id', width: 100 },
-        { field: 'userId', headerName: 'userId', width: 140 },
-        { field: 'postId', headerName: 'postId', width: 140 },
-        { field: 'comment', headerName: 'comment', width: 140 },
-        { field: 'createdAt', headerName: 'createdAt', width: 140 },
-        { field: 'updatedAt', headerName: 'updatedAt', width: 140 },
-    ]
-
     return (
-        <>
-            <div style={{ height: 400, width: '100%' }}>
-                <DataGrid
-                    rows={comments}
-                    columns={commentColumns}
-                    pageSize={19}
-                    rowsPerPageOptions={[5]}
-                    checkboxSelection
-                />
-            </div>
-        </>
-    )
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Id</TableCell>
+                        <TableCell align="right">userId</TableCell>
+                        <TableCell align="right">postId</TableCell>
+                        <TableCell align="right">comment</TableCell>
+                        <TableCell align="right">createdAt</TableCell>
+                        <TableCell align="right">updatedAt</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {comments.map((comment) => (
+                        <TableRow
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            {/* <TableCell component="th" scope="row">
+                                {row.name}
+                            </TableCell> */}
+                            <TableCell align="right">{comment.id}</TableCell>
+                            <TableCell align="right">{comment.userId}</TableCell>
+                            <TableCell align="right">{comment.postId}</TableCell>
+                            <TableCell align="right">{comment.comment}</TableCell>
+                            <TableCell align="right">{comment.createdAt}</TableCell>
+                            <TableCell align="right">{comment.updatedAt}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 }
 
 export default withRouter(Comments)

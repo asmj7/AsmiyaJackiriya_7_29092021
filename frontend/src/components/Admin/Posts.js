@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { useParams, withRouter } from "react-router-dom";
-import { DataGrid } from '@mui/x-data-grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function Posts(props) {
 
@@ -34,30 +40,44 @@ function Posts(props) {
             })
     }, [props.loggedInUser]);
 
-    const postsColumns = [
-        { field: 'id', headerName: 'Id', width: 100 },
-        { field: 'userId', headerName: 'userId', width: 140 },
-        { field: 'title', headerName: 'title', width: 140 },
-        { field: 'likes', headerName: 'likes', width: 140 },
-        { field: 'imageUrl', headerName: 'imageUrl', width: 140 },
-        { field: 'content', headerName: 'content', width: 140 },
-        { field: 'createdAt', headerName: 'createdAt', width: 140 },
-        { field: 'updatedAt', headerName: 'updatedAt', width: 140 },
-    ]
-
     return (
-        <>
-            <div style={{ height: 400, width: '100%' }}>
-                <DataGrid
-                    rows={posts}
-                    columns={postsColumns}
-                    pageSize={19}
-                    rowsPerPageOptions={[5]}
-                    checkboxSelection
-                />
-            </div>
-        </>
-    )
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Id</TableCell>
+                <TableCell align="right">userId</TableCell>
+                <TableCell align="right">title</TableCell>
+                <TableCell align="right">likes</TableCell>
+                <TableCell align="right">imageUrl</TableCell>
+                <TableCell align="right">content</TableCell>
+                <TableCell align="right">createdAt</TableCell>
+                <TableCell align="right">updatedAt</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {posts.map((row) => (
+                <TableRow
+                  key={row.name}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  {/* <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell> */}
+                  <TableCell align="right">{row.id}</TableCell>
+                  <TableCell align="right">{row.userId}</TableCell>
+                  <TableCell align="right">{row.title}</TableCell>
+                  <TableCell align="right">{row.likes}</TableCell>
+                  <TableCell align="right">{row.imageUrl}</TableCell>
+                  <TableCell align="right">{row.content}</TableCell>
+                  <TableCell align="right">{row.createdAt}</TableCell>
+                  <TableCell align="right">{row.updatedAt}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
 }
 
 export default withRouter(Posts)

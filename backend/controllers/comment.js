@@ -29,7 +29,7 @@ exports.deleteComment = (req, res) => {
     // User.hasMany(Comment, { foreignKey: 'userId' });
     // Comment.belongsTo(User, { foreignKey: 'userId' });
     Comment.findOne({ where: { id: req.params.id } })
-    if (Comment.userId === req.body.id) {
+    if (Comment.userId === req.body.id || isAdmin === true) {
         Comment.destroy({ where: { id: req.params.id } })
             .then(() => {
                 res.status(200).json({

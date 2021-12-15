@@ -22,14 +22,6 @@ function Posts(props) {
         }
     }
 
-    // Récupérer tous les utilisateurs
-    useEffect(() => {
-        Axios.get("http://localhost:3000/api/auth/", config)
-            .then((response) => {
-                console.log(response.data);
-            })
-    }, [])
-
     // Récupérer tous les posts
     useEffect(() => {
         Axios.get("http://localhost:3000/api/post/", config)
@@ -55,7 +47,6 @@ function Posts(props) {
 
     return (
         <>
-            {/* {comments.map((val, key) => ( */}
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={posts}
@@ -65,9 +56,6 @@ function Posts(props) {
                     checkboxSelection
                 />
             </div>
-            {/* ))} */}
-
-
         </>
     )
 }

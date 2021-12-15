@@ -2,8 +2,8 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
-function Admin() {
 
+function Admin() {
 
     return (
         <>

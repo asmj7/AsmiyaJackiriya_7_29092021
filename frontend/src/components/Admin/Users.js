@@ -38,7 +38,6 @@ function Users(props) {
 
     return (
         <>
-            {/* {comments.map((val, key) => ( */}
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={users}
@@ -48,9 +47,6 @@ function Users(props) {
                     checkboxSelection
                 />
             </div>
-            {/* ))} */}
-
-
         </>
     )
 }

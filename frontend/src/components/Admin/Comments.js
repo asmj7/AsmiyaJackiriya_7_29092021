@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 import { useParams, withRouter } from "react-router-dom";
 import { DataGrid } from '@mui/x-data-grid';
 
-
-
 function Comments(props) {
 
     let { id } = useParams();
@@ -56,27 +54,17 @@ function Comments(props) {
         { field: 'updatedAt', headerName: 'updatedAt', width: 140 },
     ]
 
-    const commentRows = [
-        // comments.map(val => (
-        //     { id: val.id, userId: val.userId, postId: val.postId, comment: val.comment, createdAt: val.createdAt, updatedAt: val.updatedAt }
-        // ))
-    ]
-
     return (
         <>
-            {/* {comments.map((val, key) => ( */}
-                <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={comments}
-                        columns={commentColumns}
-                        pageSize={19}
-                        rowsPerPageOptions={[5]}
-                        checkboxSelection
-                    />
-                </div>
-            {/* ))} */}
-
-
+            <div style={{ height: 400, width: '100%' }}>
+                <DataGrid
+                    rows={comments}
+                    columns={commentColumns}
+                    pageSize={19}
+                    rowsPerPageOptions={[5]}
+                    checkboxSelection
+                />
+            </div>
         </>
     )
 }

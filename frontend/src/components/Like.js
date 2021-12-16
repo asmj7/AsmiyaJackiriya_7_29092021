@@ -3,7 +3,7 @@ import Axios from 'axios';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams, withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Like({post}) {
@@ -17,6 +17,7 @@ function Like({post}) {
             display: 'flex',
             color: '#9DA8B2',
             cursor: 'pointer',
+            width: 'fit-content'
         }
     })
 
@@ -30,8 +31,8 @@ function Like({post}) {
         }
     }
 
-    const likePost = () => {
-        Axios.post(`http://localhost:3000/api/post/like/${post.id}`,{userId: userId}, config)
+    const likePost = (id) => {
+        Axios.post(`http://localhost:3000/api/post/like/${post.id}`,{userId: userId},config)
         .then((response)=> {
             console.log(response);
         })
@@ -41,7 +42,7 @@ function Like({post}) {
 
     return (
         <>
-            <Box className={classes.thumbUp} onClick={()=> likePost()}>
+            <Box className={classes.thumbUp} onClick={()=> likePost(post.id)}>
                 <ThumbUpOutlinedIcon />
             </Box>
         </>
@@ -49,4 +50,4 @@ function Like({post}) {
     )
 }
 
-export default Like
+export default withRouter(Like)

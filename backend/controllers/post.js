@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Post = models.posts;
 const User = models.users;
 const Comment = models.comments;
+const Likes = models.likes
 const fs = require("fs");
 
 // Création d'un post
@@ -54,7 +55,7 @@ exports.deletePost = (req, res) => {
     Post.findOne({ where: { id: req.params.id } })
     if (Post.userId === req.body.id || isAdmin === true) {
         Post.destroy({ where: { id: req.params.id } })
-        res.status(200).json({ message: "Post supprimé !" });
+        res.status(200).json({ message: `Post supprimé !${req.params.id}` });
     } else {
         res.status(401).json({
             message: "Impossible de supprimer le post",
@@ -72,7 +73,7 @@ exports.getAllPosts = (req, res) => {
     // Comment.belongsTo(Post, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
-        attributes: ['id', 'userId', 'title',"likes", 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title', "likes", 'content', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,
@@ -174,30 +175,27 @@ exports.getOnePost = (req, res) => {
 
 // Like et dislikes 
 exports.likePost = (req, res, next) => {
-    Post.findOne({ where: { id: req.params.id } })
-        .then(post => {
-            const like = req.body.like;
-            let opinions = {};
-            switch (like) {
-                case 0: // Si l'utilisateur enlève son like
-                    for (let userId of post.usersLiked)
-                        if (req.body.userId === userId) {
-                            opinions = {
-                                $pull: { usersLiked: userId },
-                                $inc: { likes: -1 }
-                            };
-                        };
-                    break;
-                case 1:  // Si l'utilisateur like un post
-                    opinions = {
-                        $push: { usersLiked: req.body.userId },
-                        $inc: { likes: 1 }
-                    };
-                    break;
-            };
-            Post.updateOne({ where: { id: req.params.id } }, opinions)
-                .then(() => res.status(200).json({ message: "Le post a été liké" }))
-                .catch(error => res.status(500).json({ error: error.message }))
+    // Post.hasMany(Likes, {foreignKey: 'postId'})
+    // Likes.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true });
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+
+    const postId = req.params.id
+
+    const found = Likes.findOne({
+        where: { postId: postId, userId: userId }
+    });
+
+    if (!found) {
+        Likes.create({ postId: postId, userId: userId })
+        res.status(200).json({ message: "Vous avez liké le post" });
+    } else {
+        Likes.destroy({
+            where: { postId: postId, userId: userId }
         })
-        .catch(error => res.status(500).json({ error }));
+        res.json({
+            message: "Vous n\'avez pas encore liké le post",
+        });
+    }
 };

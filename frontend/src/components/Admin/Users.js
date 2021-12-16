@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Users(props) {
 
@@ -36,6 +37,17 @@ function Users(props) {
             })
     }, [])
 
+    // supprimer un utilisateur
+    const deleteUser = (id) => {
+        Axios.delete(`http://localhost:3000/api/auth/delete/${id}`, config)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -57,6 +69,7 @@ function Users(props) {
                             <TableCell align="right">{users.id}</TableCell>
                             <TableCell align="right">{users.firstName}</TableCell>
                             <TableCell align="right">{users.lastName}</TableCell>
+                            <TableCell sx={{cursor: 'pointer'}} onClick={() => deleteUser(users.id)} align="right"><DeleteIcon /></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -2,8 +2,12 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
+import { useSelector } from "react-redux";
 
 function Admin() {
+
+    const loggedInUser = useSelector((state) => state.loggedInUser.user)
+    // console.log(loggedInUser.data.isAdmin);
 
     return (
         <>

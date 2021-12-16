@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Comments(props) {
 
@@ -48,6 +49,17 @@ function Comments(props) {
             })
     }, [id]);
 
+    // supprimer un commentaire
+    const deleteComment = (id) => {
+        Axios.delete(`http://localhost:3000/api/comment/delete/${id}`, config)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -75,6 +87,7 @@ function Comments(props) {
                             <TableCell align="right">{comment.comment}</TableCell>
                             <TableCell align="right">{comment.createdAt}</TableCell>
                             <TableCell align="right">{comment.updatedAt}</TableCell>
+                            <TableCell align="right"sx={{cursor: 'pointer'}} onClick={() => deleteComment(comment.id)}><DeleteIcon/></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

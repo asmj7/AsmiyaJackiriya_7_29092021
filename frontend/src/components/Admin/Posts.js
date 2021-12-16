@@ -11,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { makeStyles } from '@mui/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Posts(props) {
 
@@ -32,11 +33,11 @@ function Posts(props) {
 
   const useStyles = makeStyles({
     delete: {
-      width:'fit-content',
+      width: 'fit-content',
       textDecoration: 'underline',
       textDecorationColor: 'red',
-      marginBottom:'10px',
-      marginTop:'10px',
+      marginBottom: '10px',
+      marginTop: '10px',
     }
   })
 
@@ -54,6 +55,18 @@ function Posts(props) {
 
   const classes = useStyles();
 
+
+  // Supprimer un post
+  const deletePost = (id) => {
+    Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   return (
     <TableContainer component={Paper}>
       <Typography className={classes.delete} mt='30px' mb='30px' mr='auto' ml='auto'>Delete all posts</Typography>
@@ -68,6 +81,7 @@ function Posts(props) {
             <TableCell align="right">content</TableCell>
             <TableCell align="right">createdAt</TableCell>
             <TableCell align="right">updatedAt</TableCell>
+            {/* <TableCell align='right'><DeleteIcon/></TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -76,9 +90,6 @@ function Posts(props) {
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              {/* <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell> */}
               <TableCell align="right">{row.id}</TableCell>
               <TableCell align="right">{row.userId}</TableCell>
               <TableCell align="right">{row.title}</TableCell>
@@ -87,6 +98,7 @@ function Posts(props) {
               <TableCell align="right">{row.content}</TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
               <TableCell align="right">{row.updatedAt}</TableCell>
+              <TableCell sx={{cursor: 'pointer'}} onClick={() => deletePost(row.id)} align="right"><DeleteIcon /></TableCell>
             </TableRow>
           ))}
         </TableBody>

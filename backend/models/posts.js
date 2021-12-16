@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: false
       }
     },
-    likes: {
+    like: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0

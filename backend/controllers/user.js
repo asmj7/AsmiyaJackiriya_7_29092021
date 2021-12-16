@@ -82,13 +82,13 @@ exports.deleteUser = (req, res) => {
     User.findOne({ where: { id: req.params.id } })
         .then((user) => {
             if (user.id === userId || isAdmin === true) {
-                user.destroy()
+                user.destroy({ where: { id: req.params.id } })
                     .then(() => {
                         res.status(200).json({ message: 'Votre compte a bien été supprimé !' });
                     }).catch(err => res.status(400).json({ message: 'Votre compte n\'a pas pu être supprimé.' }));
             };
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error: error.message }));
 };
 
 // Récupérer tous les utilisateurs 

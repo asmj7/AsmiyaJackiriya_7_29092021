@@ -12,12 +12,16 @@ import Comments from './components/Admin/Comments';
 import Posts from './components/Admin/Posts';
 import Users from './components/Admin/Users';
 import Admin from './components/Admin/Admin'
+import { useSelector } from "react-redux";
 
 function App() {
+
+  const loggedInUser = useSelector((state) => state.loggedInUser.user)
+
   return (
     <div className="App">
       <Router>
-          <Navbar />
+        <Navbar />
         <Switch>
           <Route path="/" exact component={Accueil} />
           <Route path="/profile/:id" exact component={Profile} />
@@ -25,10 +29,14 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/post/:id" exact component={Post} />
-          <Route path="/admin/comments" exact component={Comments}/>
-          <Route path="/admin/posts" exact component={Posts}/>
-          <Route path="/admin/users" exact component={Users}/>
-          <Route path="/admin" exact component={Admin}/>
+          {loggedInUser.data.isAdmin === true &&
+            <>
+              <Route path="/admin/comments" exact component={Comments} />
+              <Route path="/admin/posts" exact component={Posts} />
+              <Route path="/admin/users" exact component={Users} />
+              <Route path="/admin" exact component={Admin} />
+            </>
+          }
         </Switch>
       </Router>
     </div>

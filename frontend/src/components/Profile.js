@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Axios from 'axios';
 import './css/navbar.css'
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { useParams } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
@@ -54,6 +54,7 @@ function Profile() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [id, setId] = useState("");
 
     const token = localStorage.getItem("email")
     const config = {
@@ -73,15 +74,26 @@ function Profile() {
             })
     }, [])
 
+    // Récupérer les posts de l'utilisateur
     useEffect(() => {
         Axios.get(`http://localhost:3000/api/post/user/${params.id}`, config)
             .then((response) => {
                 setUserPosts(response.data);
-                console.log(response.data)
+                setId(response.data.id)
             })
     }, [])
 
-    console.log(userPosts.id);
+    // supprimer un utilisateur
+    const deleteUser = (id) => {
+        Axios.delete(`http://localhost:3000/api/auth/delete/${id}`, config)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     const classes = useStyles();
 
     return (
@@ -104,6 +116,7 @@ function Profile() {
                         </Grid>
                     </Grid>
                     <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
+                    <Button onClick={()=> deleteUser(id)}>Supprimer mon compte</Button>
                 </>
             ) : (
                 <>

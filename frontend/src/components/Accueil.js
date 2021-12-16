@@ -83,15 +83,15 @@ function Home(props) {
     }, [props.loggedInUser]);
 
     // Supprimer un post
-    const deletePost = (id) => {
-        Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
-            .then((response) => {
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    // const deletePost = (id) => {
+    //     Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
+    //         .then((response) => {
+    //             console.log(response.data)
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         })
+    // }
 
     const classes = useStyles();
 
@@ -103,11 +103,13 @@ function Home(props) {
                 {uploads.map((val, key) => (
                     <Box className={classes.postContainer} key={key}>
                         <Box className={classes.deleteBox}>
-                            <Box className={classes.userName} onClick={() => history.push(`/profile/${val.user.id}`)}>
-                                {val.user.firstName} {val.user.lastName}
-                            </Box>
+                            {/* {uploads && uploads.user && */}
+                                <Box className={classes.userName} onClick={() => history.push(`/profile/${val.user.id}`)}>
+                                    {val.user.firstName} {val.user.lastName}
+                                </Box>
+                            {/* } */}
                             {userId == val.userId &&
-                                <Box className={classes.iconBox} onClick={() => deletePost(val.id)}>
+                                <Box className={classes.iconBox}>
                                     <HighlightOffIcon sx={{ p: '20px' }} />
                                 </Box>
                             }

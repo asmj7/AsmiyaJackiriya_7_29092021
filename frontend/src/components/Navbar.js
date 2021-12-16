@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './css/navbar.css';
 import { useSelector } from 'react-redux';
 // import { useHistory } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { logOut } from '../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
@@ -16,6 +16,7 @@ function UserLogged() {
     const useStyles = makeStyles({
         menuItems: {
             color: 'white',
+            cursor: 'pointer'
         },
         linkItems: {
             padding: "0",
@@ -24,19 +25,17 @@ function UserLogged() {
 
     })
 
-
-
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     // const loggedInGuest = useSelector((state) => state.loggedInGuest.user)
     const logout = useSelector((state) => state.logout.user)
     const dispatch = useDispatch();
     console.log(loggedInUser)
-    // let history = useHistory();
+    let history = useHistory();
 
     function Logout() {
 
         localStorage.clear();
-        // history.push("/login")
+        history.push("/login")
         dispatch(logOut(logout))
     }
 
@@ -47,15 +46,13 @@ function UserLogged() {
         dispatch(logOut(logout))
     }
 
-
-
     let id = loggedInUser.data.userId
 
     const classes = useStyles();
 
     return (
         <>
-            <Grid className={classes.grid} columnSpacing={{ xs: 3, sm: 2, md: 3 }} sx={{ display: 'flex', columnGap: 3 }}>
+            <Grid className={classes.grid} columnSpacing={{ xs: 3, sm: 2, md: 3 }} sx={{ display: 'flex', columnGap: 3, alignItems:'center' }}>
                 <Link className={classes.linkItems} to="/">
                     <Grid item className={classes.menuItems}>Accueil</Grid>
                 </Link>
@@ -65,9 +62,9 @@ function UserLogged() {
                 <Link className={classes.linkItems} to={`/profile/${id}`}>
                     <Grid item className={classes.menuItems}>{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</Grid>
                 </Link>
-                <Link className={classes.linkItems} to="/login">
+                {/* <Link className={classes.linkItems} to="/login"> */}
                     <Grid item className={classes.menuItems} onClick={Logout}><LogoutRoundedIcon /></Grid>
-                </Link>
+                {/* </Link> */}
             </Grid>
 
         </>

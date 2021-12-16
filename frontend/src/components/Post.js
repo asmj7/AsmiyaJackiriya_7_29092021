@@ -32,6 +32,7 @@ function Post() {
             minWidth: 250,
             margin: "auto",
             marginTop: '50px',
+            marginBottom:'50px',
         },
         comment: {
             width: "90%"

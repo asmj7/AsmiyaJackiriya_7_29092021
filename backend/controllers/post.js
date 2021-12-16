@@ -23,7 +23,8 @@ exports.createPost = (req, res) => {
         title: req.body.title,
         content: req.body.content,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        userId: userId
+        userId: userId,
+        like: req.body.like
     })
         .then((post) => {
             res.status(201).json(post);

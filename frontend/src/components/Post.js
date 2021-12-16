@@ -149,7 +149,7 @@ function Post() {
                         <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
                     <Box color='#828286'>{uploads.createdAt}</Box>
                     {userId == postData.userId ? (
-                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost()}>
+                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost(uploads.id)}>
                             <HighlightOffIcon />
                         </Box>
                     ) : (false)}

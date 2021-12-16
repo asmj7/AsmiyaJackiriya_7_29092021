@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { useParams, withRouter } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -15,6 +15,7 @@ import Like from "./Like";
 
 // After auth
 function Home(props) {
+    let { id } = useParams();
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser.data.userId
@@ -81,13 +82,16 @@ function Home(props) {
             })
     }, [props.loggedInUser]);
 
-    // // like
-    // useEffect(()=> {
-    //     Axios.post(`http://localhost:3000/api/post/like/${id}`, config)
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
-    // }, [])
+    // Supprimer un post
+    const deletePost = (id) => {
+        Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     const classes = useStyles();
 
@@ -103,7 +107,7 @@ function Home(props) {
                                 {val.user.firstName} {val.user.lastName}
                             </Box>
                             {userId == val.userId &&
-                                <Box className={classes.iconBox}>
+                                <Box className={classes.iconBox} onClick={() => deletePost(val.id)}>
                                     <HighlightOffIcon sx={{ p: '20px' }} />
                                 </Box>
                             }

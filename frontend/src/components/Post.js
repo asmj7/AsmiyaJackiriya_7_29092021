@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Axios from 'axios';
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { withRouter } from 'react-router-dom';
 import { TextField, Box } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -23,6 +24,8 @@ function Post() {
     const [comment, setComment] = useState("");
     const [showComments, setShowComments] = useState("");
 
+    const history = useHistory();
+
     const useStyles = makeStyles({
         postContainer: {
             border: "1.5px solid #BCBCBC",
@@ -32,7 +35,7 @@ function Post() {
             minWidth: 250,
             margin: "auto",
             marginTop: '50px',
-            marginBottom:'50px',
+            marginBottom: '50px',
         },
         comment: {
             width: "90%"
@@ -49,6 +52,9 @@ function Post() {
             width: "90%",
             margin: "auto",
             paddingTop: '20px'
+        },
+        userName: {
+            cursor: 'pointer'
         }
     })
 
@@ -146,7 +152,8 @@ function Post() {
             <Box className={classes.postContainer}>
                 <Box className={classes.postBoxContainer}>
                     {uploads && uploads.user &&
-                        <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
+                        <Box fontWeight='700' className={classes.userName} onClick={() => history.push(`/profile/${uploads.user.id}`)}>{uploads.user.firstName}</Box>
+                    }
                     <Box color='#828286'>{uploads.createdAt}</Box>
                     {userId == postData.userId ? (
                         <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost(uploads.id)}>
@@ -199,7 +206,7 @@ function Post() {
                     <Button onClick={() => createComment(postId)} endIcon={<SendIcon />}>Envoyer</Button>
                 </Box>
             </Box>
-            <Footer/>
+            <Footer />
         </>
     )
 }

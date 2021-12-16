@@ -46,6 +46,9 @@ function Profile() {
         profile: {
             color: "#1C2833",
             backgroundColor: '#D6DBDF'
+        },
+        button: {
+            marginTop: '30px'
         }
     })
 
@@ -116,7 +119,7 @@ function Profile() {
                         </Grid>
                     </Grid>
                     <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
-                    <Button onClick={()=> deleteUser(id)}>Supprimer mon compte</Button>
+                    <Button sx={{mt:'20px', mb:'10px'}} variant='contained' className={classes.button} onClick={()=> deleteUser(id)}>Supprimer mon compte</Button>
                 </>
             ) : (
                 <>

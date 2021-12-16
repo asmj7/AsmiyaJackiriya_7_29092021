@@ -184,7 +184,8 @@ exports.likePost = (req, res, next) => {
     const postId = req.params.id
 
     const found = Likes.findOne({
-        where: { postId: postId, userId: userId }
+        where: { postId: postId, userId: userId },
+        attributes: ['id', 'userId', 'postId'],
     });
 
     if (!found) {

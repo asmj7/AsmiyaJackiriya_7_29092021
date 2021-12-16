@@ -44,16 +44,16 @@ function Home(props) {
             justifyContent: 'space-between',
         },
         thumbUp: {
-            padding:'20px',
+            padding: '20px',
             display: 'flex',
-            color:'#9DA8B2',
+            color: '#9DA8B2',
             cursor: 'pointer',
         },
         userName: {
             cursor: 'pointer',
-            fontWeight:'700',
-            padding:'20px',
-            display:'flex',
+            fontWeight: '700',
+            padding: '20px',
+            display: 'flex',
         }
     })
 
@@ -119,7 +119,10 @@ function Home(props) {
                                 <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
                             </div>
                         </Box>
-                        <Like post={val}/>
+                        <Box display='flex' alignItems='end'>
+                            <Like post={val} />
+                            <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
+                        </Box>
                     </Box>
                 ))}
             </Container>

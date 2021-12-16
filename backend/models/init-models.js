@@ -8,7 +8,7 @@ function initModels(sequelize) {
   var comments = _comments(sequelize, DataTypes);
   var posts = _posts(sequelize, DataTypes);
   var users = _users(sequelize, DataTypes);
-  var likes = _users(sequelize, DataTypes);
+  var likes = _likes(sequelize, DataTypes);
 
 
   return {

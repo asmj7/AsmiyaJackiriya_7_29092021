@@ -136,7 +136,6 @@ function Post() {
             })
     }
 
-
     const classes = useStyles();
 
     if (!uploads) {
@@ -148,6 +147,7 @@ function Post() {
                 <Box className={classes.postBoxContainer}>
                     {uploads && uploads.user &&
                         <Box fontWeight='700' className={classes.userName}>{uploads.user.firstName}</Box>}
+                    <Box color='#828286'>{uploads.createdAt}</Box>
                     {userId == postData.userId ? (
                         <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost()}>
                             <HighlightOffIcon />

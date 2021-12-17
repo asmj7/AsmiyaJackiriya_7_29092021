@@ -75,6 +75,7 @@ function Profile() {
                 setFirstName(response.data.firstName)
                 setLastName(response.data.lastName)
                 setEmail(response.data.email)
+                setId(response.data.id)
                 console.log(response.data);
             })
     }, [])
@@ -84,7 +85,7 @@ function Profile() {
         Axios.get(`http://localhost:3000/api/post/user/${params.id}`, config)
             .then((response) => {
                 setUserPosts(response.data);
-                setId(response.data.id)
+                // setId(response.data.id)
             })
     }, [])
 

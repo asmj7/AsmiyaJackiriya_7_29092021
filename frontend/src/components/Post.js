@@ -90,6 +90,7 @@ function Post() {
             { postId: postId, comment: comment }, config)
             .then((response) => {
                 console.log(response.data);
+                setComment("")
                 // const commentToAdd = {comment: comment}
                 // setShowComments([...showComments, commentToAdd])
             })

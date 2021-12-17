@@ -4,6 +4,7 @@ import Axios from 'axios';
 import { useSelector } from "react-redux";
 import { useParams, withRouter } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
@@ -11,7 +12,6 @@ import { makeStyles } from '@mui/styles';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Like from "./Like";
 
 // After auth
 function Home(props) {
@@ -49,6 +49,8 @@ function Home(props) {
             display: 'flex',
             color: '#9DA8B2',
             cursor: 'pointer',
+            alignItems: 'end',
+            columnGap: '7px'
         },
         userName: {
             cursor: 'pointer',
@@ -58,6 +60,7 @@ function Home(props) {
         }
     })
 
+    const [likes, setLikes] = useState(0);
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -75,7 +78,12 @@ function Home(props) {
             .then((response) => {
                 console.log(response.data)
                 setUploads(response.data)
-                // setPostId(response.data[0].id)
+                const likesArray = [];
+                response.data.map((val) => {
+                    likesArray.push(val.likes);
+                });
+                console.log(likesArray)
+                setLikes(likesArray)
             })
             .catch((error) => {
                 console.log(error);
@@ -93,6 +101,14 @@ function Home(props) {
             })
     }
 
+    // Liker un post
+    const likePost = (id) => {
+        Axios.post(`http://localhost:3000/api/likes/${id}`, { userId: userId }, config)
+            .then((response) => {
+                console.log(response);
+            })
+    }
+
     const classes = useStyles();
 
     return (
@@ -101,35 +117,45 @@ function Home(props) {
                 justifycontent="center"
                 alignitems="center" xs={6} className="home">
                 {uploads.map((val, key) => (
-                    <Box className={classes.postContainer} key={key}>
-                        <Box className={classes.deleteBox}>
-                            {/* {uploads && uploads.user && */}
+                    <>
+                        <Box className={classes.postContainer} key={key}>
+                            <Box className={classes.deleteBox}>
+                                {/* {uploads && uploads.user && */}
                                 <Box className={classes.userName} onClick={() => history.push(`/profile/${val.user.id}`)}>
                                     {val.user.firstName} {val.user.lastName}
                                 </Box>
-                            {/* } */}
-                            {userId == val.userId &&
-                                <Box className={classes.iconBox} onClick={() => deletePost(val.id)}>
-                                    <HighlightOffIcon sx={{ p: '20px' }} />
-                                </Box>
-                            }
-                        </Box>
-                        <Box className={classes.postBox} key={key} onClick={() => history.push(`/post/${val.id}`)}>
-                            <h2 className="title">{val.title}</h2>
-                            <div className="content">
-                                <div className="description">
-                                    {val.content}
+                                {/* } */}
+                                {userId == val.userId &&
+                                    <Box className={classes.iconBox} onClick={() => deletePost(val.id)}>
+                                        <HighlightOffIcon sx={{ p: '20px' }} />
+                                    </Box>
+                                }
+                            </Box>
+                            <Box className={classes.postBox} key={key} onClick={() => history.push(`/post/${val.id}`)}>
+                                <h2 className="title">{val.title}</h2>
+                                <div className="content">
+                                    <div className="description">
+                                        {val.content}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="imgContainer">
-                                <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
-                            </div>
+                                <div className="imgContainer">
+                                    <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
+                                </div>
+                            </Box>
+                            <Box display='flex' alignItems='end'>
+                                <Box className={classes.thumbUp} onClick={() => {
+                                    likePost(val.id);
+                                    console.log(likes);
+                                    setLikes(likes + 1);
+                                    console.log(likes);
+                                }}>
+                                    <ThumbUpOutlinedIcon/>
+                                    {val.likes}
+                                </Box>
+                                <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
+                            </Box>
                         </Box>
-                        <Box display='flex' alignItems='end'>
-                            <Like post={val} />
-                            <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
-                        </Box>
-                    </Box>
+                    </>
                 ))}
             </Container>
             <Footer />

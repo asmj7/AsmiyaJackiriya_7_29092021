@@ -38,11 +38,11 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: false
       }
     },
-    // like: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   defaultValue: 0
-    // },
+    like: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
   }, {
     sequelize,
     tableName: 'posts',

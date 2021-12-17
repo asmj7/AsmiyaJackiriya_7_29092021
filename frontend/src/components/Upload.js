@@ -5,7 +5,8 @@ import {
     TextField,
     Button,
     FormControl,
-    TextareaAutosize
+    TextareaAutosize,
+    Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -25,6 +26,7 @@ function Upload() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
+    const [message, setMessage] = useState("");
 
     // Au click sur "Publier"
     const upload = (e) => {
@@ -47,8 +49,9 @@ function Upload() {
 
         Axios.post("http://localhost:3000/api/post/upload", formData, config)
             .then((response) => {
-                console.log(response);
+                console.log(response.data);
             })
+            .catch((error) => { setMessage(error.response.data.message) });
     };
 
     const classes = useStyles();
@@ -57,6 +60,7 @@ function Upload() {
         <>
             <div className="upload">
                 <h1>Créer une publication</h1>
+                <Typography color='red'>{message}</Typography>
                 <FormControl className="form">
                     <div>
                         <TextField
@@ -76,6 +80,7 @@ function Upload() {
                         <TextareaAutosize
                             label="Contenu"
                             id="standard-size-small"
+                            required='true'
                             size="small"
                             variant="standard"
                             type="text"

@@ -8,6 +8,8 @@ import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
 import Footer from './Footer';
 import { useHistory } from "react-router-dom";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 // import CryptoAES from 'crypto-js/aes';
 
 function Profile() {
@@ -101,6 +103,7 @@ function Profile() {
 
     return (
         <>
+
             {userId == params.id ? (
                 <>
                     <h1 className="profile">À propos de moi</h1>
@@ -119,13 +122,21 @@ function Profile() {
                         </Grid>
                     </Grid>
                     <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
-                    <Button sx={{mt:'20px', mb:'10px'}} variant='contained' className={classes.button} onClick={()=> deleteUser(id)}>Supprimer mon compte</Button>
+                    <Popup trigger={
+                        <Button sx={{ mt: '20px', mb: '10px' }} variant='contained' className={classes.button}>
+                            Supprimer mon compte
+                        </Button>
+                    }>
+                        <Typography>Voulez-vous vraiment supprimer votre compte ?</Typography>
+                        <Button variant='outlined' onClick={() => deleteUser(id)}>Oui</Button>
+                    </Popup>
+
                 </>
             ) : (
                 <>
-                <h1 className="profile">À propos de {firstName} {lastName}</h1>
-                <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
-                <Grid xs={8} sm={6} md={4} item>
+                    <h1 className="profile">À propos de {firstName} {lastName}</h1>
+                    <Grid container sx={{ display: 'flex', border: '1px dashed grey' }} className={classes.userInfo}>
+                        <Grid xs={8} sm={6} md={4} item>
                             <Typography className={classes.userFirstname} fontWeight='600' variant="subtitle1">Prénom</Typography>
                             <Typography variant="subtitle1">{firstName}</Typography>
                         </Grid>
@@ -133,7 +144,7 @@ function Profile() {
                             <Typography className={classes.userLastname} fontWeight='600' variant="subtitle1">Nom</Typography>
                             <Typography variant="subtitle1">{lastName}</Typography>
                         </Grid>
-                </Grid>
+                    </Grid>
                 </>
             )}
             {params.id == userId ? (<h1 className={classes.profile}>Mes publications</h1>) : (<h1 className={classes.profile}>Les publications de {firstName} {lastName}</h1>)}

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Axios from 'axios';
 import { useHistory } from "react-router-dom";
-import './css/navbar.css';
+import '../css/accueil.css';
 import { withRouter } from 'react-router-dom';
-import { loginSuccess } from '../redux/actions/userActions'
+import { loginSuccess } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import { TextField, Button, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -73,37 +73,38 @@ function Login() {
   const classes = useStyles();
 
   return (
-
-    <div className="identification">
+    <>
       <Box sx={{ color: 'red', mt: '20px' }}>{errorMessage}</Box>
       <Box className="errorMessageBox"></Box>
-      <div className={classes.login}>
-        <h1 className={classes.loginText}>Se connecter</h1>
-        <div >
-          <TextField
-            label="Email"
-            id="email"
-            required='true'
-            size="small"
-            variant="standard"
-            value={email} onChange={(e) => setEmail(e.target.value)}
-            type="email"
-          />
+      <div className="identification">
+        <div className={classes.login}>
+          <h1 className={classes.loginText}>Se connecter</h1>
+          <div >
+            <TextField
+              label="Email"
+              id="email"
+              required='true'
+              size="small"
+              variant="standard"
+              value={email} onChange={(e) => setEmail(e.target.value)}
+              type="email"
+            />
+          </div>
+          <div>
+            <TextField
+              label="Mot de passe"
+              required='true'
+              id="standard-size-small"
+              size="small"
+              variant="standard"
+              value={password} onChange={(e) => setPassword(e.target.value)}
+              type="password"
+            />
+          </div>
+          <Button variant="contained" className="Login" onClick={() => Validation()} sx={{ mt: 3.5 }}>Se connecter</Button>
         </div>
-        <div>
-          <TextField
-            label="Mot de passe"
-            required='true'
-            id="standard-size-small"
-            size="small"
-            variant="standard"
-            value={password} onChange={(e) => setPassword(e.target.value)}
-            type="password"
-          />
-        </div>
-        <Button variant="contained" className="Login" onClick={()=> Validation()} sx={{ mt: 3.5 }}>Se connecter</Button>
       </div>
-    </div>
+    </>
   );
 }
 

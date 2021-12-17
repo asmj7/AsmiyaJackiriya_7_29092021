@@ -13,7 +13,7 @@ exports.signup = (req, res) => {
         !req.body.email ||
         !req.body.password
     ) {
-        return res.status(400).json({ error: 'Merci de remplir tous les champs' })
+        return res.status(400).json({ message: 'Merci de remplir tous les champs' })
     }
     User.findOne({ where: { email: req.body.email } })
         .then(user => {

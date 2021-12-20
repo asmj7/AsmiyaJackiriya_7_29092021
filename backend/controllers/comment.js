@@ -27,10 +27,8 @@ exports.createComment = (req, res) => {
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
     console.log(req.body.id);
-    // Post.hasMany(Comment, { foreignKey: 'postId' });
-    // Comment.belongsTo(Post, { foreignKey: 'postId' });
-    // User.hasMany(Comment, { foreignKey: 'userId' });
-    // Comment.belongsTo(User, { foreignKey: 'userId' });
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'CASCADE', hooks: true });
     Comment.findOne({ where: { id: req.params.id } })
     if (Comment.userId === req.body.id || isAdmin === true) {
         Comment.destroy({ where: { id: req.params.id } })

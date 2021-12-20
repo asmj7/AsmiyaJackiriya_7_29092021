@@ -9,29 +9,94 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import jwt from "jsonwebtoken";
+import {Box, Button} from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MenuIcon from '@mui/icons-material/Menu';
 
+// MenuItems à afficher lorsque l'utilisateur est connecté
 function UserLogged() {
 
-
-    const useStyles = makeStyles({
-        menuItems: {
-            color: 'white',
-            cursor: 'pointer'
-        },
-        linkItems: {
-            padding: "0",
-            textDecoration: "none"
-        }
-
-    })
-
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    // const loggedInGuest = useSelector((state) => state.loggedInGuest.user)
+    let id = loggedInUser.data.userId
     const logout = useSelector((state) => state.logout.user)
     const dispatch = useDispatch();
     console.log(loggedInUser)
     let history = useHistory();
 
+    const useStyles = makeStyles({
+        menuItems: {
+            textDecoration: 'none',
+            cursor: 'pointer'
+        },
+        linkItems: {
+            padding: "0",
+            color: 'black',
+            textDecoration: "none"
+        }
+
+    })
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const classes = useStyles();
+
+    return (
+        <div>
+            <Button
+                id="demo-positioned-button"
+                aria-controls="demo-positioned-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+            >
+                <MenuIcon />
+            </Button>
+            <Menu
+                id="demo-positioned-menu"
+                aria-labelledby="demo-positioned-button"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <MenuItem className={classes.menuItems} onClick={handleClose}>
+                    <Link className={classes.linkItems} to="/">
+                        Accueil
+                    </Link>
+                </MenuItem>
+                <MenuItem className={classes.menuItems} onClick={handleClose}>
+                    <Link className={classes.linkItems} to="/upload">
+                        Publier
+                    </Link>
+                </MenuItem>
+                <MenuItem className={classes.menuItems} onClick={handleClose}>
+                    <Link className={classes.linkItems} to={`/profile/${id}`}>
+                        {loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}
+                    </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <Box item className={classes.menuItems} onClick={Logout}><LogoutRoundedIcon /></Box>
+                </MenuItem>
+            </Menu>
+        </div>
+    );
+
+    // Déconnexion
     function Logout() {
 
         localStorage.clear();
@@ -39,37 +104,16 @@ function UserLogged() {
         dispatch(logOut(logout))
     }
 
+    // Déconnexion automatique (token invalide)
     const current_time = Date.now() / 1000;
     if (jwt.exp < current_time) {
         localStorage.clear();
         // history.push("/login")
         dispatch(logOut(logout))
     }
-
-    let id = loggedInUser.data.userId
-
-    const classes = useStyles();
-
-    return (
-        <>
-            <Grid className={classes.grid} columnSpacing={{ xs: 3, sm: 2, md: 3 }} sx={{ display: 'flex', columnGap: 3, alignItems:'center' }}>
-                <Link className={classes.linkItems} to="/">
-                    <Grid item className={classes.menuItems}>Accueil</Grid>
-                </Link>
-                <Link className={classes.linkItems}  to="/upload">
-                    <Grid item className={classes.menuItems}>Publier</Grid>
-                </Link>
-                <Link className={classes.linkItems} to={`/profile/${id}`}>
-                    <Grid item className={classes.menuItems}>{loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}</Grid>
-                </Link>
-                {/* <Link className={classes.linkItems} to="/login"> */}
-                    <Grid item className={classes.menuItems} onClick={Logout}><LogoutRoundedIcon /></Grid>
-                {/* </Link> */}
-            </Grid>
-
-        </>
-    )
 }
+
+// MenuItems à afficher lorsque l'utilisateur n'est pas connecté
 function Guest() {
     return (
         <>
@@ -86,12 +130,11 @@ function Guest() {
 
 }
 
+// Gestion des deux MenuItems
 export default function Navbar() {
 
     const [loggedIn, setLoggedIn] = useState(false);
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    // const loggedInGuest = useSelector((state) => state.loggedInGuest.user)
-    // console.log(loggedInUser)
 
     useEffect(() => {
 
@@ -102,16 +145,6 @@ export default function Navbar() {
             setLoggedIn(true)
         }
     }, [loggedInUser])
-
-    // useEffect(() => {
-
-    //     if (!loggedInGuest || Object.keys(loggedInGuest).length === 0) {
-    //         setLoggedIn(false)
-    //     }
-    //     else {
-    //         setLoggedIn(true)
-    //     }
-    // }, [loggedInGuest])
 
     return (
         <div className="navbar">
@@ -130,13 +163,3 @@ export default function Navbar() {
     )
 
 }
-
-// ReactDOM.render(
-//     <BrowserRouter>
-//         <Navbar />
-//     </BrowserRouter>,
-//     document.getElementById('root')
-// );
-
-// export default Navbar;
-

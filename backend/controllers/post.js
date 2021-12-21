@@ -35,19 +35,6 @@ exports.createPost = (req, res) => {
         });
 }
 
-// Modification d'un post
-exports.updatePost = (req, res) => {
-    Post.findOne({ where: { id: req.params.id } })
-        .then(() => {
-            Post.update(
-                { content: req.body.content }
-            ).then(() => res.status(201).json({ message: "Publication modifié !" }))
-        })
-        .catch((err) => {
-            res.status(500).send({ message: "Une erreur est survenue lors de la modification du post." });
-        });
-}
-
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
     console.log('delete post');

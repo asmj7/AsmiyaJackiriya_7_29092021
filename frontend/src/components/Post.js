@@ -153,7 +153,7 @@ function Post() {
             <Box className={classes.postContainer}>
                 <Box className={classes.postBoxContainer}>
                     {uploads && uploads.user &&
-                        <Box fontWeight='700' className={classes.userName} onClick={() => history.push(`/profile/${uploads.user.id}`)}>{uploads.user.firstName}</Box>
+                        <Box fontWeight='700' className={classes.userName} onClick={() => history.push(`/profile/${uploads.user.id}`)}>{uploads.user.firstName}{" "}{uploads.user.lastName}</Box>
                     }
                     <Box color='#828286'>{uploads.createdAt}</Box>
                     {userId == postData.userId ? (

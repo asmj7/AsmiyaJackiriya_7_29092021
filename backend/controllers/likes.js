@@ -5,37 +5,39 @@ const User = models.users;
 const Comment = models.comments;
 const Likes = models.likes
 
-// Like et dislikes 
+// Like
 exports.likePost = (req, res, next) => {
-    // Post.hasMany(Likes, {foreignKey: 'postId'})
-    // Likes.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true });
-    // User.hasMany(Likes, {foreignKey: 'userId'})
-    // Likes.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade', hooks: true });
-
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId = decodedToken.userId;
-    const postId = req.params.id
-
-    const found = Likes.findOne({
-        where: { 
-            postId: postId ,
-            userId: userId
-        },
-        attributes: ['id', 'userId', 'postId'],
-    })
-
-    if (!found) {
-        Likes.create({ postId: postId, userId: userId })
-        .then((like) => {
-            res.status(201).json({like});
+    Post.findOne({ id: req.params.id })
+        .then(post => {
+            const like = req.body.like;
+            let opinions = {};
+            switch (like) {
+                case 0: // Si l'utilisateur enlève son like
+                    for (let userId of post.usersDisliked)
+                        if (req.body.userId === userId) {
+                            opinions = {
+                                $pull: { usersDisliked: userId },
+                                $inc: { dislikes: -1 }
+                            };
+                        };
+                    for (let userId of post.usersLiked)
+                        if (req.body.userId === userId) {
+                            opinions = {
+                                $pull: { usersLiked: userId },
+                                $inc: { likes: -1 }
+                            };
+                        };
+                    break;
+                case 1:  // Si l'utilisateur like un post
+                    opinions = {
+                        $push: { usersLiked: req.body.userId },
+                        $inc: { likes: 1 }
+                    };
+                    break;
+            };
+            Post.updateOne({ id: req.params.id }, opinions)
+                .then(() => res.status(200).json({ message: "Le post a été liké" }))
+                .catch(error => res.status(500).json({ error }))
         })
-    } else {
-        Likes.destroy({
-            where: { postId: postId, userId: userId }
-        })
-        .then((like) => {
-            res.status(201).json({like});
-        })
-    }
+        .catch(error => res.status(500).json({ error }));
 };

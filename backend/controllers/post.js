@@ -16,7 +16,7 @@ exports.createPost = (req, res) => {
     const userId = decodedToken.userId;
 
     if (!req.body.content) {
-        return res.status(400).json({ message: "Merci de remplir tous les champs." });
+        return res.status(400).json({ message: "Vous ne pouvez pas publier sans contenu." });
     }
 
     Post.create({

@@ -28,6 +28,6 @@ export const loginFail = () => {
 export const logOut = (user) => {
     return {
         type:ActionTypes.LOGOUT,
-        payload: {user: user},
+        payload: {user: null},
     }
 }

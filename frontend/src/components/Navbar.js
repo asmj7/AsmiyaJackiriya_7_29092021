@@ -3,7 +3,7 @@ import './css/navbar.css';
 import { useSelector } from 'react-redux';
 // import { useHistory } from "react-router-dom";
 import { Link, useHistory } from 'react-router-dom';
-import { logOut } from '../redux/actions/userActions'
+import { logoutReducer } from '../redux/reducers/userReducer'
 import { useDispatch } from 'react-redux';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { makeStyles } from '@mui/styles';
@@ -19,7 +19,7 @@ function UserLogged() {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     let id = loggedInUser.data.userId
-    const logout = useSelector((state) => state.logout.user)
+    const logout = useSelector((state) => state.logout.isLoggedIn)
     const dispatch = useDispatch();
     console.log(loggedInUser)
     let history = useHistory();
@@ -45,6 +45,16 @@ function UserLogged() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+
+    // Déconnexion
+    function Logout() {
+
+        localStorage.clear();
+        history.push("/login")
+        dispatch(logoutReducer(logout))
+    }
+
 
     const classes = useStyles();
 
@@ -96,20 +106,12 @@ function UserLogged() {
         </div>
     );
 
-    // Déconnexion
-    function Logout() {
-
-        localStorage.clear();
-        history.push("/login")
-        dispatch(logOut(logout))
-    }
-
     // Déconnexion automatique (token invalide)
     const current_time = Date.now() / 1000;
     if (jwt.exp < current_time) {
         localStorage.clear();
         // history.push("/login")
-        dispatch(logOut(logout))
+        dispatch(logoutReducer(logout))
     }
 }
 

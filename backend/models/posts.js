@@ -38,10 +38,10 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: false
       }
     },
-    // like: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
+    like: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     sequelize,
     tableName: 'posts',

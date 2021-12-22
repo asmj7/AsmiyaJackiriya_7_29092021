@@ -60,7 +60,7 @@ function Home(props) {
         }
     })
 
-    const [likes, setLikes] = useState(0);
+    const [likes, setLikes] = useState([]);
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -103,7 +103,10 @@ function Home(props) {
 
     // Liker un post
     const likePost = (id) => {
-        Axios.post(`http://localhost:3000/api/likes/${id}`, { userId: userId }, config)
+        Axios.post(`http://localhost:3000/api/likes/`, {
+            userId: userId,
+            postId: id
+        }, config)
             .then((response) => {
                 console.log(response);
             })
@@ -145,11 +148,8 @@ function Home(props) {
                             <Box display='flex' alignItems='end'>
                                 <Box className={classes.thumbUp} onClick={() => {
                                     likePost(val.id);
-                                    console.log(likes);
-                                    setLikes(likes + 1);
-                                    console.log(likes);
                                 }}>
-                                    <ThumbUpOutlinedIcon/>
+                                    <ThumbUpOutlinedIcon />
                                     {val.likes}
                                 </Box>
                                 <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>

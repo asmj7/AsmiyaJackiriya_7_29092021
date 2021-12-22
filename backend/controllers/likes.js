@@ -7,37 +7,26 @@ const Likes = models.likes
 
 // Like
 exports.likePost = (req, res, next) => {
-    Post.findOne({ id: req.params.id })
-        .then(post => {
-            const like = req.body.like;
-            let opinions = {};
-            switch (like) {
-                case 0: // Si l'utilisateur enlève son like
-                    for (let userId of post.usersDisliked)
-                        if (req.body.userId === userId) {
-                            opinions = {
-                                $pull: { usersDisliked: userId },
-                                $inc: { dislikes: -1 }
-                            };
-                        };
-                    for (let userId of post.usersLiked)
-                        if (req.body.userId === userId) {
-                            opinions = {
-                                $pull: { usersLiked: userId },
-                                $inc: { likes: -1 }
-                            };
-                        };
-                    break;
-                case 1:  // Si l'utilisateur like un post
-                    opinions = {
-                        $push: { usersLiked: req.body.userId },
-                        $inc: { likes: 1 }
-                    };
-                    break;
-            };
-            Post.updateOne({ id: req.params.id }, opinions)
-                .then(() => res.status(200).json({ message: "Le post a été liké" }))
-                .catch(error => res.status(500).json({ error }))
-        })
-        .catch(error => res.status(500).json({ error }));
-};
+
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId = decodedToken.userId;
+    const postId = req.body.id;
+
+    Likes.findOne({
+        where: { userId: userId, postId: postId }
+    }).then(liked => {
+        if (!liked) {
+            Likes.create({
+                userId: userId,
+                postId: postId
+            }).then(() => res.status(201).json({ message: "Le post a été liké !" }))
+                .catch(error => res.status(500).json({ error: error.message }))
+        } else {
+            Likes.destroy({
+                where: { userId: userId, postId: postId }
+            }).then(() => res.status(200).json({ message: "Vous n'avez pas encore liké le post" }))
+                .catch(error => res.status(500).json({ error: error.message }))
+        }
+    }).catch(error => res.status(500).json({ error: "Oups ! Un problème est survenu. Veuillez nous excuser." }))
+}

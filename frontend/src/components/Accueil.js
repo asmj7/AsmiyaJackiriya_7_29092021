@@ -147,10 +147,11 @@ function Home(props) {
                             </Box>
                             <Box display='flex' alignItems='end'>
                                 <Box className={classes.thumbUp} onClick={() => {
-                                    likePost(val.id);
+                                    likePost(val.id)
+                                    setLikes(likes + 1)
                                 }}>
                                     <ThumbUpOutlinedIcon />
-                                    {val.likes}
+                                    {likes}
                                 </Box>
                                 <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
                             </Box>
@@ -243,23 +244,3 @@ function HomePage() {
 }
 
 export default withRouter(HomePage);
-
-
-
-// Supprimer un commentaire
-        // function GetCommentId(e) {
-        //     useEffect(() => {
-        //         Axios.delete("http://localhost:3000/api/comment/delete",
-        //             {
-        //                 commentId: commentId,
-        //                 headers: {
-        //                     "Content-Type": 'application/json',
-        //                     'Accept': 'application/json',
-        //                     Authorization: `Bearer ${token}`,
-        //                 }
-        //             })
-        //             .then((response) => {
-        //                 console.log(response.data[e.target.id]);
-        //             })
-        //     }, [])
-        // }

@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     postId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
+    }
   }, {
     sequelize,
     tableName: 'likes',

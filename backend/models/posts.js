@@ -37,11 +37,7 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         notEmpty: false
       }
-    },
-    like: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    }
   }, {
     sequelize,
     tableName: 'posts',

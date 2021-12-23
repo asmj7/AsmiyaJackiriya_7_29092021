@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const Post = models.posts;
 const User = models.users;
 const Comment = models.comments;
-const Likes = models.likes
 const fs = require("fs");
 
 // Création d'un post
@@ -24,7 +23,6 @@ exports.createPost = (req, res) => {
         content: req.body.content,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         userId: userId,
-        like: req.body.like
     })
         .then((post) => {
             res.status(201).json(post);
@@ -61,7 +59,7 @@ exports.getAllPosts = (req, res) => {
     // Comment.belongsTo(Post, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
-        attributes: ['id', 'userId', 'title', "likes", 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,
@@ -136,7 +134,7 @@ exports.getOnePost = (req, res) => {
     Comment.belongsTo(User, { foreignKey: 'userId' });
     Post.findOne({
         where: { id: req.params.id },
-        attributes: ['id', 'userId', 'title', 'content', 'likes', 'imageUrl', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,

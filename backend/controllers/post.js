@@ -7,8 +7,6 @@ const fs = require("fs");
 
 // Création d'un post
 exports.createPost = (req, res) => {
-    // console.log("createPost");
-    // console.log("req.body : ", req.body);
 
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
@@ -35,7 +33,6 @@ exports.createPost = (req, res) => {
 
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
-    console.log('delete post');
     Post.hasMany(Comment, { foreignKey: 'postId' })
     Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'CASCADE', hooks: true });
     Post.findOne({ where: { id: req.params.id } })

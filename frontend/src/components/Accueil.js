@@ -60,7 +60,7 @@ function Home(props) {
         }
     })
 
-    const [likes, setLikes] = useState(0);
+    const [likes, setLikes] = useState([]);
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -78,12 +78,6 @@ function Home(props) {
             .then((response) => {
                 console.log(response.data)
                 setUploads(response.data)
-                const likesArray = [];
-                response.data.map((val) => {
-                    likesArray.push(val.likes);
-                });
-                console.log(likesArray)
-                setLikes(likesArray)
             })
             .catch((error) => {
                 console.log(error);
@@ -101,9 +95,12 @@ function Home(props) {
             })
     }
 
+    let likesArray = []
+
     // Liker un post
     const likePost = (id) => {
-        Axios.post(`http://localhost:3000/api/likes/${id}`, { userId: userId }, config)
+        likesArray.push({userId: userId, postId: id})
+        Axios.post(`http://localhost:3000/api/likes/`, likesArray, config)
             .then((response) => {
                 console.log(response);
             })
@@ -144,13 +141,10 @@ function Home(props) {
                             </Box>
                             <Box display='flex' alignItems='end'>
                                 <Box className={classes.thumbUp} onClick={() => {
-                                    likePost(val.id);
-                                    console.log(likes);
-                                    setLikes(likes + 1);
-                                    console.log(likes);
+                                    likePost(val.id)
                                 }}>
-                                    <ThumbUpOutlinedIcon/>
-                                    {val.likes}
+                                    <ThumbUpOutlinedIcon />
+                                    {likes}
                                 </Box>
                                 <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
                             </Box>
@@ -243,23 +237,3 @@ function HomePage() {
 }
 
 export default withRouter(HomePage);
-
-
-
-// Supprimer un commentaire
-        // function GetCommentId(e) {
-        //     useEffect(() => {
-        //         Axios.delete("http://localhost:3000/api/comment/delete",
-        //             {
-        //                 commentId: commentId,
-        //                 headers: {
-        //                     "Content-Type": 'application/json',
-        //                     'Accept': 'application/json',
-        //                     Authorization: `Bearer ${token}`,
-        //                 }
-        //             })
-        //             .then((response) => {
-        //                 console.log(response.data[e.target.id]);
-        //             })
-        //     }, [])
-        // }

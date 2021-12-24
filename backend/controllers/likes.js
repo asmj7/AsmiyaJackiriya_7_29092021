@@ -1,17 +1,13 @@
 const models = require('../models');
 const jwt = require('jsonwebtoken');
-const Post = models.posts;
-const User = models.users;
-const Comment = models.comments;
 const Likes = models.likes
 
 // Like
 exports.likePost = (req, res, next) => {
-
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId = decodedToken.userId;
-    const postId = req.body.id;
+    console.log('userId:' + req.body.userId);
+   
+    const postId = req.body.postId;
+    const userId = req.body.userId
 
     Likes.findOne({
         where: { userId: userId, postId: postId }

@@ -26,7 +26,6 @@ exports.createComment = (req, res) => {
 
 // Suppression d'un commentaire
 exports.deleteComment = (req, res) => {
-    console.log(req.body.id);
     Post.hasMany(Comment, { foreignKey: 'postId' });
     Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'CASCADE', hooks: true });
     Comment.findOne({ where: { id: req.params.id } })
@@ -46,8 +45,7 @@ exports.deleteComment = (req, res) => {
 
 // Récupérer les commentaires du post
 exports.getCommentsByPost = (req, res) => {
-    console.log("postId: " + req.params.id)
-    console.log(req.body.id);
+    
     Post.hasMany(Comment, { foreignKey: 'postId' });
     Comment.belongsTo(Post, { foreignKey: 'postId' });
     User.hasMany(Comment, { foreignKey: 'userId' });

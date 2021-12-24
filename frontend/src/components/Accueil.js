@@ -78,12 +78,6 @@ function Home(props) {
             .then((response) => {
                 console.log(response.data)
                 setUploads(response.data)
-                const likesArray = [];
-                response.data.map((val) => {
-                    likesArray.push(val.likes);
-                });
-                console.log(likesArray)
-                setLikes(likesArray)
             })
             .catch((error) => {
                 console.log(error);
@@ -101,12 +95,12 @@ function Home(props) {
             })
     }
 
+    let likesArray = []
+
     // Liker un post
     const likePost = (id) => {
-        Axios.post(`http://localhost:3000/api/likes/`, {
-            userId: userId,
-            postId: id
-        }, config)
+        likesArray.push({userId: userId, postId: id})
+        Axios.post(`http://localhost:3000/api/likes/`, likesArray, config)
             .then((response) => {
                 console.log(response);
             })
@@ -148,7 +142,6 @@ function Home(props) {
                             <Box display='flex' alignItems='end'>
                                 <Box className={classes.thumbUp} onClick={() => {
                                     likePost(val.id)
-                                    setLikes(likes + 1)
                                 }}>
                                     <ThumbUpOutlinedIcon />
                                     {likes}

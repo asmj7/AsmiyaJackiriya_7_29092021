@@ -44,6 +44,7 @@ export const logoutReducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: null,
+                user: null,
                 isLoggedIn: false
             };
         default:

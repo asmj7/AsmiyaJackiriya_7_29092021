@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 // import { useHistory } from "react-router-dom";
 import { Link, useHistory } from 'react-router-dom';
 import { logoutReducer } from '../redux/reducers/userReducer'
+import {logOut} from './../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { makeStyles } from '@mui/styles';
@@ -52,7 +53,7 @@ function UserLogged() {
 
         localStorage.clear();
         history.push("/login")
-        dispatch(logoutReducer(logout))
+        dispatch(logOut)
     }
 
 

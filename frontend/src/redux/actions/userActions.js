@@ -25,7 +25,7 @@ export const loginFail = () => {
     }
 }
 
-export const logOut = (user) => {
+export const logOut = () => {
     return {
         type:ActionTypes.LOGOUT,
         payload: {user: null},

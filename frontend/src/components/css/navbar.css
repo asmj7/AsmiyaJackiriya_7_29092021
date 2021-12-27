@@ -73,3 +73,12 @@ body{
 .publish {
     margin-top: 10px;
 }
+
+@media (max-width: 502px) {
+    .navbar {
+        display: block;
+    } 
+    .menu {
+        justify-content: space-around;
+    }   
+}

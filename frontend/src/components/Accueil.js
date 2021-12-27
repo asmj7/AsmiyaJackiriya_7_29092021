@@ -18,8 +18,7 @@ function Home(props) {
     let { id } = useParams();
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.data.userId
-
+    const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
     let history = useHistory();
     const useStyles = makeStyles({
         postContainer: {
@@ -178,6 +177,7 @@ function GuestHome() {
     const classes = useStyles();
     return (
         <>
+            <img src="../assets/social-media.jpg" alt="Social media"/>
             <Grid container mt={6} rowGap={10} mb='30px' columnGap={5} >
                 <Grid item md={6}>
                     <Typography variant='h1' fontSize='40px' fontWeight='medium' color='#e81f63'>Communication interne</Typography>

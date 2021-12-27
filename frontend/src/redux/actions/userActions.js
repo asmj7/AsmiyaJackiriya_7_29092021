@@ -1,16 +1,4 @@
 import { ActionTypes } from "../contants/action-types"
-export const registerSuccess = (user) => {
-    return {
-        type:ActionTypes.REGISTER_SUCCESS,
-        payload: {user:user},
-    }
-}
-
-export const registerFail = () => {
-    return {
-        type:ActionTypes.REGISTER_FAIL,
-    }
-}
 
 export const loginSuccess = (user) => {
     return {
@@ -25,9 +13,9 @@ export const loginFail = () => {
     }
 }
 
-export const logOut = (user) => {
+export const logOut = () => {
     return {
         type:ActionTypes.LOGOUT,
-        payload: {user: user},
+        payload: {user: null},
     }
 }

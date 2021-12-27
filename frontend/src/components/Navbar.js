@@ -3,7 +3,8 @@ import './css/navbar.css';
 import { useSelector } from 'react-redux';
 // import { useHistory } from "react-router-dom";
 import { Link, useHistory } from 'react-router-dom';
-import { logOut } from '../redux/actions/userActions'
+import { logoutReducer } from '../redux/reducers/userReducer'
+import {logOut} from './../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { makeStyles } from '@mui/styles';
@@ -18,10 +19,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 function UserLogged() {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    let id = loggedInUser.data.userId
-    const logout = useSelector((state) => state.logout.user)
+    let id = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
+    // const logout = useSelector((state) => state.logout.isLoggedIn)
     const dispatch = useDispatch();
-    console.log(loggedInUser)
     let history = useHistory();
 
     const useStyles = makeStyles({
@@ -45,6 +45,16 @@ function UserLogged() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+
+    // Déconnexion
+    function Logout() {
+
+        localStorage.clear();
+        history.push("/login")
+        dispatch(logOut())
+    }
+
 
     const classes = useStyles();
 
@@ -86,7 +96,7 @@ function UserLogged() {
                 </MenuItem>
                 <MenuItem className={classes.menuItems} onClick={handleClose}>
                     <Link className={classes.linkItems} to={`/profile/${id}`}>
-                        {loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}
+                        {loggedInUser && loggedInUser.user.data && loggedInUser.user.data.userInfo[0] + " " + loggedInUser.user.data.userInfo[1]}
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
@@ -96,21 +106,13 @@ function UserLogged() {
         </div>
     );
 
-    // Déconnexion
-    function Logout() {
-
-        localStorage.clear();
-        history.push("/login")
-        dispatch(logOut(logout))
-    }
-
     // Déconnexion automatique (token invalide)
-    const current_time = Date.now() / 1000;
-    if (jwt.exp < current_time) {
-        localStorage.clear();
-        // history.push("/login")
-        dispatch(logOut(logout))
-    }
+    // const current_time = Date.now() / 1000;
+    // if (jwt.exp < current_time) {
+    //     localStorage.clear();
+    //     // history.push("/login")
+    //     dispatch(logoutReducer(logout))
+    // }
 }
 
 // MenuItems à afficher lorsque l'utilisateur n'est pas connecté
@@ -150,7 +152,7 @@ export default function Navbar() {
         <div className="navbar">
 
             <Link to="/" className="link">
-                <h1 className="groupomania">Groupomania.</h1>
+                <img tabindex="0" className="groupomania" src="assets/icon-left-font-monochrome-white" alt="Groupomania"/>
             </Link>
             <ul className="menu">
                 {loggedIn ? (

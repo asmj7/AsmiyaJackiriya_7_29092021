@@ -56,7 +56,7 @@ exports.getAllPosts = (req, res) => {
     // Comment.belongsTo(Post, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
-        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'userId', 'title','content', 'imageUrl', 'createdAt', 'updatedAt'],
         include: [
             {
                 model: User,

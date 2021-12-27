@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Axios from 'axios';
+import {logOut} from './../redux/actions/userActions'
 import './css/navbar.css'
 import { Box, Typography, Button } from '@mui/material';
 import { useParams } from "react-router-dom";
@@ -15,8 +16,9 @@ import 'reactjs-popup/dist/index.css';
 function Profile() {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.data.userId
+    const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
 
+    const dispatch = useDispatch();
     let history = useHistory();
     const useStyles = makeStyles({
         userInfo: {
@@ -76,7 +78,7 @@ function Profile() {
                 setLastName(response.data.lastName)
                 setEmail(response.data.email)
                 setId(response.data.id)
-                console.log(response.data);
+                console.log(response);
             })
     }, [])
 
@@ -96,6 +98,7 @@ function Profile() {
                 console.log(response)
                 history.push("/login")
                 localStorage.clear();
+                dispatch(logOut())
             })
             .catch((error) => {
                 console.log(error);

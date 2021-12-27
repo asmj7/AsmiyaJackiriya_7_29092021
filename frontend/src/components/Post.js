@@ -15,7 +15,7 @@ function Post() {
     let { id } = useParams();
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.data.userId
+    const userId = loggedInUser.user.data.userId
 
     const [uploads, setUploads] = useState([]);
     // const [userId, setUserId] = useState("");

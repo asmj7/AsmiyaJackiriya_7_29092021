@@ -18,7 +18,7 @@ function Home(props) {
     let { id } = useParams();
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser && loggedInUser.data ? loggedInUser.data.userId : null;
+    const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
     let history = useHistory();
     const useStyles = makeStyles({
         postContainer: {

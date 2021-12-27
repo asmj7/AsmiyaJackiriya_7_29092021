@@ -15,7 +15,7 @@ import 'reactjs-popup/dist/index.css';
 function Profile() {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.data.userId
+    const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
 
     let history = useHistory();
     const useStyles = makeStyles({
@@ -76,7 +76,7 @@ function Profile() {
                 setLastName(response.data.lastName)
                 setEmail(response.data.email)
                 setId(response.data.id)
-                console.log(response.data);
+                console.log(response);
             })
     }, [])
 

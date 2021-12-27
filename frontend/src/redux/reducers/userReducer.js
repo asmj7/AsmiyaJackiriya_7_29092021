@@ -4,21 +4,7 @@ const initialState = {
     token: localStorage.getItem("email"),
     isLoggedIn: null,
     user: null,
-}
-
-export const userGuestReducer = (state = initialState, action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case ActionTypes.REGISTER_SUCCESS:
-            localStorage.getItem("email", payload.token)
-            return {
-                ...state,
-                isLoggedIn: true,
-                user: payload
-            };
-        default:
-            return state;
-    }
+    isAdmin: false
 }
 
 export const userLoggedReducer = (state = initialState, action) => {
@@ -31,22 +17,21 @@ export const userLoggedReducer = (state = initialState, action) => {
                 isLoggedIn: true,
                 user: payload
             };
-        default:
-            return state;
-    }
-}
-
-export const logoutReducer = (state = initialState, action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case ActionTypes.LOGOUT:
-            localStorage.removeItem("email")
+            case ActionTypes.REGISTER_SUCCESS:
+            localStorage.getItem("email", payload.token)
             return {
                 ...state,
-                token: null,
-                user: null,
-                isLoggedIn: false
+                isLoggedIn: true,
+                user: payload
             };
+            case ActionTypes.LOGOUT:
+                localStorage.removeItem("email")
+                return {
+                    ...state,
+                    token: null,
+                    user: null,
+                    isLoggedIn: false
+                };
         default:
             return state;
     }

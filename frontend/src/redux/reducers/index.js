@@ -6,13 +6,11 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['loggedInGuest', 'loggedInUser']
+    whitelist: ['loggedInUser']
 }
 
 const reducers = combineReducers({
-    loggedInGuest: userGuestReducer,
     loggedInUser: userLoggedReducer,
-    logout: logoutReducer,
 })
 
 export default persistReducer(persistConfig, reducers);

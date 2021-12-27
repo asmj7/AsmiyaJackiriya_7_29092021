@@ -19,10 +19,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 function UserLogged() {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    let id = loggedInUser.data.userId
-    const logout = useSelector((state) => state.logout.isLoggedIn)
+    let id = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
+    // const logout = useSelector((state) => state.logout.isLoggedIn)
     const dispatch = useDispatch();
-    console.log(loggedInUser)
     let history = useHistory();
 
     const useStyles = makeStyles({
@@ -53,7 +52,7 @@ function UserLogged() {
 
         localStorage.clear();
         history.push("/login")
-        dispatch(logOut)
+        dispatch(logOut())
     }
 
 
@@ -97,7 +96,7 @@ function UserLogged() {
                 </MenuItem>
                 <MenuItem className={classes.menuItems} onClick={handleClose}>
                     <Link className={classes.linkItems} to={`/profile/${id}`}>
-                        {loggedInUser.data.userInfo[0] + " " + loggedInUser.data.userInfo[1]}
+                        {loggedInUser && loggedInUser.user.data && loggedInUser.user.data.userInfo[0] + " " + loggedInUser.user.data.userInfo[1]}
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
@@ -108,12 +107,12 @@ function UserLogged() {
     );
 
     // Déconnexion automatique (token invalide)
-    const current_time = Date.now() / 1000;
-    if (jwt.exp < current_time) {
-        localStorage.clear();
-        // history.push("/login")
-        dispatch(logoutReducer(logout))
-    }
+    // const current_time = Date.now() / 1000;
+    // if (jwt.exp < current_time) {
+    //     localStorage.clear();
+    //     // history.push("/login")
+    //     dispatch(logoutReducer(logout))
+    // }
 }
 
 // MenuItems à afficher lorsque l'utilisateur n'est pas connecté

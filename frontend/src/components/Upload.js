@@ -51,6 +51,9 @@ function Upload() {
         Axios.post("http://localhost:3000/api/post/upload", formData, config)
             .then((response) => {
                 console.log(response.data);
+                setContent("");
+                setImage("");
+                setTitle("");
             })
             .catch((error) => { setMessage(error.response.data.message) });
     };
@@ -71,6 +74,7 @@ function Upload() {
                             variant="standard"
                             type="text"
                             name="title"
+                            value={title}
                             sx={{ width: '100%' }}
                             placeholder="Titre..."
                             onChange={(e) => setTitle(e.target.value)}

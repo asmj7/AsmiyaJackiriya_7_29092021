@@ -1,41 +1,28 @@
 const models = require('../models');
 const jwt = require('jsonwebtoken');
-const Post = models.posts;
-const User = models.users;
-const Comment = models.comments;
 const Likes = models.likes
 
-// Like et dislikes 
+// Like
 exports.likePost = (req, res, next) => {
-    // Post.hasMany(Likes, {foreignKey: 'postId'})
-    // Likes.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade', hooks: true });
-    // User.hasMany(Likes, {foreignKey: 'userId'})
-    // Likes.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade', hooks: true });
+    console.log('userId:' + req.body.userId);
+   
+    const postId = req.body.postId;
+    const userId = req.body.userId
 
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId = decodedToken.userId;
-    const postId = req.params.id
-
-    const found = Likes.findOne({
-        where: { 
-            postId: postId ,
-            userId: userId
-        },
-        attributes: ['id', 'userId', 'postId'],
-    })
-
-    if (!found) {
-        Likes.create({ postId: postId, userId: userId })
-        .then((like) => {
-            res.status(201).json({like});
-        })
-    } else {
-        Likes.destroy({
-            where: { postId: postId, userId: userId }
-        })
-        .then((like) => {
-            res.status(201).json({like});
-        })
-    }
-};
+    Likes.findOne({
+        where: { userId: userId, postId: postId }
+    }).then(liked => {
+        if (!liked) {
+            Likes.create({
+                userId: userId,
+                postId: postId
+            }).then(() => res.status(201).json({ message: "Le post a été liké !" }))
+                .catch(error => res.status(500).json({ error: error.message }))
+        } else {
+            Likes.destroy({
+                where: { userId: userId, postId: postId }
+            }).then(() => res.status(200).json({ message: "Vous n'avez pas encore liké le post" }))
+                .catch(error => res.status(500).json({ error: error.message }))
+        }
+    }).catch(error => res.status(500).json({ error: "Oups ! Un problème est survenu. Veuillez nous excuser." }))
+}

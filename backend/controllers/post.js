@@ -3,20 +3,17 @@ const jwt = require('jsonwebtoken');
 const Post = models.posts;
 const User = models.users;
 const Comment = models.comments;
-const Likes = models.likes
 const fs = require("fs");
 
 // Création d'un post
 exports.createPost = (req, res) => {
-    // console.log("createPost");
-    // console.log("req.body : ", req.body);
 
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
 
     if (!req.body.content) {
-        return res.status(400).json({ message: "Merci de remplir tous les champs." });
+        return res.status(400).json({ message: "Vous ne pouvez pas publier sans contenu." });
     }
 
     Post.create({
@@ -36,7 +33,6 @@ exports.createPost = (req, res) => {
 
 // Suppression d'un post 
 exports.deletePost = (req, res) => {
-    console.log('delete post');
     Post.hasMany(Comment, { foreignKey: 'postId' })
     Comment.belongsTo(Post, { foreignKey: 'postId', onDelete: 'CASCADE', hooks: true });
     Post.findOne({ where: { id: req.params.id } })
@@ -60,7 +56,11 @@ exports.getAllPosts = (req, res) => {
     // Comment.belongsTo(Post, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
+<<<<<<< HEAD
         attributes: ['id', 'userId', 'title','content', 'imageUrl', 'createdAt', 'updatedAt'],
+=======
+        attributes: ['id', 'userId', 'title', 'content', 'imageUrl', 'createdAt', 'updatedAt'],
+>>>>>>> main
         include: [
             {
                 model: User,

@@ -27,6 +27,7 @@ function Upload() {
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
     const [message, setMessage] = useState("");
+    const disableButton = content.length === 0;
 
     // Au click sur "Publier"
     const upload = (e) => {
@@ -86,13 +87,14 @@ function Upload() {
                             type="text"
                             minRows={5}
                             name="content"
+                            value={content}
                             placeholder="Quoi de neuf ?"
                             onChange={(e) => setContent(e.target.value)}
                             className={classes.inputContent}
                         />
                     </div>
                     <input accept="image/*" id="imgInp" type="file" name="image" onChange={(e) => setImage(e.target.files[0])}></input>
-                    <Button type="submit" className="publish" variant="contained" onClick={upload} sx={{ mt: 2.5 }}>Publier</Button>
+                    <Button type="submit" className="publish" variant="contained" onClick={upload} sx={{ mt: 2.5 }} disabled={disableButton}>Publier</Button>
                 </FormControl>
             </div>
         </>
@@ -100,42 +102,3 @@ function Upload() {
 }
 
 export default Upload;
-
-// const upload = (e) => {
-    //     e.preventDefault()
-    //     const token = localStorage.getItem("email")
-    //     var userId = jwt_decode(token);
-    //     const config = {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': `token ${token}`
-    //         }
-    //     };
-    //     // const config = {
-    //     //     headers: {
-    //     //         // 'Content-Type': 'application/json',
-    //     //         // 'Accept': 'application/json',
-    //     //         // 'Access-Control-Allow-Credentials': false,
-    //     //         'Authorization': `token ${token}`,
-    //     //         'withCredentials' :true
-    //     //     }
-    //     // }
-    //     // Axios.post("http://localhost:3000/api/post/upload", config, {
-    //     //     title: title,
-    //     //     content: content,
-    //     //     image: image,
-    //     //     userId: userId
-    //     // })
-    //     Axios("http://localhost:3000/api/post/upload",{
-    //         title: title,
-    //         content: content,
-    //         imageUrl: imageUrl,
-    //         userId: userId
-    //     },{headers: {
-    //         'Content-Type': 'application/json',
-    //         Accept: 'application/json',
-    //         Authorization: `Bearer ${token}`,
-    //         credentials: 'include'
-    //     }})
-    // }

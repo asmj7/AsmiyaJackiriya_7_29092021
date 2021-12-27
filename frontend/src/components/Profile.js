@@ -94,6 +94,8 @@ function Profile() {
         Axios.delete(`http://localhost:3000/api/auth/delete/${id}`, config)
             .then((response) => {
                 console.log(response)
+                history.push("/login")
+                localStorage.clear();
             })
             .catch((error) => {
                 console.log(error);

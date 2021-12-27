@@ -23,6 +23,7 @@ function Post() {
     const [postId, setPostId] = useState("");
     const [comment, setComment] = useState("");
     const [showComments, setShowComments] = useState("");
+    const disableButton = comment.length === 0;
 
     const history = useHistory();
 
@@ -204,7 +205,7 @@ function Post() {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                     />
-                    <Button onClick={() => createComment(postId)} endIcon={<SendIcon />}>Envoyer</Button>
+                    <Button onClick={() => createComment(postId)} endIcon={<SendIcon />} disabled={disableButton}>Envoyer</Button>
                 </Box>
             </Box>
             <Footer />

@@ -177,6 +177,7 @@ function GuestHome() {
     const classes = useStyles();
     return (
         <>
+            <img src="../assets/Social_media.jpg"/>
             <Grid container mt={6} rowGap={10} mb='30px' columnGap={5} >
                 <Grid item md={6}>
                     <Typography variant='h1' fontSize='40px' fontWeight='medium' color='#e81f63'>Communication interne</Typography>

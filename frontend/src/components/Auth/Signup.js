@@ -38,7 +38,6 @@ function Signup() {
                 email: emailReg,
                 password: passwordReg
             }).then((response) => {
-                dispatch(registerSuccess(response))
                 if (response.data.loggedIn) {
                     console.log(response.data.message);
                     setMessage(response.data.message)

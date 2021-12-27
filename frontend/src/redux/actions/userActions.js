@@ -1,16 +1,4 @@
 import { ActionTypes } from "../contants/action-types"
-export const registerSuccess = (user) => {
-    return {
-        type:ActionTypes.REGISTER_SUCCESS,
-        payload: {user:user},
-    }
-}
-
-export const registerFail = () => {
-    return {
-        type:ActionTypes.REGISTER_FAIL,
-    }
-}
 
 export const loginSuccess = (user) => {
     return {

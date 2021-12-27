@@ -17,13 +17,6 @@ export const userLoggedReducer = (state = initialState, action) => {
                 isLoggedIn: true,
                 user: payload
             };
-            case ActionTypes.REGISTER_SUCCESS:
-            localStorage.getItem("email", payload.token)
-            return {
-                ...state,
-                isLoggedIn: true,
-                user: payload
-            };
             case ActionTypes.LOGOUT:
                 localStorage.removeItem("email")
                 return {

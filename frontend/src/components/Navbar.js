@@ -152,7 +152,7 @@ export default function Navbar() {
         <div className="navbar">
 
             <Link to="/" className="link">
-                <h1 className="groupomania">Groupomania.</h1>
+                <img className="groupomania" src="assets/icon-left-font-monochrome-white"/>
             </Link>
             <ul className="menu">
                 {loggedIn ? (

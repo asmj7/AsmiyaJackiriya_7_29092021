@@ -11,7 +11,6 @@ app.use(bodyParser.json());
 const commentRoutes = require("./routes/comment")
 const postRoutes = require('./routes/post')
 const userRoutes = require('./routes/user');
-const likesRoutes = require('./routes/likes');
 
 // Gestion des erreurs CORS (accès interdit aux autres serveurs)
 app.use(cors());
@@ -32,7 +31,6 @@ app.use(bodyParser.urlencoded({
 app.use('/api/comment', commentRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/auth', userRoutes);
-app.use('/api/likes', likesRoutes)
 
 
 module.exports = app;

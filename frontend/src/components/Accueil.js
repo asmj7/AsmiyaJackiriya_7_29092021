@@ -103,7 +103,7 @@ function Home(props) {
                 alignitems="center" xs={6} className="home">
                 {uploads.map((val, key) => (
                     <>
-                        <Box className={classes.postContainer} key={key}>
+                        <Box className={classes.postContainer} key={val.id}>
                             <Box className={classes.deleteBox}>
                                 {/* {uploads && uploads.user && */}
                                 <Box className={classes.userName} onClick={() => history.push(`/profile/${val.user.id}`)}>

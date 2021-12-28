@@ -7,6 +7,7 @@ import { loginSuccess } from '../../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import { TextField, Button, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import Footer from "../Footer";
 
 function Login() {
 
@@ -18,6 +19,11 @@ function Login() {
     loginText: {
       fontSize: "35px",
       marginTop: '10px'
+    },
+    identification: {
+      width: 'fit-content',
+    margin: 'auto',
+    marginBottom: '100px',
     }
   })
 
@@ -66,7 +72,7 @@ function Login() {
     <>
       <Box sx={{ color: 'red', mt: '20px' }}>{errorMessage}</Box>
       <Box className="errorMessageBox"></Box>
-      <div className="identification">
+      <div className={classes.identification}>
         <div className={classes.login}>
           <h1 className={classes.loginText}>Se connecter</h1>
           <div >
@@ -94,6 +100,7 @@ function Login() {
           <Button variant="contained" className="Login" onClick={() => Validation()} sx={{ mt: 3.5 }}>Se connecter</Button>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

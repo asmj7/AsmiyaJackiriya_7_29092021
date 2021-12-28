@@ -1,8 +1,6 @@
 ## Introduction
 The Frontend is created in React and the server is developped with Express.
 
-INSTALLATION :
-
 ## Groupomania 
 
 To run the Frontend you have to install [React-Redux](https://react-redux.js.org/introduction/getting-started) version 7.1+ 

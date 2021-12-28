@@ -36,9 +36,6 @@ function Login() {
     let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
 
     let hasEmptyValue = false;
-    // if (email.getAttribute("required") === 'true' && !email.value) {
-    //   hasEmptyValue = true;
-    // }
 
     if (!email.match(pattern) || hasEmptyValue) {
       errorMessageBox.innerText = 'Veuillez renseigner tous les champs obligatoires au format valide';
@@ -65,11 +62,7 @@ function Login() {
 
   const dispatch = useDispatch();
   let history = useHistory();
-
-  // const login = () => {
-
-
-  // }
+  
   const classes = useStyles();
 
   return (
@@ -83,7 +76,7 @@ function Login() {
             <TextField
               label="Email"
               id="email"
-              required='true'
+              required={true}
               size="small"
               variant="standard"
               value={email} onChange={(e) => setEmail(e.target.value)}

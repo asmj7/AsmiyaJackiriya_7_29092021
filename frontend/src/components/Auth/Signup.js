@@ -44,9 +44,7 @@ function Signup() {
                     localStorage.setItem("loggedIn", true);
                     localStorage.setItem("email", response.data.token);
                 } else {
-                    // localStorage.setItem("loggedIn", false);
                     console.log(response.data)
-                    // setErrorMessage(response.data.message)
                 }
             })
                 .catch((error) => { setErrorMessage(error.response.data.message) });

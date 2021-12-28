@@ -32,7 +32,7 @@ export const userLoggedReducer = (state = initialState, action) => {
     }
 }
 
-export const postsReducer = (state = initialState, action) => {
+export const postsReducer = (state = stateTwo, action) => {
     const { type, payload } = action;
     switch (type) {
         case ActionTypes.COMMENTS:

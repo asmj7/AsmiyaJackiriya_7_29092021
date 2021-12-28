@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Axios from 'axios';
-import { useSelector } from "react-redux";
 import { useParams, withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,9 +15,6 @@ function Comments(props) {
     let { id } = useParams();
 
     const [comments, setComments] = useState([]);
-
-    const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.user.data.userId
     const token = localStorage.getItem("email")
 
     const config = {

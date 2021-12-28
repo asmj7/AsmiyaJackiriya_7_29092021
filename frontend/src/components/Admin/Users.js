@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Axios from 'axios';
-import { useSelector } from "react-redux";
-import { useParams, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,12 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Users(props) {
 
-    let { id } = useParams();
-
     const [users, setUsers] = useState([]);
-
-    const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.user.data.userId
     const token = localStorage.getItem("email")
 
     const config = {

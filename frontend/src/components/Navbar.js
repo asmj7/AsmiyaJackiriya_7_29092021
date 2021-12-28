@@ -3,12 +3,10 @@ import './css/navbar.css';
 import { useSelector } from 'react-redux';
 // import { useHistory } from "react-router-dom";
 import { Link, useHistory } from 'react-router-dom';
-import { logoutReducer } from '../redux/reducers/userReducer'
 import {logOut} from './../redux/actions/userActions'
 import { useDispatch } from 'react-redux';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { makeStyles } from '@mui/styles';
-import Grid from '@mui/material/Grid';
 import jwt from "jsonwebtoken";
 import {Box, Button} from '@mui/material';
 import Menu from '@mui/material/Menu';

@@ -38,7 +38,7 @@ exports.signup = (req, res) => {
                     .catch(error => res.status(500).json({ error: error.message }));
 
             } else {
-                res.status(409).json({ error: 'Cet utilisateur existe déjà' })
+                res.status(409).json({ message: 'Cet utilisateur existe déjà' })
             }
         })
 };

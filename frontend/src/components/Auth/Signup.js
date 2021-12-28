@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Axios from 'axios';
 import '../css/navbar.css';
 import { withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { registerSuccess } from '../../redux/actions/userActions';
 import { Typography, TextField, Button, Box } from '@mui/material';
 import Footer from "../Footer";
 
@@ -15,7 +13,6 @@ function Signup() {
     const [passwordReg, setPasswordReg] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [message, setMessage] = useState("");
-    const dispatch = useDispatch();
 
     function Validation(e) {
 
@@ -47,7 +44,7 @@ function Signup() {
                     console.log(response.data)
                 }
             })
-                .catch((error) => { setErrorMessage(error.response.data.message) });
+                .catch((error) => { setErrorMessage(error.message) });
         }
 
     }

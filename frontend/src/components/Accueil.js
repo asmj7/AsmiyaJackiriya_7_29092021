@@ -2,20 +2,17 @@ import React, { useEffect, useState } from "react";
 import './css/accueil.css';
 import Axios from 'axios';
 import { useSelector } from "react-redux";
-import { useParams, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
-// import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 // After auth
 function Home(props) {
-    let { id } = useParams();
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;

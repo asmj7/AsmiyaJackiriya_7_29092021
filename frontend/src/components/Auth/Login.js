@@ -24,9 +24,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [emailError, setEmailError] = useState('');
-
-  let Login = document.querySelector('.Login')
 
   function Validation(e) {
     // e.preventDefault();

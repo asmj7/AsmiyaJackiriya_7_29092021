@@ -17,6 +17,8 @@ function Post() {
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser.user.data.userId
 
+    const isAdmin = loggedInUser.user.data.isAdmin
+
     const [uploads, setUploads] = useState([]);
     // const [userId, setUserId] = useState("");
     const [postData, setPostData] = useState("");
@@ -158,7 +160,7 @@ function Post() {
                         <Box fontWeight='700' className={classes.userName} onClick={() => history.push(`/profile/${uploads.user.id}`)}>{uploads.user.firstName}{" "}{uploads.user.lastName}</Box>
                     }
                     <Box color='#828286'>{uploads.createdAt}</Box>
-                    {userId == postData.userId ? (
+                    {userId == postData.userId || isAdmin ? (
                         <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost(uploads.id)}>
                             <HighlightOffIcon />
                         </Box>

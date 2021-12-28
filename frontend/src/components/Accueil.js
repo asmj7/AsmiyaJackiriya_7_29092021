@@ -19,6 +19,10 @@ function Home(props) {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
+
+    const isAdmin = loggedInUser.user.data.isAdmin
+    console.log(isAdmin);
+
     let history = useHistory();
     const useStyles = makeStyles({
         postContainer: {
@@ -109,10 +113,10 @@ function Home(props) {
                                     {val.user.firstName} {val.user.lastName}
                                 </Box>
                                 {/* } */}
-                                {userId == val.userId &&
+                                {userId == val.userId || isAdmin ? (
                                     <Box className={classes.iconBox} onClick={() => deletePost(val.id)}>
                                         <HighlightOffIcon sx={{ p: '20px' }} />
-                                    </Box>
+                                    </Box>) : (false)
                                 }
                             </Box>
                             <Box className={classes.postBox} key={key} onClick={() => history.push(`/post/${val.id}`)}>

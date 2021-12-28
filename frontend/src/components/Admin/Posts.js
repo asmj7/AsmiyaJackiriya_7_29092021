@@ -20,7 +20,7 @@ function Posts(props) {
   const [posts, setPosts] = useState([]);
 
   const loggedInUser = useSelector((state) => state.loggedInUser.user)
-  const userId = loggedInUser.data.userId
+  const userId = loggedInUser.user.data.userId
   const token = localStorage.getItem("email")
 
   const config = {
@@ -30,16 +30,6 @@ function Posts(props) {
       Authorization: `Bearer ${token}`,
     }
   }
-
-  const useStyles = makeStyles({
-    delete: {
-      width: 'fit-content',
-      textDecoration: 'underline',
-      textDecorationColor: 'red',
-      marginBottom: '10px',
-      marginTop: '10px',
-    }
-  })
 
   // Récupérer tous les posts
   useEffect(() => {
@@ -52,9 +42,6 @@ function Posts(props) {
         console.log(error);
       })
   }, [props.loggedInUser]);
-
-  const classes = useStyles();
-
 
   // Supprimer un post
   const deletePost = (id) => {
@@ -69,7 +56,6 @@ function Posts(props) {
 
   return (
     <TableContainer component={Paper}>
-      <Typography className={classes.delete} mt='30px' mb='30px' mr='auto' ml='auto'>Delete all posts</Typography>
       <Table sx={{ minWidth: 650, borderTop: 'solid' }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>

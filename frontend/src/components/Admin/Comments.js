@@ -18,7 +18,7 @@ function Comments(props) {
     const [comments, setComments] = useState([]);
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
-    const userId = loggedInUser.data.userId
+    const userId = loggedInUser.user.data.userId
     const token = localStorage.getItem("email")
 
     const config = {

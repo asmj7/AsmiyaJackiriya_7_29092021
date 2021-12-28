@@ -8,7 +8,7 @@ To run the Frontend you have to install [React-Redux](https://react-redux.js.org
 ## Server 
 
 - Clone this repo. 
-- Import the [database](https://github.com/asmj7/AsmiyaJackiriya_7_29092021/blob/main/backend/config/database.js)
+- Import the [database](https://github.com/asmj7/AsmiyaJackiriya_7_29092021/blob/main/backend/config/database.js) Mysql
 
 From within the project folder, go to the Back end with `cd back-end` then run `npm install`. You can run the server with `nodemon server.js`. 
 

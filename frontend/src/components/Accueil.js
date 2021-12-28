@@ -58,7 +58,7 @@ function Home(props) {
             display: 'flex',
         }
     })
-    
+
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -93,17 +93,6 @@ function Home(props) {
             })
     }
 
-    let likesArray = []
-
-    // Liker un post
-    const likePost = (id) => {
-        likesArray.push({userId: userId, postId: id})
-        Axios.post(`http://localhost:3000/api/likes/`, likesArray, config)
-            .then((response) => {
-                console.log(response);
-            })
-    }
-
     const classes = useStyles();
 
     return (
@@ -133,9 +122,11 @@ function Home(props) {
                                         {val.content}
                                     </div>
                                 </div>
-                                <div className="imgContainer">
-                                    <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
-                                </div>
+                                {val.imageUrl ? (
+                                    <div className="imgContainer">
+                                        <img className="image" maxwidth="xs" src={val.imageUrl} alt="img"></img>
+                                    </div>
+                                ) : (false)}
                             </Box>
                             <Box display='flex' alignItems='end'>
                                 <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
@@ -170,7 +161,7 @@ function GuestHome() {
     const classes = useStyles();
     return (
         <>
-            <img src="../assets/social-media.jpg" alt="Social media"/>
+            <img src="../assets/social-media.jpg" alt="Social media" />
             <Grid container mt={6} rowGap={10} mb='30px' columnGap={5} >
                 <Grid item md={6}>
                     <Typography variant='h1' fontSize='40px' fontWeight='medium' color='#e81f63'>Communication interne</Typography>

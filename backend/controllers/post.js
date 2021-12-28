@@ -12,14 +12,17 @@ exports.createPost = (req, res) => {
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
 
-    if (!req.body.content) {
-        return res.status(400).json({ message: "Vous ne pouvez pas publier sans contenu." });
-    }
+    const imageUrl =
+    req.file
+      ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      : null;
+
+    const title = req.body.title ? title : null
 
     Post.create({
-        title: req.body.title,
+        title: title,
         content: req.body.content,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        imageUrl: imageUrl,
         userId: userId,
     })
         .then((post) => {

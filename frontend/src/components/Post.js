@@ -145,6 +145,7 @@ function Post() {
     }
 
     const classes = useStyles();
+    console.log(uploads);
 
     if (!uploads) {
         return <div>loading</div>
@@ -169,9 +170,11 @@ function Post() {
                         {uploads.content}
                     </div>
                 </div>
-                <div className="imgContainer">
-                    <img className="image" maxwidth="xs" src={uploads.imageUrl} alt="img"></img>
-                </div>
+                {uploads.imageUrl ? (
+                    <div className="imgContainer">
+                        <img className="image" maxwidth="xs" src={uploads.imageUrl} alt="img"></img>
+                    </div>
+                ) : (false)}
                 {showComments ? (
                     showComments.map((val, key) => (
                         <Box className={classes.showComments}>

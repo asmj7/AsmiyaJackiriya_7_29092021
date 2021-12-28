@@ -55,7 +55,7 @@ function Upload() {
                 setImage("");
                 setTitle("");
             })
-            .catch((error) => { setMessage(error.response.data.message) });
+            .catch((error) => { setMessage('Un problème est survenu merci de réessayer plutard') });
     };
 
     const classes = useStyles();

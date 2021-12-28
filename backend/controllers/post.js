@@ -17,10 +17,8 @@ exports.createPost = (req, res) => {
       ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       : null;
 
-    const title = req.body.title ? title : null
-
     Post.create({
-        title: title,
+        title: req.body.title,
         content: req.body.content,
         imageUrl: imageUrl,
         userId: userId,

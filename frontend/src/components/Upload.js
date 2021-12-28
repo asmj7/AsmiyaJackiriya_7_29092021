@@ -27,7 +27,7 @@ function Upload() {
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
     const [message, setMessage] = useState("");
-    const disableButton = content.length === 0;
+    const disableButton = content.length === 0 || title.length === 0;
 
     // Au click sur "Publier"
     const upload = (e) => {
@@ -73,6 +73,7 @@ function Upload() {
                             size="small"
                             variant="standard"
                             type="text"
+                            required={true}
                             name="title"
                             value={title}
                             sx={{ width: '100%' }}
@@ -85,7 +86,7 @@ function Upload() {
                         <TextareaAutosize
                             label="Contenu"
                             id="standard-size-small"
-                            required='true'
+                            required={true}
                             size="small"
                             variant="standard"
                             type="text"

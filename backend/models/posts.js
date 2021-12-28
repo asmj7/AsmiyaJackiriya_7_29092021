@@ -20,16 +20,10 @@ module.exports = function(sequelize, DataTypes) {
     title: {
       type: DataTypes.STRING(100),
       allowNull: true,
-      validate: {
-        notEmpty: false
-      }
     },
     content: {
       type: DataTypes.TEXT,
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
     },
     imageUrl: {
       type: DataTypes.STRING(255),

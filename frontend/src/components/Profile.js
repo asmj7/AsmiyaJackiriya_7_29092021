@@ -60,7 +60,6 @@ function Profile() {
     const [userPosts, setUserPosts] = useState([]);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
     const [id, setId] = useState("");
 
     const token = localStorage.getItem("email")
@@ -76,7 +75,6 @@ function Profile() {
             .then((response) => {
                 setFirstName(response.data.firstName)
                 setLastName(response.data.lastName)
-                setEmail(response.data.email)
                 setId(response.data.id)
                 console.log(response);
             })
@@ -123,10 +121,6 @@ function Profile() {
                             <Typography className={classes.userLastname} fontWeight='600' variant="subtitle1">Nom</Typography>
                             <Typography variant="subtitle1">{lastName}</Typography>
                         </Grid>
-                        <Grid xs={8} sm={6} md={4} item >
-                            <Typography className={classes.userEmail} fontWeight='600' variant="subtitle1">E-mail</Typography>
-                            <Typography variant="subtitle1">{email}</Typography>
-                        </Grid>
                     </Grid>
                     <Typography mt={2} sm={8} className={classes.modifMessage} variant="subtitle1">Vous ne pouvez pas modifier ces informations</Typography>
                     <Popup trigger={
@@ -165,9 +159,9 @@ function Profile() {
                                     {val.content}
                                 </div>
                             </div>
-                            <div className="imgContainer">
+                            {val.imageUrl ? (<div className="imgContainer">
                                 <img className="image" src={val.imageUrl} alt="img"></img>
-                            </div>
+                            </div>) : (false)}
                         </Box>
                     </Grid>
                 ))}

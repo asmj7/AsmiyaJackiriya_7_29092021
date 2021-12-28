@@ -58,8 +58,7 @@ function Home(props) {
             display: 'flex',
         }
     })
-
-    const [likes, setLikes] = useState([]);
+    
     const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
 
@@ -139,12 +138,6 @@ function Home(props) {
                                 </div>
                             </Box>
                             <Box display='flex' alignItems='end'>
-                                <Box className={classes.thumbUp} onClick={() => {
-                                    likePost(val.id)
-                                }}>
-                                    <ThumbUpOutlinedIcon />
-                                    {likes}
-                                </Box>
                                 <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
                             </Box>
                         </Box>

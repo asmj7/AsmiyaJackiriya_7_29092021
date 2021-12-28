@@ -19,3 +19,10 @@ export const logOut = () => {
         payload: {user: null},
     }
 }
+
+export const posts = (posts) => {
+    return {
+        type: ActionTypes.COMMENTS,
+        payload: {posts: posts}
+    }
+}

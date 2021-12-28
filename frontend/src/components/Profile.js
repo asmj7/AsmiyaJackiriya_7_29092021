@@ -88,6 +88,7 @@ function Profile() {
             .then((response) => {
                 setUserPosts(response.data);
                 // setId(response.data.id)
+                console.log(response.data);
             })
     }, [])
 

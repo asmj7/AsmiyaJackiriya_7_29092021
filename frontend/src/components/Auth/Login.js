@@ -59,7 +59,7 @@ function Login() {
             console.log(response.data)
           }
         })
-        // .catch((error) => { setErrorMessage(error.response.data.message) });
+        .catch((error) => { setErrorMessage(error.response.data.message) });
     }
   }
 
@@ -93,7 +93,7 @@ function Login() {
           <div>
             <TextField
               label="Mot de passe"
-              required='true'
+              required={true}
               id="standard-size-small"
               size="small"
               variant="standard"

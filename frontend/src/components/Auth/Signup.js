@@ -27,7 +27,7 @@ function Signup() {
         let lastName = document.querySelector('#lastName').value
         let password = document.querySelector('#password').value
 
-        if (!email.match(pattern) || email == '' || firstName == '' || lastName == '' || password == '') {
+        if (!email.match(pattern) || email === '' || firstName === '' || lastName === '' || password === '') {
             errorMessageBox.innerText = 'Veuillez renseigner tous les champs obligatoires au format valide';
             errorMessageBox.style.color = '#F04824';
         } else {

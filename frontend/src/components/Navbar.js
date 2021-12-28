@@ -107,12 +107,12 @@ function UserLogged() {
     );
 
     // Déconnexion automatique (token invalide)
-    // const current_time = Date.now() / 1000;
-    // if (jwt.exp < current_time) {
-    //     localStorage.clear();
-    //     // history.push("/login")
-    //     dispatch(logoutReducer(logout))
-    // }
+    const current_time = Date.now() / 1000;
+    if (jwt.exp < current_time) {
+        localStorage.clear();
+        history.push("/login")
+        dispatch(logOut())
+    }
 }
 
 // MenuItems à afficher lorsque l'utilisateur n'est pas connecté
@@ -152,7 +152,7 @@ export default function Navbar() {
         <div className="navbar">
 
             <Link to="/" className="link">
-                <img tabindex="0" className="groupomania" src="../assets/icon-left-font-monochrome-white.png" alt="Groupomania"/>
+                <img tabIndex="0" className="groupomania" src="../assets/icon-left-font-monochrome-white.png" alt="Groupomania"/>
             </Link>
             <ul className="menu">
                 {loggedIn ? (

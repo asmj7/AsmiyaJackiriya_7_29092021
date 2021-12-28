@@ -7,6 +7,8 @@ const initialState = {
     isAdmin: false
 }
 
+const stateTwo = {}
+
 export const userLoggedReducer = (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
@@ -25,6 +27,19 @@ export const userLoggedReducer = (state = initialState, action) => {
                     user: null,
                     isLoggedIn: false
                 };
+        default:
+            return state;
+    }
+}
+
+export const postsReducer = (state = initialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+        case ActionTypes.COMMENTS:
+            return {
+                ...state,
+                posts: payload
+            }
         default:
             return state;
     }

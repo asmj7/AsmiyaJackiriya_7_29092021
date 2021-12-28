@@ -47,46 +47,46 @@ export default function Footer() {
                     <Grid item xs={8} md={2} sm={4} m='auto'>
                         <Typography variant="subtitle2" m='auto' className={classes.footerTitle}>Produit</Typography>
                         <Grid item xs={12} className={classes.footerGrid}>
-                            <Link href="#">Applications mobiles</Link>
-                            <Link href="#">Applications de bureau</Link>
-                            <Link href="#">Intégrations</Link>
-                            <Link href="#">API / Webhooks</Link>
-                            <Link href="#">Etat du service</Link>
+                            <Link to="#">Applications mobiles</Link>
+                            <Link to="#">Applications de bureau</Link>
+                            <Link to="#">Intégrations</Link>
+                            <Link to="#">API / Webhooks</Link>
+                            <Link to="#">Etat du service</Link>
                         </Grid>
                     </Grid>
                     <Grid item xs={8} md={2} sm={4} m='auto'>
                         <Typography variant="subtitle2" m='auto' className={classes.footerTitle}>Ressources</Typography>
                         <Grid item xs={12} className={classes.footerGrid}>
-                            <Link href="#">Nos clients</Link>
-                            <Link href="#">Livres blancs</Link>
-                            <Link href="#">Evénements</Link>
+                            <Link to="#">Nos clients</Link>
+                            <Link to="#">Livres blancs</Link>
+                            <Link to="#">Evénements</Link>
                         </Grid>
                     </Grid>
                     <Grid item xs={8} md={2} sm={4} m='auto'>
                         <Typography variant="subtitle2" className={classes.footerTitle}>informations</Typography>
                         <Grid item xs={12} className={classes.footerGrid}>
-                            <Link href="#">Tarifs</Link>
-                            <Link href="#">Comparatifs</Link>
-                            <Link href="#">Secteurs d'activité</Link>
-                            <Link href="#">Meilleurs logiciels</Link>
+                            <Link to="#">Tarifs</Link>
+                            <Link to="#">Comparatifs</Link>
+                            <Link to="#">Secteurs d'activité</Link>
+                            <Link to="#">Meilleurs logiciels</Link>
                         </Grid>
                     </Grid>
                     <Grid item xs={8} md={2} sm={4} m='auto'>
                         <Typography variant="subtitle2" className={classes.footerTitle}>Liens</Typography>
                         <Grid item xs={12} className={classes.footerGrid}>
-                            <Link href="#">Blog</Link>
-                            <Link href="#">Vidéos</Link>
-                            <Link href="#">Presse</Link>
-                            <Link href="#">Base de connaissances</Link>
+                            <Link to="#">Blog</Link>
+                            <Link to="#">Vidéos</Link>
+                            <Link to="#">Presse</Link>
+                            <Link to="#">Base de connaissances</Link>
                         </Grid>
                     </Grid>
                     <Grid item xs={8} md={2} sm={4} m='auto'>
                         <Typography variant="subtitle2" m='auto' className={classes.footerTitle}>À propos</Typography>
                         <Grid item xs={12} className={classes.footerGrid}>
-                            <Link href="#">Contactez-nous</Link>
-                            <Link href="#">Qui sommes-nous ?</Link>
-                            <Link href="#">Nous recrutons</Link>
-                            <Link href="#">Sécurité</Link>
+                            <Link to="#">Contactez-nous</Link>
+                            <Link to="#">Qui sommes-nous ?</Link>
+                            <Link to="#">Nous recrutons</Link>
+                            <Link to="#">Sécurité</Link>
                         </Grid>
                     </Grid>
                 </Grid >

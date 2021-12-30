@@ -26,17 +26,21 @@ function App() {
           <Route path="/" exact component={Accueil} />
           <Route path="/profile/:id" exact component={Profile} />
           <Route path="/upload" exact component={Upload} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/signup" exact component={Signup} />
+          {!loggedInUser ? (
+            <>
+              <Route path="/login" exact component={Login} />
+              <Route path="/signup" exact component={Signup} />
+            </>
+          ) : (false)}
           <Route path="/post/:id" exact component={Post} />
-          {loggedInUser && loggedInUser.user.data && loggedInUser.user.data.isAdmin === true && (
+          {loggedInUser && loggedInUser.user.data && loggedInUser.user.data.isAdmin === true ? (
             <>
               <Route path="/admin/comments" exact component={Comments} />
               <Route path="/admin/posts" exact component={Posts} />
               <Route path="/admin/users" exact component={Users} />
               <Route path="/admin" exact component={Admin} />
             </>
-          )}
+          ) : (<div>Vous ne pouvez pas accéder à cette page</div>)}
         </Switch>
       </Router>
     </div>

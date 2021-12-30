@@ -7,7 +7,7 @@ const initialState = {
     isAdmin: false
 }
 
-const stateTwo = {}
+const stateTwo = []
 
 export const userLoggedReducer = (state = initialState, action) => {
     const { type, payload } = action;
@@ -19,14 +19,14 @@ export const userLoggedReducer = (state = initialState, action) => {
                 isLoggedIn: true,
                 user: payload
             };
-            case ActionTypes.LOGOUT:
-                localStorage.removeItem("email")
-                return {
-                    ...state,
-                    token: null,
-                    user: null,
-                    isLoggedIn: false
-                };
+        case ActionTypes.LOGOUT:
+            localStorage.removeItem("email")
+            return {
+                ...state,
+                token: null,
+                user: null,
+                isLoggedIn: false
+            };
         default:
             return state;
     }
@@ -35,11 +35,16 @@ export const userLoggedReducer = (state = initialState, action) => {
 export const postsReducer = (state = stateTwo, action) => {
     const { type, payload } = action;
     switch (type) {
+        case ActionTypes.POSTS:
+            return {
+                ...state,
+                post: payload
+            }
         case ActionTypes.COMMENTS:
             return {
                 ...state,
-                posts: payload
-            }
+                comments: payload
+            };
         default:
             return state;
     }

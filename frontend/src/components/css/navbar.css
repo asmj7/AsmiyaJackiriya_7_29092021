@@ -12,12 +12,18 @@ body{
 .groupomania {
     color: white;
     margin: 0;
+    width: 116px;
+    height: 100px;
 }
 .navbar .menu {
     margin-left: auto;
     display: flex;
+    height: fit-content;
+    margin-top: 32px;
 }
-
+.menu {
+    padding: 0px;
+}
 .menuItems {
     list-style: none;
     color: white;

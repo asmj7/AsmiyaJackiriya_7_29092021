@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Axios from 'axios';
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { withRouter } from 'react-router-dom';
 import { TextField, Box } from '@mui/material';
@@ -9,25 +9,23 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Footer from "./Footer"
+import Footer from "./Footer";
+import { getPost } from "../redux/actions/userActions";
 
 function Post() {
     let { id } = useParams();
 
+    const post = useSelector((state) => state.posts.post)
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser.user.data.userId
 
     const isAdmin = loggedInUser.user.data.isAdmin
 
-    const [uploads, setUploads] = useState([]);
-    // const [userId, setUserId] = useState("");
-    const [postData, setPostData] = useState("");
-    const [postId, setPostId] = useState("");
-    const [comment, setComment] = useState("");
-    const [showComments, setShowComments] = useState("");
+    const [comment, setComment] = useState([]);
     const disableButton = comment.length === 0;
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const useStyles = makeStyles({
         postContainer: {
@@ -62,8 +60,6 @@ function Post() {
     })
 
     const token = localStorage.getItem("email");
-    console.log(postData.userId);
-    console.log(userId);
 
     const config = {
         headers: {
@@ -75,111 +71,76 @@ function Post() {
 
     // Récupérer un post
     useEffect(() => {
-        Axios.get(`http://localhost:3000/api/post/${id}`, config)
-            .then((response) => {
-                setUploads(response.data)
-                setPostId(response.data.id);
-                setPostData(response.data)
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, []);
+        dispatch(getPost(id));
+        
+    }, [dispatch, id]);
+
 
     // Créer un commentaire
-    const createComment = () => {
+    const createComment = useCallback(() => {
         Axios.post("http://localhost:3000/api/comment/create",
-            { postId: postId, comment: comment }, config)
+            { postId: id, comment: comment }, config)
             .then((response) => {
-                console.log(response.data);
                 setComment("")
-                // const commentToAdd = {comment: comment}
-                // setShowComments([...showComments, commentToAdd])
+                dispatch(getPost(id))
             })
-    }
-
-    // Récupérer les commentaires du post
-    useEffect(() => {
-        Axios({
-            method: "GET",
-            url: `http://localhost:3000/api/comment/${id}`,
-            headers: {
-                "Content-Type": 'application/json',
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((response) => {
-                setShowComments(response.data);
-                console.log(response.data);
-                let array = response.data
-                const results = array.filter(obj => {
-                    return obj.user.id == userId
-                });
-                console.log(results)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, [id]);
-
+    }, [id, comment, config])
+    
     // Supprimer un post
-    const deletePost = () => {
+    const deletePost = useCallback(() => {
         Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
             .then((response) => {
-                console.log(response.data)
+                history.push('/')
             })
             .catch((error) => {
                 console.log(error);
             })
-    }
+    }, [config, id, history])
 
     // supprimer un commentaire
-    const deleteComment = (id) => {
-        Axios.delete(`http://localhost:3000/api/comment/delete/${id}`, config)
+    const deleteComment = useCallback((commentId) => {
+        Axios.delete(`http://localhost:3000/api/comment/delete/${commentId}`, config)
             .then((response) => {
-                console.log(response)
+                dispatch(getPost(id))
             })
             .catch((error) => {
                 console.log(error);
             })
-    }
+    }, [config, id, dispatch])
 
     const classes = useStyles();
-    console.log(uploads);
 
-    if (!uploads) {
+    if (!post) {
         return <div>loading</div>
     }
     return (
         <>
             <Box className={classes.postContainer}>
                 <Box className={classes.postBoxContainer}>
-                    {uploads && uploads.user &&
-                        <Box fontWeight='700' className={classes.userName} onClick={() => history.push(`/profile/${uploads.user.id}`)}>{uploads.user.firstName}{" "}{uploads.user.lastName}</Box>
+                    {post?.user &&
+                        <Box fontWeight='700' className={classes.userName} onClick={() => history.push(`/profile/${post?.user.id}`)}>{post?.user.firstName}{" "}{post?.user.lastName}</Box>
                     }
-                    <Box color='#828286'>{uploads.createdAt}</Box>
-                    {userId == postData.userId || isAdmin ? (
-                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost(uploads.id)}>
+                    <Box color='#828286'>{post?.createdAt}</Box>
+                    {userId == post?.userId || isAdmin ? (
+                        <Box sx={{ cursor: 'pointer', height: 'fit-content', fontSize: '20px', color: '#23394D' }} onClick={() => deletePost(post?.id)}>
                             <HighlightOffIcon />
                         </Box>
                     ) : (false)}
                 </Box>
-                <h2 className="title">{uploads.title}</h2>
+                <h2 className="title">{post?.title}</h2>
                 <div className="content">
                     <div className="description">
-                        {uploads.content}
+                        {post?.content}
                     </div>
                 </div>
-                {uploads.imageUrl ? (
+                {post?.imageUrl ? (
                     <div className="imgContainer">
-                        <img className="image" maxwidth="xs" src={uploads.imageUrl} alt="img"></img>
+                        <img className="image" maxwidth="xs" src={post?.imageUrl} alt="img"></img>
                     </div>
                 ) : (false)}
-                {showComments ? (
-                    showComments.map((val, key) => (
-                        <Box className={classes.showComments}>
+                {post?.comments ? (
+                    post?.comments.map((val, key) => (
+                        <Box className={classes.post?.comments} key={key}>
                             <Box pl='20px' pr='20px' sx={{ display: 'block', border: '1px solid #DEDEDE', borderColor: 'grey' }}>
                                 <Box color='#495fdb' className={classes.commentUserInfo}><span>{val.user.firstName} {val.user.lastName}</span></Box>
                                 <Box className={classes.postBoxContainer}>
@@ -210,7 +171,7 @@ function Post() {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                     />
-                    <Button onClick={() => createComment(postId)} endIcon={<SendIcon />} disabled={disableButton}>Envoyer</Button>
+                    <Button onClick={() => createComment(id)} endIcon={<SendIcon />} disabled={disableButton}>Envoyer</Button>
                 </Box>
             </Box>
             <Footer />

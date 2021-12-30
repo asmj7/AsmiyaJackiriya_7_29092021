@@ -53,8 +53,6 @@ exports.getAllPosts = (req, res) => {
     Post.belongsTo(User, { foreignKey: 'userId' });
     Post.hasMany(Comment, { foreignKey: 'postId' });
     Comment.belongsTo(Post, { foreignKey: 'postId' });
-    // User.hasMany(Comment, { foreignKey: 'userId' });
-    // Comment.belongsTo(Post, { foreignKey: 'userId' });
     Post.findAll({
         order: [["updatedAt", "DESC"]],
         attributes: ['id', 'userId', 'title','content', 'imageUrl', 'createdAt', 'updatedAt'],
@@ -144,7 +142,7 @@ exports.getOnePost = (req, res) => {
                 include: [
                     {
                         model: User,
-                        attributes: ["firstName", "lastName"],
+                        attributes: ["firstName", "lastName", 'id'],
                     },
                 ],
             },

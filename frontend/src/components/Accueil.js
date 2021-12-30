@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './css/accueil.css';
 import Axios from 'axios';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -10,6 +10,7 @@ import { makeStyles } from '@mui/styles';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+// import { posts } from "../redux/actions/userActions";
 
 // After auth
 function Home(props) {
@@ -20,6 +21,7 @@ function Home(props) {
     const isAdmin = loggedInUser.user.data.isAdmin
     console.log(isAdmin);
 
+    const dispatch = useDispatch();
     let history = useHistory();
     const useStyles = makeStyles({
         postContainer: {
@@ -77,6 +79,7 @@ function Home(props) {
             .then((response) => {
                 console.log(response.data)
                 setUploads(response.data)
+                // dispatch(posts(response))
             })
             .catch((error) => {
                 console.log(error);
@@ -116,7 +119,7 @@ function Home(props) {
                                     </Box>) : (false)
                                 }
                             </Box>
-                            <Box className={classes.postBox} key={key} onClick={() => history.push(`/post/${val.id}`)}>
+                            <Box className={classes.postBox} onClick={() => history.push(`/post/${val.id}`)}>
                                 <h2 className="title">{val.title}</h2>
                                 <div className="content">
                                     <div className="description">
@@ -162,11 +165,14 @@ function GuestHome() {
     const classes = useStyles();
     return (
         <>
-            <img src="../assets/social-media.jpg" alt="Social media" />
-            <Grid container mt={6} rowGap={10} mb='30px' columnGap={5} >
-                <Grid item md={6}>
+
+            <Grid container mt={6} rowGap={5} mb='30px' columnGap={3} mt={0}>
+                <Grid item md={7}>
                     <Typography variant='h1' fontSize='40px' fontWeight='medium' color='#e81f63'>Communication interne</Typography>
                     <Typography variant='h2' fontSize='40px' m='auto' mt='20px' className={classes.titleTwo}>Communiquer plus directement avec vos collègues</Typography>
+                </Grid>
+                <Grid item md={4.7}>
+                    <img className='social-media-img' src="./assets/social-media.jpg" alt="Social media" />
                 </Grid>
                 <Grid item md={4}>
                     <Typography variant='subtitle1'>

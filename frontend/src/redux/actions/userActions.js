@@ -8,12 +8,6 @@ export const loginSuccess = (user) => {
     }
 }
 
-export const loginFail = () => {
-    return {
-        type: ActionTypes.LOGIN_FAIL,
-    }
-}
-
 export const logOut = () => {
     return {
         type: ActionTypes.LOGOUT,

@@ -10,7 +10,7 @@ import { makeStyles } from '@mui/styles';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { getPosts } from "../redux/actions/userActions";
+import { getPosts, deleteOnePost } from "../redux/actions/userActions";
 
 // After auth
 function Home(props) {

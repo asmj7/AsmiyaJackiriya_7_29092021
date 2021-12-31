@@ -28,9 +28,50 @@ export const getPost = (id) => {
         }
         const post = await Axios.get(`http://localhost:3000/api/post/${id}`, config)
         dispatch({
+            type: ActionTypes.POST,
+            payload: post.data
+        })
+        return post.data
+    };
+}
+
+export const getPosts = () => {
+    return async (dispatch) => {
+        const token = localStorage.getItem("email");
+
+        const config = {
+            headers: {
+                "Content-Type": 'application/json',
+                'Accept': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        }
+        const post = await Axios.get("http://localhost:3000/api/post/", config)
+        dispatch({
             type: ActionTypes.POSTS,
             payload: post.data
-        }) 
+        })
+        return post.data
+    };
+
+}
+
+export const deleteOnePost = (id) => {
+    return async (dispatch) => {
+        const token = localStorage.getItem("email");
+
+        const config = {
+            headers: {
+                "Content-Type": 'application/json',
+                'Accept': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        }
+        const post = await Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
+        dispatch({
+            type: ActionTypes.DELETEPOST,
+            payload: post.data
+        })
         return post.data
     };
 

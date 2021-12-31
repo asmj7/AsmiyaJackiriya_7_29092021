@@ -15,7 +15,8 @@ import { getPost } from "../redux/actions/userActions";
 function Post() {
     let { id } = useParams();
 
-    const post = useSelector((state) => state.posts.post)
+    const post = useSelector((state) => state.post.post)
+
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser.user.data.userId
 

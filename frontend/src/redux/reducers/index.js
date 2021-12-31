@@ -11,7 +11,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
     loggedInUser: userLoggedReducer,
-    posts: postsReducer
+    post: postsReducer
 })
 
 export default persistReducer(persistConfig, reducers);

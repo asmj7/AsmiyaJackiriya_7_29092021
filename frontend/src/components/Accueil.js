@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import './css/accueil.css';
 import Axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { makeStyles } from '@mui/styles';
 import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-// import { posts } from "../redux/actions/userActions";
+import { getPosts } from "../redux/actions/userActions";
 
 // After auth
 function Home(props) {
@@ -87,15 +87,9 @@ function Home(props) {
     }, [props.loggedInUser]);
 
     // Supprimer un post
-    const deletePost = (id) => {
-        Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
-            .then((response) => {
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    const deletePost = useCallback((id) => {
+        dispatch(deleteOnePost(id));
+    }, [dispatch])
 
     const classes = useStyles();
 

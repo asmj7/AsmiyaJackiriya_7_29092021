@@ -1,4 +1,4 @@
-import { ActionTypes } from "../contants/action-types";
+import { ActionTypes } from "../contents/action-types";
 
 const initialState = {
     token: localStorage.getItem("email"),

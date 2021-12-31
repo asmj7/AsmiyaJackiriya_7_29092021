@@ -1,4 +1,4 @@
-import { ActionTypes } from "../contants/action-types";
+import { ActionTypes } from "../contents/action-types";
 import Axios from 'axios';
 
 export const loginSuccess = (user) => {
@@ -38,9 +38,6 @@ export const getPost = (id) => {
             payload: post.data
         }) 
         return post.data
-        // .catch((error) => {
-        //     console.log(error);
-        // })
     };
 
 }

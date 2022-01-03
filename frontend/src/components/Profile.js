@@ -7,7 +7,6 @@ import { Box, Typography, Button } from '@mui/material';
 import { useParams } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
-import Footer from './Footer';
 import { useHistory } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -166,7 +165,6 @@ function Profile() {
                     </Grid>
                 ))}
             </Grid>
-            <Footer />
         </>
     )
 }

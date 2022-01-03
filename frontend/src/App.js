@@ -13,10 +13,13 @@ import Posts from './components/Admin/Posts';
 import Users from './components/Admin/Users';
 import Admin from './components/Admin/Admin'
 import { useSelector } from "react-redux";
+import Footer from "./components/Footer";
+
 
 function App() {
 
   const loggedInUser = useSelector((state) => state.loggedInUser.user)
+  console.log(loggedInUser);
 
   return (
     <div className="App">
@@ -24,24 +27,26 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Accueil} />
-          <Route path="/profile/:id" exact component={Profile} />
-          <Route path="/upload" exact component={Upload} />
           {!loggedInUser ? (
             <>
               <Route path="/login" exact component={Login} />
               <Route path="/signup" exact component={Signup} />
             </>
-          ) : (false)}
-          <Route path="/post/:id" exact component={Post} />
-          {loggedInUser && loggedInUser.user.data && loggedInUser.user.data.isAdmin === true ? (
+          ) : (
             <>
-              <Route path="/admin/comments" exact component={Comments} />
-              <Route path="/admin/posts" exact component={Posts} />
-              <Route path="/admin/users" exact component={Users} />
-              <Route path="/admin" exact component={Admin} />
-            </>
-          ) : (<div>Vous ne pouvez pas accéder à cette page</div>)}
+              <Route path="/profile/:id" exact component={Profile} />
+              <Route path="/upload" exact component={Upload} />
+              <Route path="/post/:id" exact component={Post} />
+              {loggedInUser.user.data && loggedInUser.user.data.isAdmin &&
+                <>
+                  <Route path="/admin/comments" exact component={Comments} />
+                  <Route path="/admin/posts" exact component={Posts} />
+                  <Route path="/admin/users" exact component={Users} />
+                  <Route path="/admin" exact component={Admin} />
+                </>}
+            </>)}
         </Switch>
+        <Footer />
       </Router>
     </div>
   );

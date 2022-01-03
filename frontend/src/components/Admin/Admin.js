@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
 
 function Admin() {
-
+    console.log('admin');
     return (
         <>
             <Box mt='40px' display='flex' justifyContent='space-evenly'>

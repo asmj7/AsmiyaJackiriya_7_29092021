@@ -68,6 +68,9 @@ export const deleteOnePost = (id) => {
             }
         }
         const post = await Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
+        if(post) {
+            alert('Le post a été supprimé')
+        }
         dispatch({
             type: ActionTypes.DELETEPOST,
             payload: post.data

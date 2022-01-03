@@ -7,7 +7,10 @@ const initialState = {
     isAdmin: false
 }
 
-const stateTwo = []
+const stateTwo = {
+    post: {},
+    posts: []
+}
 
 export const userLoggedReducer = (state = initialState, action) => {
     const { type, payload } = action;
@@ -48,7 +51,7 @@ export const postsReducer = (state = stateTwo, action) => {
         case ActionTypes.POSTS:
             return {
                 ...state,
-                post: payload
+                posts: payload
             }
         case ActionTypes.COMMENTS:
             return {

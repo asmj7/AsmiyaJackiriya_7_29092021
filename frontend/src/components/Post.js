@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Footer from "./Footer";
 import { getPost } from "../redux/actions/userActions";
 
 function Post() {
@@ -175,7 +174,6 @@ function Post() {
                     <Button onClick={() => createComment(id)} endIcon={<SendIcon />} disabled={disableButton}>Envoyer</Button>
                 </Box>
             </Box>
-            <Footer />
         </>
     )
 }

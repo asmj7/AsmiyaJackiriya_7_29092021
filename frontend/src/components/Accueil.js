@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
 import './css/accueil.css';
-import Axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
-import Footer from "./Footer";
 import { useHistory } from "react-router-dom";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { getPosts, deleteOnePost } from "../redux/actions/userActions";
 
-// After auth
 function Home(props) {
 
     const loggedInUser = useSelector((state) => state.loggedInUser.user)
     const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
+
+    const post = useSelector((state) => state.post.posts)
+    console.log(post);
 
     const isAdmin = loggedInUser.user.data.isAdmin
     console.log(isAdmin);
@@ -62,9 +62,7 @@ function Home(props) {
         }
     })
 
-    const [uploads, setUploads] = useState([]);
     const token = localStorage.getItem("email")
-
     const config = {
         headers: {
             "Content-Type": 'application/json',
@@ -75,21 +73,15 @@ function Home(props) {
 
     // Récupérer les posts
     useEffect(() => {
-        Axios.get("http://localhost:3000/api/post/", config)
-            .then((response) => {
-                console.log(response.data)
-                setUploads(response.data)
-                // dispatch(posts(response))
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, [props.loggedInUser]);
+        dispatch(getPosts());
+    }, [dispatch, props.loggedInUser]);
 
     // Supprimer un post
     const deletePost = useCallback((id) => {
+        console.log(id);
         dispatch(deleteOnePost(id));
-    }, [dispatch])
+        dispatch(getPosts())
+    }, [dispatch, post])
 
     const classes = useStyles();
 
@@ -98,9 +90,8 @@ function Home(props) {
             <Container display="flex"
                 justifycontent="center"
                 alignitems="center" xs={6} className="home">
-                {uploads.map((val, key) => (
-                    <>
-                        <Box className={classes.postContainer} key={val.id}>
+                {post?.map((val, key) => (
+                        <Box className={classes.postContainer} key={val.id} >
                             <Box className={classes.deleteBox}>
                                 {/* {uploads && uploads.user && */}
                                 <Box className={classes.userName} onClick={() => history.push(`/profile/${val.user.id}`)}>
@@ -130,14 +121,11 @@ function Home(props) {
                                 <Box color='#828286' height='fit-content' p='20px'>{val.createdAt}</Box>
                             </Box>
                         </Box>
-                    </>
                 ))}
             </Container>
-            <Footer />
         </>
     )
 }
-
 
 // Home page before auth
 function GuestHome() {
@@ -189,7 +177,6 @@ function GuestHome() {
                 <Button href="/signup">Inscrivez-vous !
                 </Button>
             </Box>
-            <Footer />
         </>
     )
 }

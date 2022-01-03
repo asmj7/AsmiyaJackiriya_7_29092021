@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Axios from 'axios';
 import { withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
@@ -9,10 +9,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteOnePost, getPosts } from "../../redux/actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
 
 function Posts(props) {
 
-  const [posts, setPosts] = useState([]);
+  const posts = useSelector((state) => state.post.posts)
+
+  const dispatch = useDispatch();
   const token = localStorage.getItem("email")
 
   const config = {
@@ -25,26 +29,15 @@ function Posts(props) {
 
   // Récupérer tous les posts
   useEffect(() => {
-    Axios.get("http://localhost:3000/api/post/", config)
-      .then((response) => {
-        setPosts(response.data)
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    dispatch(getPosts());
   }, [props.loggedInUser]);
 
   // Supprimer un post
-  const deletePost = (id) => {
-    Axios.delete(`http://localhost:3000/api/post/delete/${id}`, config)
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
+  const deletePost = useCallback((id) => {
+    console.log(id);
+    dispatch(deleteOnePost(id));
+    dispatch(getPosts())
+}, [dispatch, posts])
 
   return (
     <TableContainer component={Paper}>

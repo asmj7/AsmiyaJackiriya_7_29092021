@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Axios from 'axios';
 import { useParams, withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
@@ -9,12 +9,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCommentRedux, getComments } from "../../redux/actions/userActions";
 
 function Comments(props) {
 
+    const comments = useSelector((state) => state.post.comments)
+    console.log(comments);
+
     let { id } = useParams();
 
-    const [comments, setComments] = useState([]);
+    const dispatch = useDispatch();
     const token = localStorage.getItem("email")
 
     const config = {
@@ -27,34 +32,14 @@ function Comments(props) {
 
     // Récupérer les commentaire du post
     useEffect(() => {
-        Axios({
-            method: "GET",
-            url: `http://localhost:3000/api/comment/`,
-            headers: {
-                "Content-Type": 'application/json',
-                'Accept': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((response) => {
-                console.log(response.data);
-                setComments(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, [id]);
+        dispatch(getComments());
+    }, [dispatch]);
 
     // supprimer un commentaire
-    const deleteComment = (id) => {
-        Axios.delete(`http://localhost:3000/api/comment/delete/${id}`, config)
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    const deleteComment = useCallback((id) => {
+        dispatch(deleteCommentRedux(id));
+        dispatch(getComments())
+    }, [dispatch, comments])
 
     return (
         <TableContainer component={Paper}>
@@ -70,7 +55,7 @@ function Comments(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {comments.map((comment) => (
+                    {comments?.map((comment) => (
                         <TableRow
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
@@ -83,7 +68,7 @@ function Comments(props) {
                             <TableCell align="right">{comment.comment}</TableCell>
                             <TableCell align="right">{comment.createdAt}</TableCell>
                             <TableCell align="right">{comment.updatedAt}</TableCell>
-                            <TableCell align="right"sx={{cursor: 'pointer'}} onClick={() => deleteComment(comment.id)}><DeleteIcon/></TableCell>
+                            <TableCell align="right" sx={{ cursor: 'pointer' }} onClick={() => deleteComment(comment.id)}><DeleteIcon /></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

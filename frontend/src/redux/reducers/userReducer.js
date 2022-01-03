@@ -22,6 +22,16 @@ export const userLoggedReducer = (state = initialState, action) => {
                 isLoggedIn: true,
                 user: payload
             };
+        case ActionTypes.USERS:
+            return {
+                ...state,
+                users: payload
+            };
+        case ActionTypes.DELETEUSER:
+            return {
+                ...state,
+                user: payload
+            };
         case ActionTypes.LOGOUT:
             localStorage.removeItem("email")
             return {
@@ -57,6 +67,11 @@ export const postsReducer = (state = stateTwo, action) => {
             return {
                 ...state,
                 comments: payload
+            };
+        case ActionTypes.DELETECOMMENT:
+            return {
+                ...state,
+                comment: payload
             };
         default:
             return state;

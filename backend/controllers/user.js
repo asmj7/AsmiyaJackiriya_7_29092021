@@ -80,7 +80,7 @@ exports.deleteUser = (req, res) => {
     const userId = decodedToken.userId;
     User.findOne({ where: { id: req.params.id } })
         .then((user) => {
-            if (user.id === userId || isAdmin === true) {
+            if (user.id === userId || user.isAdmin === true) {
                 user.destroy({ where: { id: req.params.id } })
                     .then(() => {
                         res.status(200).json({ message: 'Votre compte a bien été supprimé !' });

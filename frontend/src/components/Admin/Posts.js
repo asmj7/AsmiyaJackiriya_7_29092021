@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Axios from 'axios';
+import React, { useCallback, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,17 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 function Posts(props) {
 
   const posts = useSelector((state) => state.post.posts)
-
   const dispatch = useDispatch();
-  const token = localStorage.getItem("email")
-
-  const config = {
-    headers: {
-      "Content-Type": 'application/json',
-      'Accept': 'application/json',
-      Authorization: `Bearer ${token}`,
-    }
-  }
 
   // Récupérer tous les posts
   useEffect(() => {

@@ -19,7 +19,6 @@ import Footer from "./components/Footer";
 function App() {
 
   const loggedInUser = useSelector((state) => state.loggedInUser.user)
-  console.log(loggedInUser);
 
   return (
     <div className="App">

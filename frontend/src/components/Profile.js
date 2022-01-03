@@ -75,7 +75,6 @@ function Profile() {
                 setFirstName(response.data.firstName)
                 setLastName(response.data.lastName)
                 setId(response.data.id)
-                console.log(response);
             })
     }, [])
 
@@ -93,7 +92,6 @@ function Profile() {
     const deleteUser = (id) => {
         Axios.delete(`http://localhost:3000/api/auth/delete/${id}`, config)
             .then((response) => {
-                console.log(response)
                 history.push("/login")
                 localStorage.clear();
                 dispatch(logOut())

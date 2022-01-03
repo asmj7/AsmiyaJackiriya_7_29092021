@@ -16,10 +16,8 @@ function Home(props) {
     const userId = loggedInUser && loggedInUser.user.data ? loggedInUser.user.data.userId : null;
 
     const post = useSelector((state) => state.post.posts)
-    console.log(post);
 
     const isAdmin = loggedInUser.user.data.isAdmin
-    console.log(isAdmin);
 
     const dispatch = useDispatch();
     let history = useHistory();
@@ -61,15 +59,6 @@ function Home(props) {
             display: 'flex',
         }
     })
-
-    const token = localStorage.getItem("email")
-    const config = {
-        headers: {
-            "Content-Type": 'application/json',
-            'Accept': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-    }
 
     // Récupérer les posts
     useEffect(() => {

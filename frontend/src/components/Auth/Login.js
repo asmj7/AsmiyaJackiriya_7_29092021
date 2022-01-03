@@ -52,7 +52,6 @@ function Login() {
           dispatch(loginSuccess(response))
           if (response.data.loggedIn) {
             history.push("/")
-            console.log(response.data)
             localStorage.setItem("loggedIn", true);
             localStorage.setItem("email", response.data.token)
           } else {

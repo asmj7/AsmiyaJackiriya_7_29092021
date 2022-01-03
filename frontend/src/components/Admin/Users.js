@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Axios from 'axios';
+import React, { useCallback, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,18 +14,7 @@ import { deleteUserRedux, getUsers } from "../../redux/actions/userActions";
 function Users(props) {
 
     const users = useSelector((state) => state.loggedInUser.users)
-    console.log(users);
-
     const dispatch = useDispatch();
-    const token = localStorage.getItem("email")
-
-    const config = {
-        headers: {
-            "Content-Type": 'application/json',
-            'Accept': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-    }
 
     // Récupérer tous les utilisateurs
     useEffect(() => {

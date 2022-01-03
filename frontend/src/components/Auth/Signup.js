@@ -36,7 +36,6 @@ function Signup() {
                 password: passwordReg
             }).then((response) => {
                 if (response.data.loggedIn) {
-                    console.log(response.data.message);
                     setMessage(response.data.message)
                     localStorage.setItem("loggedIn", true);
                     localStorage.setItem("email", response.data.token);

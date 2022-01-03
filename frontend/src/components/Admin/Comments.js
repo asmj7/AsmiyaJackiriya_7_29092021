@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Axios from 'axios';
-import { useParams, withRouter } from "react-router-dom";
+import React, { useCallback, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,20 +14,7 @@ import { deleteCommentRedux, getComments } from "../../redux/actions/userActions
 function Comments(props) {
 
     const comments = useSelector((state) => state.post.comments)
-    console.log(comments);
-
-    let { id } = useParams();
-
     const dispatch = useDispatch();
-    const token = localStorage.getItem("email")
-
-    const config = {
-        headers: {
-            "Content-Type": 'application/json',
-            'Accept': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-    }
 
     // Récupérer les commentaire du post
     useEffect(() => {

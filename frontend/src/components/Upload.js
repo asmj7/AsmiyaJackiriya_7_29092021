@@ -39,8 +39,6 @@ function Upload() {
         formData.append("image", image);
         formData.append("content", content);
 
-        // console.log("credentials" + credentials
-
         const config = {
             headers: {
                 "Content-Type": 'multipart/form-data',
@@ -50,7 +48,6 @@ function Upload() {
 
         Axios.post("http://localhost:3000/api/post/upload", formData, config)
             .then((response) => {
-                console.log(response.data);
                 setContent("");
                 setImage("");
                 setTitle("");

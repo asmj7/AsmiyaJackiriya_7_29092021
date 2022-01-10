@@ -22,11 +22,12 @@ function Posts(props) {
   }, [props.loggedInUser]);
 
   // Supprimer un post
-  const deletePost = useCallback((id) => {
+  const deletePost = async(id) => {
     console.log(id);
-    dispatch(deleteOnePost(id));
-    dispatch(getPosts())
-}, [dispatch, posts])
+    await dispatch(deleteOnePost(id));
+    await dispatch(getPosts())
+    console.log(posts);
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -47,7 +48,7 @@ function Posts(props) {
         <TableBody>
           {posts.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell align="right">{row.id}</TableCell>
@@ -58,7 +59,7 @@ function Posts(props) {
               <TableCell align="right">{row.content}</TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
               <TableCell align="right">{row.updatedAt}</TableCell>
-              <TableCell sx={{cursor: 'pointer'}} onClick={() => deletePost(row.id)} align="right"><DeleteIcon /></TableCell>
+              <TableCell sx={{ cursor: 'pointer' }} onClick={() => deletePost(row.id)} align="right"><DeleteIcon /></TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -22,10 +22,10 @@ function Users(props) {
     }, [dispatch])
 
     // supprimer un utilisateur
-    const deleteUser = useCallback((id) => {
-        dispatch(deleteUserRedux(id))
-        dispatch(getUsers())
-    }, [dispatch, users])
+    const deleteUser = async (id) => {
+        await dispatch(deleteUserRedux(id))
+        await dispatch(getUsers())
+    }
 
     return (
         <TableContainer component={Paper}>

@@ -27,14 +27,13 @@ mysql --user=root
 use groupomania;
 show tables;
 
-You should have
-+-----------------------+
-| Tables_in_groupomania |
-+-----------------------+
-| comments              |
-| posts                 |
-| users                 |
-+-----------------------+
+You should have :
+
+Tables_in_groupomania 
+  - comments
+  - posts
+  - users
+
 3 rows in set (0,01 sec)
 
 From within the project folder, go to the Back end with `cd backend` then run `npm install`. 

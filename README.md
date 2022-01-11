@@ -3,7 +3,9 @@ The Frontend is created in React and the server is developped with Express.
 
 ## Groupomania 
 
-To run the Frontend you have to install [React-Redux](https://react-redux.js.org/introduction/getting-started) version 7.1+ 
+To run the Frontend you have to install [React-Redux](https://react-redux.js.org/introduction/getting-started) version 7.1+
+
+To run the Backend you have to install [MySQL](https://dev.mysql.com/downloads/mysql/)
 
 ## Server 
 
